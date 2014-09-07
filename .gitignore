@@ -20,4 +20,4 @@ src/*
 lib/*
 xcuserstate
 #xcshareddata/
-Pods
+Pods/
