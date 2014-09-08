@@ -1,10 +1,13 @@
 PODS:
   - AFNetworking (1.3.4)
+  - TPKeyboardAvoiding (1.2.4)
 
 DEPENDENCIES:
   - AFNetworking (~> 1.3.3)
+  - TPKeyboardAvoiding (~> 1.2)
 
 SPEC CHECKSUMS:
   AFNetworking: 80c4e0652b08eb34e25b9c0ff3c82556fe5967b4
+  TPKeyboardAvoiding: 925e1e1912597d1a4956697eec3bd9656552153c
 
 COCOAPODS: 0.32.1

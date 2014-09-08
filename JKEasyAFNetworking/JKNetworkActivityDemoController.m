@@ -21,6 +21,8 @@
 @property (weak, nonatomic) IBOutlet UITextView *inputGetParameters;
 @property (weak, nonatomic) IBOutlet UIView *errorView;
 @property (weak, nonatomic) IBOutlet UILabel *errorMessageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *executionTime;
+@property (strong,nonatomic) NSDate *requestSendTime;
 
 - (IBAction)sendAPIRequestButtonPressed:(id)sender;
 @property (strong, nonatomic) IBOutlet UIToolbar *inputToolbar;
@@ -51,6 +53,13 @@
     NSDictionary* inputGETParameters=nil;
     NSError* error;
     
+    self.requestSendTime = [NSDate date];
+    
+
+    
+
+    
+    
 
     if([self.inputDataToSend.text length]){
         inputPOSTData = [NSJSONSerialization JSONObjectWithData:[self.inputDataToSend.text dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
@@ -69,18 +78,37 @@
     JKNetworkActivity* newAPIRequest = [[JKNetworkActivity alloc] initWithData:inputPOSTData andAuthorizationToken:AuthorizationToken];
     
     
+    
     [newAPIRequest communicateWithServerWithMethod:self.requestType.selectedSegmentIndex andIsFullURL:self.inputURLScheme.selectedSegmentIndex
                                andPathToAPI:self.inputURLField.text
                                 andParameters:inputGETParameters
                               completion:^(id successResponse) {
-                                  self.serverResponse.text=[NSString stringWithFormat:@"Server Returned successful response : %@",successResponse];
+                                
+                                  
+                                  
+                                  [self showResponseWithMessage:successResponse andIsSuccessfullResponse:YES];
+                                 
                                   
                               }
                                  failure:^(NSError* errorResponse) {
-                                     
+                                 
+                                     [self showResponseWithMessage:[errorResponse localizedDescription] andIsSuccessfullResponse:NO];
+                                 
+                                 
                                      
                                      
                                  }];
+}
+
+-(void)showResponseWithMessage:(id)responseMessage andIsSuccessfullResponse:(BOOL)isRequestSuccessfull{
+    NSDate *requestCompletionTime;
+    NSTimeInterval executionTime;
+    requestCompletionTime= [NSDate date];
+    executionTime= [requestCompletionTime timeIntervalSinceDate:self.requestSendTime];
+     self.executionTime.text=[NSString stringWithFormat:@"Executed in %.3f Seconds",executionTime];
+    
+     self.serverResponse.text=[NSString stringWithFormat:@"Server Responded with Message  :  \n\n %@",responseMessage];
+    
 }
 - (IBAction)doneButtonPressed:(id)sender {
     [self.view endEditing:YES];
