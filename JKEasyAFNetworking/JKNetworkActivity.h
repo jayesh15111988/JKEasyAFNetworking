@@ -10,5 +10,5 @@
 
 @interface JKNetworkActivity : NSObject
 -(id)initWithData:(NSDictionary*)dataToSend andAuthorizationToken:(NSString*)authorizationToken;
--(void)communicateWithServerWithMethod:(NSString*)method andPathToAPI:(NSString*)pathToAPI andParameters:(NSDictionary*)parameters completion:(void (^)(id JSON))completion failure:(void (^)(NSError * error))failure;
+-(void)communicateWithServerWithMethod:(NSInteger)method andIsFullURL:(BOOL)isFullURL andPathToAPI:(NSString*)pathToAPI andParameters:(NSDictionary*)parameters completion:(void (^)(id successResponse))completion failure:(void (^)(NSError * errorResponse))failure;
 @end

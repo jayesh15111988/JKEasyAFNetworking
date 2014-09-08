@@ -9,7 +9,9 @@
 #import <Foundation/Foundation.h>
 
 #define BaseURL @"https://nch.duethealth.com"
-#define URLExtension @"api_merged_testing"
+#define URLExtension @"api_merged1"
+#define AuthorizationToken @"7d28ec8819258a123f8846e120f1cc32"
+#define TimeoutInterval 10
 
 @interface JKURLConstants : NSObject
 
