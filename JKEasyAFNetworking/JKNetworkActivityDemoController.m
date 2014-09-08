@@ -10,6 +10,7 @@
 #import "JKNetworkActivity.h"
 #import "JKURLConstants.h"
 
+#define animationTimeframe 2.0f
 
 @interface JKNetworkActivityDemoController ()
 @property (weak, nonatomic) IBOutlet UITextField *inputURLField;
@@ -18,10 +19,13 @@
 @property (weak, nonatomic) IBOutlet UITextView *inputDataToSend;
 @property (weak, nonatomic) IBOutlet UITextView *serverResponse;
 @property (weak, nonatomic) IBOutlet UITextView *inputGetParameters;
+@property (weak, nonatomic) IBOutlet UIView *errorView;
+@property (weak, nonatomic) IBOutlet UILabel *errorMessageLabel;
 
 - (IBAction)sendAPIRequestButtonPressed:(id)sender;
 @property (strong, nonatomic) IBOutlet UIToolbar *inputToolbar;
 - (IBAction)doneButtonPressed:(id)sender;
+- (IBAction)errorOkButtonPressed:(id)sender;
 
 
 @end
@@ -32,6 +36,7 @@
 
 -(void)viewDidLoad{
     [super viewDidLoad];
+    [self hideErrorViewWithAnimationDuration:0];
     self.inputDataToSend.inputAccessoryView =self.inputToolbar;
     self.inputURLField.inputAccessoryView=self.inputToolbar;
     self.inputGetParameters.inputAccessoryView=self.inputToolbar;
@@ -53,8 +58,13 @@
     }
     if([self.inputGetParameters.text length]){
         inputGETParameters = [NSJSONSerialization JSONObjectWithData:[self.inputGetParameters.text dataUsingEncoding:NSUTF8StringEncoding] options:NSJSONReadingMutableContainers error:&error];
+        
     }
     
+    if(![self.inputURLField.text length]){
+        [self showErrorViewWithMessage:@"Please input the valid URL in given field" andAnimationDuration:animationTimeframe];
+        return;
+    }
     
     JKNetworkActivity* newAPIRequest = [[JKNetworkActivity alloc] initWithData:inputPOSTData andAuthorizationToken:AuthorizationToken];
     
@@ -75,6 +85,43 @@
 - (IBAction)doneButtonPressed:(id)sender {
     [self.view endEditing:YES];
 
+    
+}
+
+- (IBAction)errorOkButtonPressed:(id)sender {
+    [self hideErrorViewWithAnimationDuration:animationTimeframe];
+}
+
+-(void)showErrorViewWithMessage:(NSString*)errorMessage andAnimationDuration:(float)animationDuration{
+    
+    self.errorView.transform = CGAffineTransformMakeScale(0.1, 0.1);
+    self.errorMessageLabel.text=errorMessage?:@"No Error Generated";
+    
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+     
+                     animations:^(){
+                         
+                         self.errorView.transform = CGAffineTransformMakeScale(1.0, 1.0);
+
+                     }
+                     completion:nil];
+    
+}
+
+-(void)hideErrorViewWithAnimationDuration:(float)animationDuration{
+        self.errorView.transform = CGAffineTransformMakeScale(1, 1);
+
+    [UIView animateWithDuration:animationDuration
+                          delay:0.0
+                        options:UIViewAnimationOptionCurveEaseOut
+     
+                     animations:^(){
+                         self.errorView.transform = CGAffineTransformMakeScale(0.0, 0.0);
+
+                     }
+                     completion:nil];
     
 }
 @end
