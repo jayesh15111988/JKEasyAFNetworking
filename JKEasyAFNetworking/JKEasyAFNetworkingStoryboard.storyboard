@@ -12,14 +12,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input Remote URL" textAlignment="center" minimumFontSize="17" id="Vy3-i7-pSQ">
-                                <rect key="frame" x="262" y="55" width="500" height="30"/>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Input URL [https://[URLBase]/[API_Extension]/[Remaining_URL_Tail]]" textAlignment="center" minimumFontSize="17" id="Vy3-i7-pSQ">
+                                <rect key="frame" x="213" y="55" width="599" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="G3y-Tx-mtJ">
-                                <rect key="frame" x="351" y="148" width="323" height="29"/>
+                                <rect key="frame" x="351" y="182" width="323" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="GET"/>
@@ -29,7 +29,7 @@
                                 </segments>
                             </segmentedControl>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="gQn-oy-d8z">
-                                <rect key="frame" x="367" y="100" width="290" height="29"/>
+                                <rect key="frame" x="367" y="134" width="290" height="29"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <segments>
                                     <segment title="URL Without Base"/>
@@ -37,17 +37,17 @@
                                 </segments>
                             </segmentedControl>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.79999999999999982" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" keyboardDismissMode="interactive" editable="NO" id="S5N-Y4-CGR">
-                                <rect key="frame" x="530" y="481" width="474" height="167"/>
+                                <rect key="frame" x="530" y="510" width="474" height="167"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.76229194970000003" green="0.76229194970000003" blue="0.76229194970000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                             </textView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="mCA-Ua-hzv">
-                                <rect key="frame" x="425" y="678" width="175" height="45"/>
+                                <rect key="frame" x="425" y="695" width="175" height="45"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="1" green="0.56211517820000001" blue="0.2481714086" alpha="1" colorSpace="calibratedRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Send Request">
                                     <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -57,14 +57,14 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.79999999999999982" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="zs5-Qg-CAD">
-                                <rect key="frame" x="530" y="338" width="349" height="128"/>
+                                <rect key="frame" x="530" y="365" width="349" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.76229194972826086" green="0.76229194972826086" blue="0.76229194972826086" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="16"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.79999999999999982" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" id="Rbc-TT-H4r">
-                                <rect key="frame" x="530" y="195" width="349" height="128"/>
+                                <rect key="frame" x="530" y="219" width="349" height="128"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" red="0.76229194970000003" green="0.76229194970000003" blue="0.76229194970000003" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="16"/>
@@ -104,19 +104,19 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Input GET Parameters (Please input in Javascript Dictionary form e.g. {&quot;profile_id&quot;:&lt;profile_id_number>})" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="L4S-Dd-Wqe">
-                                <rect key="frame" x="250" y="195" width="250" height="130"/>
+                                <rect key="frame" x="250" y="218" width="250" height="130"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Input POST Parameters (Please input in Javascript Dictionary form)" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l5c-mu-Ybi">
-                                <rect key="frame" x="250" y="354" width="250" height="100"/>
+                                <rect key="frame" x="250" y="379" width="250" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server Response" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="hcT-f8-vNs">
-                                <rect key="frame" x="290" y="550" width="200" height="30"/>
+                                <rect key="frame" x="290" y="579" width="200" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -127,18 +127,49 @@
                                 <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(URL tail end)" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Pv-j9-WyP">
+                                <rect key="frame" x="243" y="137" width="107" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Full URL)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9Cu-Tn-PxX">
+                                <rect key="frame" x="672" y="137" width="86" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Thin" family="Helvetica Neue" pointSize="17"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hxl-Bx-qS4">
+                                <rect key="frame" x="842" y="47" width="133" height="47"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="1" green="0.56211517820000001" blue="0.2481714086" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <state key="normal" title="Reset All">
+                                    <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="resetButtonPressed:" destination="few-zC-ZBW" eventType="touchUpInside" id="qc1-Hr-gYh"/>
+                                </connections>
+                            </button>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Authorization Header" textAlignment="center" minimumFontSize="17" id="hid-Cg-5je">
+                                <rect key="frame" x="312" y="93" width="400" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <connections>
+                        <outlet property="authorizationHeader" destination="hid-Cg-5je" id="m7f-8O-kbc"/>
                         <outlet property="errorMessageLabel" destination="1ka-d0-3xC" id="C27-WC-X4i"/>
                         <outlet property="errorView" destination="7zJ-R5-Jra" id="yO0-Kt-XnZ"/>
                         <outlet property="executionTime" destination="SqI-wG-qbu" id="S86-50-Z3V"/>
                         <outlet property="inputDataToSend" destination="zs5-Qg-CAD" id="F7I-LN-6qZ"/>
                         <outlet property="inputGetParameters" destination="Rbc-TT-H4r" id="oEx-JK-VPp"/>
-                        <outlet property="inputToolbar" destination="bmP-BT-k2K" id="UP0-O1-6Bt"/>
                         <outlet property="inputURLField" destination="Vy3-i7-pSQ" id="fU5-5m-Jlb"/>
                         <outlet property="inputURLScheme" destination="gQn-oy-d8z" id="Q5u-Fg-Ps7"/>
                         <outlet property="requestType" destination="G3y-Tx-mtJ" id="nDM-OR-ikU"/>
@@ -146,17 +177,6 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6P7-5t-P1D" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="bmP-BT-k2K">
-                    <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
-                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                    <items>
-                        <barButtonItem systemItem="done" id="uZy-fr-7rh">
-                            <connections>
-                                <action selector="doneButtonPressed:" destination="few-zC-ZBW" id="J0C-rQ-al6"/>
-                            </connections>
-                        </barButtonItem>
-                    </items>
-                </toolbar>
             </objects>
             <point key="canvasLocation" x="101" y="-261"/>
         </scene>

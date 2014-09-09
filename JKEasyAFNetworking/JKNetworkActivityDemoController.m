@@ -23,10 +23,12 @@
 @property (weak, nonatomic) IBOutlet UILabel *errorMessageLabel;
 @property (weak, nonatomic) IBOutlet UILabel *executionTime;
 @property (strong,nonatomic) NSDate *requestSendTime;
+@property (weak, nonatomic) IBOutlet UITextField *authorizationHeader;
+
+
+- (IBAction)resetButtonPressed:(id)sender;
 
 - (IBAction)sendAPIRequestButtonPressed:(id)sender;
-@property (strong, nonatomic) IBOutlet UIToolbar *inputToolbar;
-- (IBAction)doneButtonPressed:(id)sender;
 - (IBAction)errorOkButtonPressed:(id)sender;
 
 
@@ -39,25 +41,34 @@
 -(void)viewDidLoad{
     [super viewDidLoad];
     [self hideErrorViewWithAnimationDuration:0];
-    self.inputDataToSend.inputAccessoryView =self.inputToolbar;
-    self.inputURLField.inputAccessoryView=self.inputToolbar;
-    self.inputGetParameters.inputAccessoryView=self.inputToolbar;
-    
+}
 
+- (IBAction)resetButtonPressed:(id)sender {
+    NSArray* subviewsInCurrentView=[self.view subviews];
+    
+    for(UIView* individualViewOnCurrentView in subviewsInCurrentView){
+
+        if([individualViewOnCurrentView isKindOfClass:[UITextField class]]){
+            UITextField* inputTextField=(UITextField*)individualViewOnCurrentView;
+            inputTextField.text=nil;
+        }
+        else if([individualViewOnCurrentView isKindOfClass:[UITextView class]]){
+            UITextView* inputTextView=(UITextView*)individualViewOnCurrentView;
+            inputTextView.text=nil;
+            
+        }
+        
+    }
 }
 
 - (IBAction)sendAPIRequestButtonPressed:(id)sender {
-    DLog(@"%d %dselected indices",self.inputURLScheme.selectedSegmentIndex,self.requestType.selectedSegmentIndex);
-    [self.view endEditing:YES];
+
     NSDictionary* inputPOSTData=nil;
     NSDictionary* inputGETParameters=nil;
     NSError* error;
     
     self.requestSendTime = [NSDate date];
     
-
-    
-
     
     
 
@@ -75,7 +86,10 @@
         return;
     }
     
-    JKNetworkActivity* newAPIRequest = [[JKNetworkActivity alloc] initWithData:inputPOSTData andAuthorizationToken:AuthorizationToken];
+    //We will check if user had already entered Auth token in the field - If not, we will use the default ones setup
+    //Through #defines
+    
+    JKNetworkActivity* newAPIRequest = [[JKNetworkActivity alloc] initWithData:inputPOSTData andAuthorizationToken:self.authorizationHeader.text.length?self.authorizationHeader.text:AuthorizationToken];
     
     
     
@@ -110,11 +124,7 @@
      self.serverResponse.text=[NSString stringWithFormat:@"Server Responded with Message  :  \n\n %@",responseMessage];
     
 }
-- (IBAction)doneButtonPressed:(id)sender {
-    [self.view endEditing:YES];
 
-    
-}
 
 - (IBAction)errorOkButtonPressed:(id)sender {
     [self hideErrorViewWithAnimationDuration:animationTimeframe];
