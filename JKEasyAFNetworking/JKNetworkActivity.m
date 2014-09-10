@@ -76,7 +76,7 @@ typedef enum {
     //We are increasing timout interval to combat out super slow internet connection
 
     [request setTimeoutInterval:TimeoutInterval];
-    
+
     if ((method==POST || method==PUT) && self.dataToPost) {
         NSData* journalInfo = [NSJSONSerialization dataWithJSONObject:self.dataToPost
                                                               options:NSJSONWritingPrettyPrinted

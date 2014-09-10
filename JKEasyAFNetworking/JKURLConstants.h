@@ -8,9 +8,14 @@
 
 #import <Foundation/Foundation.h>
 
-#define BaseURL @"https://nch.duethealth.com"
-#define URLExtension @"api_merged1"
-#define AuthorizationToken @"7d28ec8819258a123f8846e120f1cc32"
+#warning Keep Base URL, URL extension, authorization token and Timeout interval etc. parameters in this file \
+They are kept blank for reason.
+
+//Can be provided through interface
+
+#define BaseURL @""
+#define URLExtension @""
+#define AuthorizationToken @""
 #define TimeoutInterval 10
 
 @interface JKURLConstants : NSObject

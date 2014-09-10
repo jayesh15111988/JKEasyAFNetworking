@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *executionTime;
 @property (strong,nonatomic) NSDate *requestSendTime;
 @property (weak, nonatomic) IBOutlet UITextField *authorizationHeader;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 
 - (IBAction)resetButtonPressed:(id)sender;
@@ -91,14 +92,14 @@
     
     JKNetworkActivity* newAPIRequest = [[JKNetworkActivity alloc] initWithData:inputPOSTData andAuthorizationToken:self.authorizationHeader.text.length?self.authorizationHeader.text:AuthorizationToken];
     
-    
+    [self.activityIndicatorView startAnimating];
     
     [newAPIRequest communicateWithServerWithMethod:self.requestType.selectedSegmentIndex andIsFullURL:self.inputURLScheme.selectedSegmentIndex
                                andPathToAPI:self.inputURLField.text
                                 andParameters:inputGETParameters
                               completion:^(id successResponse) {
                                 
-                                  
+                                  [self.activityIndicatorView stopAnimating];
                                   
                                   [self showResponseWithMessage:successResponse andIsSuccessfullResponse:YES];
                                  
@@ -106,8 +107,9 @@
                               }
                                  failure:^(NSError* errorResponse) {
                                  
+                                                                       [self.activityIndicatorView stopAnimating];
                                      [self showResponseWithMessage:[errorResponse localizedDescription] andIsSuccessfullResponse:NO];
-                                 
+                                  [self showErrorViewWithMessage:@"Error Occurred in processing the request. Please try again with valid URL, Auth token and parameters" andAnimationDuration:animationTimeframe];
                                  
                                      
                                      
