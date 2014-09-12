@@ -11,4 +11,6 @@ Pod::Spec.new do |s|
   s.source_files  = 'JKEasyAFNetworking/NetworkingSourceGroup/**'
   s.requires_arc  = true
   s.ios.deployment_target = '7.0'
+  s.dependency 'AFNetworking', '~> 1.3.3'
+  s.dependency 'TPKeyboardAvoiding', '~> 1.2'
 end
