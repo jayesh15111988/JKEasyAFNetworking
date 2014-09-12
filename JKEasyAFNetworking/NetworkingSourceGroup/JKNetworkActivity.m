@@ -105,7 +105,7 @@ typedef enum {
                  failure(error);
              }
              
-             DLog(@"Failure while invalidating user auth token");
+             NSLog(@"Failure while invalidating user auth token");
                 }];
 
     } else {
@@ -118,7 +118,7 @@ typedef enum {
                     if(failure){
                     failure(error);
                     }
-                               DLog(@"Failed with an error: %@",JSON);
+                               NSLog(@"Failed with an error: %@",JSON);
             }];
 
         [journalRegistrationOperation start];
