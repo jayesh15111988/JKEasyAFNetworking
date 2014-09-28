@@ -13,10 +13,6 @@ They are kept blank for reason.
 
 //Can be provided through interface
 
-#define BaseURL @""
-#define URLExtension @""
-#define AuthorizationToken @""
-#define TimeoutInterval 10
 
 @interface JKURLConstants : NSObject
 
