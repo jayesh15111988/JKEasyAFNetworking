@@ -24,7 +24,7 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
 
 @property(strong, nonatomic) NSString *BaseURL;
 @property(strong, nonatomic) NSString *APIVersion;
-@property(strong, nonatomic) NSString *AuthorizationToken;
+
 @property(assign, nonatomic) NSInteger TimeoutPeriod;
 
 @end
@@ -42,8 +42,7 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
             [[NSBundle mainBundle] objectForInfoDictionaryKey:@"BaseURL"];
         self.APIVersion =
             [[NSBundle mainBundle] objectForInfoDictionaryKey:@"APIVersion"];
-        self.AuthorizationToken =
-            [[NSBundle mainBundle] objectForInfoDictionaryKey:@"Authorization"];
+        
         self.TimeoutPeriod = [[[NSBundle mainBundle]
             objectForInfoDictionaryKey:@"TimeoutPeriod"] integerValue];
 
