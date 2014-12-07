@@ -53,7 +53,12 @@ static const NSInteger totalNumberOfSections = 3;
 }
 
 -(void)initializeKeyValueHolderArray {
+    if(self.keyValueParametersCollectionInArray){
+        [self.keyValueParametersCollectionInArray removeAllObjects];
+    }
+    else {
         self.keyValueParametersCollectionInArray = [NSMutableArray new];
+    }
         NSInteger totalNumberOfSection = totalNumberOfSections;
         while (totalNumberOfSection--) {
             [self.keyValueParametersCollectionInArray addObject:[NSMutableArray new]];
@@ -167,6 +172,7 @@ static const NSInteger totalNumberOfSections = 3;
 
 
 -(IBAction)addRowButtonPressed:(UIButton*)sender {
+    [self.view endEditing:YES];
     NSInteger sectionNumberToAddRowsTo = sender.tag;
     NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumberToAddRowsTo] integerValue] + 1;
     [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumberToAddRowsTo];
@@ -175,9 +181,13 @@ static const NSInteger totalNumberOfSections = 3;
 }
 
 -(IBAction)deleteRowButtonPressed:(UIButton*)sender {
+    [self.view endEditing:YES];
     NSInteger sectionNumberToDeleteRowFrom = sender.tag;
     NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumberToDeleteRowFrom] integerValue] - 1;
-    if(newNumberOfRowsInSection < 1) {
+    
+    if(newNumberOfRowsInSection == 0) {
+        [self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom] removeAllObjects];
+        [self.tableView reloadSectionDU:sectionNumberToDeleteRowFrom withRowAnimation:UITableViewRowAnimationNone];
         return;
     }
     DLog(@"%@ ",self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom]);

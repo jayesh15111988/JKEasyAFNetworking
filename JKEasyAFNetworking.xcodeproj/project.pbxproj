@@ -19,6 +19,9 @@
 		38E23CE91A33FF3500741DD4 /* button_minus_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CE81A33FF3500741DD4 /* button_minus_red.png */; };
 		38E23CEC1A34058F00741DD4 /* NSString+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CEB1A34058F00741DD4 /* NSString+Utility.m */; };
 		38E23CEF1A34EEB600741DD4 /* NSDictionary+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */; };
+		38E23CF11A35136600741DD4 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CF01A35136600741DD4 /* settings.png */; };
+		38E23CF81A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CF61A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m */; };
+		38E23CF91A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CF71A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib */; };
 		91AE2C4C19BD18F100AA36C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91AE2C4B19BD18F100AA36C8 /* Foundation.framework */; };
 		91AE2C4E19BD18F100AA36C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91AE2C4D19BD18F100AA36C8 /* CoreGraphics.framework */; };
 		91AE2C5019BD18F100AA36C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91AE2C4F19BD18F100AA36C8 /* UIKit.framework */; };
@@ -68,6 +71,10 @@
 		38E23CEB1A34058F00741DD4 /* NSString+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utility.m"; sourceTree = "<group>"; };
 		38E23CED1A34EEB600741DD4 /* NSDictionary+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Utility.h"; sourceTree = "<group>"; };
 		38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Utility.m"; sourceTree = "<group>"; };
+		38E23CF01A35136600741DD4 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
+		38E23CF51A351B8600741DD4 /* JKRestServiceAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JKRestServiceAppSettingsViewController.h; path = "Networking Demo/JKRestServiceAppSettingsViewController.h"; sourceTree = "<group>"; };
+		38E23CF61A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JKRestServiceAppSettingsViewController.m; path = "Networking Demo/JKRestServiceAppSettingsViewController.m"; sourceTree = "<group>"; };
+		38E23CF71A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = JKRestServiceAppSettingsViewController.xib; path = "Networking Demo/JKRestServiceAppSettingsViewController.xib"; sourceTree = "<group>"; };
 		845FCEA93F97FFB60103D0A0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		91AE2C4819BD18F100AA36C8 /* JKEasyAFNetworking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKEasyAFNetworking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91AE2C4B19BD18F100AA36C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -90,7 +97,7 @@
 		91AE2C8819BD1E8E00AA36C8 /* JKURLConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKURLConstants.h; sourceTree = "<group>"; };
 		91AE2C8B19BD203900AA36C8 /* JKNetworkActivityDemoController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkActivityDemoController.h; sourceTree = "<group>"; };
 		91AE2C8C19BD203900AA36C8 /* JKNetworkActivityDemoController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkActivityDemoController.m; sourceTree = "<group>"; };
-		91AE2C8E19BD216C00AA36C8 /* JKEasyAFNetworkingStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = JKEasyAFNetworkingStoryboard.storyboard; sourceTree = "<group>"; };
+		91AE2C8E19BD216C00AA36C8 /* JKEasyAFNetworkingStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = JKEasyAFNetworkingStoryboard.storyboard; path = "Networking Demo/JKEasyAFNetworkingStoryboard.storyboard"; sourceTree = "<group>"; };
 		AECF5FB18C24A2D5AE0345CA /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		D1E71E4F666B4A95A6FF5292 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -134,7 +141,6 @@
 			children = (
 				38E23CC81A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.h */,
 				38E23CC91A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m */,
-				38E23CD21A33E29200741DD4 /* JKRequestOptionsProviderUIViewController.xib */,
 			);
 			name = "Option Selector Table View";
 			sourceTree = "<group>";
@@ -160,13 +166,13 @@
 			name = "Custom Cell";
 			sourceTree = "<group>";
 		};
-		38E23CDA1A33F22500741DD4 /* JKAppearance */ = {
+		38E23CDA1A33F22500741DD4 /* Appearance */ = {
 			isa = PBXGroup;
 			children = (
 				38E23CDE1A33F2D900741DD4 /* JKAppearanceProvider.h */,
 				38E23CDF1A33F2D900741DD4 /* JKAppearanceProvider.m */,
 			);
-			name = JKAppearance;
+			name = Appearance;
 			sourceTree = "<group>";
 		};
 		38E23CE11A33F81300741DD4 /* Images */ = {
@@ -174,6 +180,7 @@
 			children = (
 				38E23CE21A33F82000741DD4 /* button_plus_green.png */,
 				38E23CE81A33FF3500741DD4 /* button_minus_red.png */,
+				38E23CF01A35136600741DD4 /* settings.png */,
 			);
 			name = Images;
 			sourceTree = "<group>";
@@ -189,6 +196,43 @@
 				38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		38E23CF21A35143700741DD4 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				38E23CFA1A351B8F00741DD4 /* Setting */,
+				91AE2C8319BD1C3E00AA36C8 /* Networking Main Group */,
+				38E23CC71A33DB2000741DD4 /* Option Selector Table View */,
+				38E23CCB1A33E03800741DD4 /* Popup View Controllers Library */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		38E23CF31A35143E00741DD4 /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				91AE2C8E19BD216C00AA36C8 /* JKEasyAFNetworkingStoryboard.storyboard */,
+			);
+			name = Storyboards;
+			sourceTree = "<group>";
+		};
+		38E23CF41A35144700741DD4 /* Xib Files */ = {
+			isa = PBXGroup;
+			children = (
+				38E23CD21A33E29200741DD4 /* JKRequestOptionsProviderUIViewController.xib */,
+				38E23CF71A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib */,
+			);
+			name = "Xib Files";
+			sourceTree = "<group>";
+		};
+		38E23CFA1A351B8F00741DD4 /* Setting */ = {
+			isa = PBXGroup;
+			children = (
+				38E23CF51A351B8600741DD4 /* JKRestServiceAppSettingsViewController.h */,
+				38E23CF61A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m */,
+			);
+			name = Setting;
 			sourceTree = "<group>";
 		};
 		91AE2C3F19BD18F100AA36C8 = {
@@ -226,14 +270,14 @@
 		91AE2C5119BD18F100AA36C8 /* JKEasyAFNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				38E23CF41A35144700741DD4 /* Xib Files */,
+				38E23CF31A35143E00741DD4 /* Storyboards */,
+				38E23CF21A35143700741DD4 /* Controllers */,
 				38E23CE11A33F81300741DD4 /* Images */,
 				38E23CE41A33FD3B00741DD4 /* Categories */,
-				38E23CDA1A33F22500741DD4 /* JKAppearance */,
+				38E23CDA1A33F22500741DD4 /* Appearance */,
 				38E23CD41A33E54500741DD4 /* Custom Cell */,
-				38E23CCB1A33E03800741DD4 /* Popup View Controllers Library */,
-				38E23CC71A33DB2000741DD4 /* Option Selector Table View */,
 				91AE2C8419BD1CD000AA36C8 /* NetworkingSourceGroup */,
-				91AE2C8319BD1C3E00AA36C8 /* Networking Main Group */,
 				91AE2C5A19BD18F100AA36C8 /* AppDelegate.h */,
 				91AE2C5B19BD18F100AA36C8 /* AppDelegate.m */,
 				91AE2C6619BD18F100AA36C8 /* Images.xcassets */,
@@ -276,7 +320,6 @@
 			children = (
 				91AE2C8B19BD203900AA36C8 /* JKNetworkActivityDemoController.h */,
 				91AE2C8C19BD203900AA36C8 /* JKNetworkActivityDemoController.m */,
-				91AE2C8E19BD216C00AA36C8 /* JKEasyAFNetworkingStoryboard.storyboard */,
 			);
 			name = "Networking Main Group";
 			path = "Networking Demo";
@@ -370,8 +413,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38E23CF11A35136600741DD4 /* settings.png in Resources */,
 				91AE2C6719BD18F100AA36C8 /* Images.xcassets in Resources */,
 				38E23CE31A33F82000741DD4 /* button_plus_green.png in Resources */,
+				38E23CF91A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib in Resources */,
 				38E23CE91A33FF3500741DD4 /* button_minus_red.png in Resources */,
 				38E23CD91A33EA2900741DD4 /* JKOptionSelectorTableViewCell.xib in Resources */,
 				38E23CD31A33E29200741DD4 /* JKRequestOptionsProviderUIViewController.xib in Resources */,
@@ -428,6 +473,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38E23CF81A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m in Sources */,
 				38E23CE71A33FD6600741DD4 /* UITableView+Utility.m in Sources */,
 				91AE2C5C19BD18F100AA36C8 /* AppDelegate.m in Sources */,
 				38E23CE01A33F2D900741DD4 /* JKAppearanceProvider.m in Sources */,

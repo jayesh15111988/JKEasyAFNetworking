@@ -20,7 +20,6 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
     // Configure the view for the selected state
 }
 
@@ -30,6 +29,9 @@
                 self.KeyValueAddedBlock(self.keyField.text, self.valueField.text);
         }
     }
+}
+-(void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end

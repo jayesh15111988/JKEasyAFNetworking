@@ -30,6 +30,7 @@
 @property(weak, nonatomic) IBOutlet UILabel *executionTime;
 @property(strong, nonatomic) NSDate *requestSendTime;
 @property(weak, nonatomic) IBOutlet UITextField *authorizationHeader;
+@property(strong, nonatomic) UIPasteboard* generalPasteboard;
 @property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
@@ -63,6 +64,10 @@
 }
 
 - (IBAction)resetButtonPressed:(id)sender {
+    
+    //Remove all previous entries from key-value pair array
+    [self.networkRequestParametersProvider initializeKeyValueHolderArray];
+    
     NSArray *subviewsInCurrentView = [self.view subviews];
 
     for (UIView *individualViewOnCurrentView in subviewsInCurrentView) {
@@ -72,8 +77,11 @@
                 (UITextField *)individualViewOnCurrentView;
             inputTextField.text = nil;
         } else if ([individualViewOnCurrentView isKindOfClass:[UITextView class]]) {
-            if(individualViewOnCurrentView != self.serverResponse) {
-                UITextView *inputTextView = (UITextView *)individualViewOnCurrentView;
+            UITextView *inputTextView = (UITextView *)individualViewOnCurrentView;
+            if(individualViewOnCurrentView == self.serverResponse) {
+                inputTextView.text = @"Non-Editable";
+            }
+            else {
                 inputTextView.text = nil;
             }
         }
@@ -234,6 +242,20 @@
         [mutableDictionary setObject:outputDictionary[key] forKey:key];
     }
     return mutableDictionary;
+}
+
+-(IBAction)settingsButtonPressed:(id)sender {
+    DLog(@"Go To Settings pressed");
+    
+}
+
+-(IBAction)copyServerResponseButtonPressed:(id)sender {
+    if(!self.generalPasteboard) {
+        self.generalPasteboard = [UIPasteboard generalPasteboard];
+    }
+    [self.generalPasteboard setString:self.serverResponse.text];
+    [self.serverResponse selectAll:self];
+    [UIMenuController sharedMenuController].menuVisible = NO;
 }
 
 @end
