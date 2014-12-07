@@ -6,8 +6,10 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
-#import "JKNetworkActivityDemoController.h"
 #import <AFNetworking.h>
+#import "JKNetworkActivityDemoController.h"
+#import "JKRequestOptionsProviderUIViewController.h"
+#import "UIViewController+MJPopupViewController.h"
 #import "JKNetworkActivity.h"
 #import "JKURLConstants.h"
 
@@ -25,12 +27,12 @@
 @property(weak, nonatomic) IBOutlet UILabel *executionTime;
 @property(strong, nonatomic) NSDate *requestSendTime;
 @property(weak, nonatomic) IBOutlet UITextField *authorizationHeader;
+@property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
 
 - (IBAction)resetButtonPressed:(id)sender;
-
 - (IBAction)sendAPIRequestButtonPressed:(id)sender;
 - (IBAction)errorOkButtonPressed:(id)sender;
 
@@ -43,9 +45,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self hideErrorViewWithAnimationDuration:0];
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
-    }];
+    self.networkRequestParametersProvider = [[JKRequestOptionsProviderUIViewController alloc] initWithNibName:@"JKRequestOptionsProviderUIViewController" bundle:nil];
+    __weak typeof(self) weakInstance = self;
+    self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction){
+        __strong typeof(self) strongInstance = weakInstance;
+        [strongInstance dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
+    };
 }
 
 - (IBAction)resetButtonPressed:(id)sender {
@@ -70,7 +75,7 @@
 
     NSDictionary *inputPOSTData = nil;
     NSDictionary *inputGETParameters = nil;
-    NSError *error;
+    NSError *error = nil;
 
     self.requestSendTime = [NSDate date];
 
@@ -90,11 +95,19 @@
                          error:&error];
     }
 
+    NSString* errorMessage = @"";
+    
     if (![self.inputURLField.text length]) {
-        [self showErrorViewWithMessage:
-                  @"Please input the valid URL in given field"
+        errorMessage = @"Please input the valid URL in given field";
+    }
+    
+    if(error != nil) {
+        errorMessage = [errorMessage stringByAppendingString:@"\n Please enter valid values of GET/POST parameters in the given fields. E.g. Input parameters strictly follow standard JavaScript array and dictionary notations"];
+    }
+    
+    if(errorMessage.length) {
+        [self showErrorViewWithMessage:errorMessage
                   andAnimationDuration:animationTimeframe];
-        return;
     }
 
     // We will check if user had already entered Auth token in the field - If
@@ -186,4 +199,9 @@
                      }
                      completion:nil];
 }
+
+- (IBAction)addMoreOptionsButtonPressed:(id)sender {
+    [self presentPopupViewController:self.networkRequestParametersProvider animationType:MJPopupViewAnimationSlideTopTop];
+}
+
 @end
