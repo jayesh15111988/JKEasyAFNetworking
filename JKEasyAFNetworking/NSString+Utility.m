@@ -9,15 +9,16 @@
 #import "NSString+Utility.h"
 
 @implementation NSString (Utility)
--(NSDictionary*)convertJSONStringToDictionaryWithErrorObject:(NSError *)error {
+-(NSDictionary*)convertJSONStringToDictionaryWithErrorObject:(NSError **)error {
 
     NSDictionary* dictionaryRepresentationOfJSONString = [NSJSONSerialization
             JSONObjectWithData:[self
                                 dataUsingEncoding:NSUTF8StringEncoding]
             options:NSJSONReadingMutableContainers
-            error:&error];
-    if(error) {
-        return nil;
+            error:error];
+    
+    if(*error) {
+        return @{};
     }
     return dictionaryRepresentationOfJSONString;
 }

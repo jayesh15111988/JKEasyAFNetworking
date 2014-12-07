@@ -9,5 +9,5 @@
 #import <Foundation/Foundation.h>
 
 @interface NSString (Utility)
--(NSDictionary*)convertJSONStringToDictionaryWithErrorObject:(NSError*)error;
+-(NSDictionary*)convertJSONStringToDictionaryWithErrorObject:(NSError**)error;
 @end

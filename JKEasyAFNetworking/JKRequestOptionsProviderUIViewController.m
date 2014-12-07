@@ -30,12 +30,10 @@ static const NSInteger totalNumberOfSections = 3;
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.sectionHeaderViewsCollection = [NSMutableArray new];
-    self.keyValueParametersCollectionInArray = [NSMutableArray new];
     self.numberOfRowsInRespectiveSection = [[NSMutableArray alloc] initWithArray:@[@(1),@(1),@(1)]];
     
-    NSInteger totalNumberOfSection = totalNumberOfSections;
-    while (totalNumberOfSection--) {
-        [self.keyValueParametersCollectionInArray addObject:[NSMutableArray new]];
+    if(!self.keyValueParametersCollectionInArray) {
+        [self initializeKeyValueHolderArray];
     }
     
     self.sectionHeaderNamesCollection = @[@"Headers",@"GET Parameters",@"POST Parameters"];
@@ -48,6 +46,18 @@ static const NSInteger totalNumberOfSections = 3;
     headerViewTitleLabel.textAlignment = NSTextAlignmentCenter;
     [tableHeaderView addSubview:headerViewTitleLabel];
     self.tableView.tableHeaderView = tableHeaderView;
+}
+-(void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
+}
+
+-(void)initializeKeyValueHolderArray {
+        self.keyValueParametersCollectionInArray = [NSMutableArray new];
+        NSInteger totalNumberOfSection = totalNumberOfSections;
+        while (totalNumberOfSection--) {
+            [self.keyValueParametersCollectionInArray addObject:[NSMutableArray new]];
+        }
 }
 
 #pragma MARK tableView dataSource and delegate methods
@@ -143,13 +153,14 @@ static const NSInteger totalNumberOfSections = 3;
 
 - (IBAction)cancelButtonPressed:(id)sender {
     if(self.dismissViewButtonAction) {
-        self.dismissViewButtonAction(0);
+        self.dismissViewButtonAction(0, nil);
     }
 }
 
 - (IBAction)doneButtonPressed:(id)sender {
+    [self.view endEditing:YES];
     if(self.dismissViewButtonAction) {
-        self.dismissViewButtonAction(1);
+        self.dismissViewButtonAction(1, self.keyValueParametersCollectionInArray);
     }
 }
 
@@ -176,6 +187,17 @@ static const NSInteger totalNumberOfSections = 3;
     DLog(@"%@ ",self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom]);
     [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumberToDeleteRowFrom];
     [self.tableView reloadSectionDU:sectionNumberToDeleteRowFrom withRowAnimation:UITableViewRowAnimationNone];
+}
+
+-(void)accumulateKeyValuesInParameterHolder:(NSArray*)inputParametersHolderArray {
+    NSInteger currentIndex = 1;
+    for(NSDictionary* individualKeyValueDictionary in inputParametersHolderArray) {
+        for(NSString* key in individualKeyValueDictionary) {
+            [self.keyValueParametersCollectionInArray[currentIndex] addObject:@{key : individualKeyValueDictionary[key]}];
+        }
+        currentIndex++;
+    }
+    DLog(@"Key value pair collection %@",self.keyValueParametersCollectionInArray);
 }
 
 @end

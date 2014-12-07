@@ -18,6 +18,7 @@
 		38E23CE71A33FD6600741DD4 /* UITableView+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CE61A33FD6600741DD4 /* UITableView+Utility.m */; };
 		38E23CE91A33FF3500741DD4 /* button_minus_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CE81A33FF3500741DD4 /* button_minus_red.png */; };
 		38E23CEC1A34058F00741DD4 /* NSString+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CEB1A34058F00741DD4 /* NSString+Utility.m */; };
+		38E23CEF1A34EEB600741DD4 /* NSDictionary+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */; };
 		91AE2C4C19BD18F100AA36C8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91AE2C4B19BD18F100AA36C8 /* Foundation.framework */; };
 		91AE2C4E19BD18F100AA36C8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91AE2C4D19BD18F100AA36C8 /* CoreGraphics.framework */; };
 		91AE2C5019BD18F100AA36C8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91AE2C4F19BD18F100AA36C8 /* UIKit.framework */; };
@@ -65,6 +66,8 @@
 		38E23CE81A33FF3500741DD4 /* button_minus_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_minus_red.png; sourceTree = "<group>"; };
 		38E23CEA1A34058F00741DD4 /* NSString+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utility.h"; sourceTree = "<group>"; };
 		38E23CEB1A34058F00741DD4 /* NSString+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utility.m"; sourceTree = "<group>"; };
+		38E23CED1A34EEB600741DD4 /* NSDictionary+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Utility.h"; sourceTree = "<group>"; };
+		38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Utility.m"; sourceTree = "<group>"; };
 		845FCEA93F97FFB60103D0A0 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		91AE2C4819BD18F100AA36C8 /* JKEasyAFNetworking.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JKEasyAFNetworking.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91AE2C4B19BD18F100AA36C8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -182,6 +185,8 @@
 				38E23CE61A33FD6600741DD4 /* UITableView+Utility.m */,
 				38E23CEA1A34058F00741DD4 /* NSString+Utility.h */,
 				38E23CEB1A34058F00741DD4 /* NSString+Utility.m */,
+				38E23CED1A34EEB600741DD4 /* NSDictionary+Utility.h */,
+				38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -430,6 +435,7 @@
 				38E23CCA1A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m in Sources */,
 				38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */,
 				38E23CD11A33E05D00741DD4 /* UIViewController+MJPopupViewController.m in Sources */,
+				38E23CEF1A34EEB600741DD4 /* NSDictionary+Utility.m in Sources */,
 				38E23CD71A33E62B00741DD4 /* JKOptionSelectorTableViewCell.m in Sources */,
 				91AE2C5819BD18F100AA36C8 /* main.m in Sources */,
 				91AE2C8719BD1D5300AA36C8 /* JKNetworkActivity.m in Sources */,

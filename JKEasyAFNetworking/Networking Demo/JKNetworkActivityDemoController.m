@@ -11,6 +11,7 @@
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "NSString+Utility.h"
+#import "NSDictionary+Utility.h"
 #import "JKNetworkActivity.h"
 #import "JKURLConstants.h"
 
@@ -46,12 +47,18 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+
     [self hideErrorViewWithAnimationDuration:0];
     self.networkRequestParametersProvider = [[JKRequestOptionsProviderUIViewController alloc] initWithNibName:@"JKRequestOptionsProviderUIViewController" bundle:nil];
-    __weak typeof(self) weakInstance = self;
-    self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction){
-        __strong typeof(self) strongInstance = weakInstance;
-        [strongInstance dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
+    __weak typeof(self) weakSelf = self;
+    self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction, NSArray* inputKeyValuePairCollection){
+        __strong typeof(self) strongSelf = weakSelf;
+        if(inputKeyValuePairCollection) {
+            strongSelf.inputGetParameters.text = [NSString stringWithFormat:@"%@",  [[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[GET]] jsonStringWithPrettyPrint]];
+            strongSelf.inputDataToSend.text = [NSString stringWithFormat:@"%@",[[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[POST]] jsonStringWithPrettyPrint]];
+        }
+        
+        [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
     };
 }
 
@@ -64,11 +71,11 @@
             UITextField *inputTextField =
                 (UITextField *)individualViewOnCurrentView;
             inputTextField.text = nil;
-        } else if ([individualViewOnCurrentView
-                       isKindOfClass:[UITextView class]]) {
-            UITextView *inputTextView =
-                (UITextView *)individualViewOnCurrentView;
-            inputTextView.text = nil;
+        } else if ([individualViewOnCurrentView isKindOfClass:[UITextView class]]) {
+            if(individualViewOnCurrentView != self.serverResponse) {
+                UITextView *inputTextView = (UITextView *)individualViewOnCurrentView;
+                inputTextView.text = nil;
+            }
         }
     }
 }
@@ -83,10 +90,10 @@
 
 
     if ([self.inputDataToSend.text length]) {
-        inputPOSTData = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:error];
+        inputPOSTData = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:&error];
     }
     if ([self.inputGetParameters.text length]) {
-        inputGETParameters = [self.inputGetParameters.text convertJSONStringToDictionaryWithErrorObject:error];
+        inputGETParameters = [self.inputGetParameters.text convertJSONStringToDictionaryWithErrorObject:&error];
     }
 
     NSString* errorMessage = @"";
@@ -156,7 +163,7 @@
         [NSString stringWithFormat:@"Executed in %.3f Seconds", executionTime];
 
     self.serverResponse.text =
-        [NSString stringWithFormat:@"\n\n %@",
+        [NSString stringWithFormat:@"%@",
                                    responseMessage];
 }
 
@@ -196,7 +203,37 @@
 }
 
 - (IBAction)addMoreOptionsButtonPressed:(id)sender {
+    NSError* getParamersConversionError = nil;
+    NSError* postParamersConversionError = nil;
+    NSDictionary* getParamertsKeyValueHolderDictionary = @{};
+    NSDictionary* postParametersHolderDictionary = @{};
+    
+    if(self.inputGetParameters.text.length) {
+        getParamertsKeyValueHolderDictionary = [self.inputGetParameters.text convertJSONStringToDictionaryWithErrorObject:&getParamersConversionError];
+    }
+    if(self.inputDataToSend.text.length) {
+        postParametersHolderDictionary = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:&postParamersConversionError];
+    }
+    
+    
+    if(getParamertsKeyValueHolderDictionary.count || postParametersHolderDictionary.count) {
+        [self.networkRequestParametersProvider initializeKeyValueHolderArray];
+        [self.networkRequestParametersProvider accumulateKeyValuesInParameterHolder:@[getParamertsKeyValueHolderDictionary, postParametersHolderDictionary]];
+    }
+    
     [self presentPopupViewController:self.networkRequestParametersProvider animationType:MJPopupViewAnimationSlideTopTop];
+}
+
+- (NSDictionary *) getKeyedDictionaryFromArray:(NSArray *)array {
+    NSDictionary* outputDictionary;
+
+    
+    NSMutableDictionary *mutableDictionary = [[NSMutableDictionary alloc] init];
+    for (outputDictionary in array){
+        NSString* key = [[outputDictionary allKeys] firstObject];
+        [mutableDictionary setObject:outputDictionary[key] forKey:key];
+    }
+    return mutableDictionary;
 }
 
 @end
