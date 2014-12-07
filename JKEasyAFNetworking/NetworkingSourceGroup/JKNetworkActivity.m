@@ -74,6 +74,8 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
         destinationUrlString = [self getUrlFromString:pathToAPI];
     }
 
+    destinationUrlString = [destinationUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];

@@ -131,7 +131,7 @@
         communicateWithServerWithMethod:self.requestType.selectedSegmentIndex
         andIsFullURL:self.inputURLScheme.selectedSegmentIndex
         andPathToAPI:self.inputURLField.text
-        andParameters:inputGETParameters
+     andParameters:inputGETParameters
         completion:^(id successResponse) {
 
             [self.activityIndicatorView stopAnimating];
@@ -173,7 +173,7 @@
 }
 
 - (void)showErrorViewWithMessage:(NSString *)errorMessage
-            andAnimationDuration:(float)animationDuration {
+            andAnimationDuration:(CGFloat)animationDuration {
 
     self.errorView.transform = CGAffineTransformMakeScale(0.1, 0.1);
     self.errorMessageLabel.text = errorMessage ?: @"No Error Generated";
@@ -189,7 +189,7 @@
                      completion:nil];
 }
 
-- (void)hideErrorViewWithAnimationDuration:(float)animationDuration {
+- (void)hideErrorViewWithAnimationDuration:(CGFloat)animationDuration {
     self.errorView.transform = CGAffineTransformMakeScale(1, 1);
 
     [UIView animateWithDuration:animationDuration
