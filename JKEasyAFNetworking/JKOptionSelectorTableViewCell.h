@@ -9,5 +9,10 @@
 #import <UIKit/UIKit.h>
 
 @interface JKOptionSelectorTableViewCell : UITableViewCell
-
+@property (weak, nonatomic) IBOutlet UITextField *keyField;
+@property (weak, nonatomic) IBOutlet UITextField *valueField;
+@property (nonatomic, assign) NSInteger currentKeyValuePairArrayIndex;
+@property (nonatomic, assign) BOOL didAddKeyValuePairToArray;
+typedef void (^KeyValueAdded)(NSString* key, NSString* value);
+@property (strong, nonatomic) KeyValueAdded KeyValueAddedBlock;
 @end

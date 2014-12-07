@@ -10,12 +10,14 @@
 #import "JKNetworkActivityDemoController.h"
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
+#import "NSString+Utility.h"
 #import "JKNetworkActivity.h"
 #import "JKURLConstants.h"
 
 #define animationTimeframe 2.0f
 
 @interface JKNetworkActivityDemoController ()
+
 @property(weak, nonatomic) IBOutlet UITextField *inputURLField;
 @property(weak, nonatomic) IBOutlet UISegmentedControl *inputURLScheme;
 @property(weak, nonatomic) IBOutlet UISegmentedControl *requestType;
@@ -81,18 +83,10 @@
 
 
     if ([self.inputDataToSend.text length]) {
-        inputPOSTData = [NSJSONSerialization
-            JSONObjectWithData:[self.inputDataToSend.text
-                                   dataUsingEncoding:NSUTF8StringEncoding]
-                       options:NSJSONReadingMutableContainers
-                         error:&error];
+        inputPOSTData = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:error];
     }
     if ([self.inputGetParameters.text length]) {
-        inputGETParameters = [NSJSONSerialization
-            JSONObjectWithData:[self.inputGetParameters.text
-                                   dataUsingEncoding:NSUTF8StringEncoding]
-                       options:NSJSONReadingMutableContainers
-                         error:&error];
+        inputGETParameters = [self.inputGetParameters.text convertJSONStringToDictionaryWithErrorObject:error];
     }
 
     NSString* errorMessage = @"";
@@ -108,6 +102,7 @@
     if(errorMessage.length) {
         [self showErrorViewWithMessage:errorMessage
                   andAnimationDuration:animationTimeframe];
+        return;
     }
 
     // We will check if user had already entered Auth token in the field - If

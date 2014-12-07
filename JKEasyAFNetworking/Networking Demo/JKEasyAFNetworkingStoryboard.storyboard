@@ -186,7 +186,8 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
-                    <simulatedScreenMetrics key="simulatedDestinationMetrics"/>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="1024" height="768"/>
                     <connections>
                         <outlet property="activityIndicatorView" destination="nfk-gm-cGO" id="r4I-35-r2T"/>
                         <outlet property="authorizationHeader" destination="hid-Cg-5je" id="m7f-8O-kbc"/>

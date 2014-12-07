@@ -6,13 +6,14 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
+#import "UITableView+Utility.h"
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "JKOptionSelectorTableViewCell.h"
 #import "JKAppearanceProvider.h"
 
-
 static NSString* cellIdentifier = @"optionSelectorCell";
+static const NSInteger totalNumberOfSections = 3;
 
 @interface JKRequestOptionsProviderUIViewController ()
 @property (strong, nonatomic) NSArray* sectionHeaderNamesCollection;
@@ -20,8 +21,8 @@ static NSString* cellIdentifier = @"optionSelectorCell";
 @property (strong, nonatomic) IBOutlet UIView *tableViewFooter;
 @property (strong, nonatomic) IBOutlet UIView *tableViewHeader;
 @property (strong, nonatomic) NSMutableArray* sectionHeaderViewsCollection;
-
-
+@property (strong, nonatomic) NSMutableArray* numberOfRowsInRespectiveSection;
+@property (strong, nonatomic) NSMutableArray* keyValueParametersCollectionInArray;
 @end
 
 @implementation JKRequestOptionsProviderUIViewController
@@ -29,6 +30,14 @@ static NSString* cellIdentifier = @"optionSelectorCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.sectionHeaderViewsCollection = [NSMutableArray new];
+    self.keyValueParametersCollectionInArray = [NSMutableArray new];
+    self.numberOfRowsInRespectiveSection = [[NSMutableArray alloc] initWithArray:@[@(1),@(1),@(1)]];
+    
+    NSInteger totalNumberOfSection = totalNumberOfSections;
+    while (totalNumberOfSection--) {
+        [self.keyValueParametersCollectionInArray addObject:[NSMutableArray new]];
+    }
+    
     self.sectionHeaderNamesCollection = @[@"Headers",@"GET Parameters",@"POST Parameters"];
     self.tableView.tableFooterView = self.tableViewFooter;
     UIView* tableHeaderView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 512, 60)];
@@ -43,11 +52,11 @@ static NSString* cellIdentifier = @"optionSelectorCell";
 
 #pragma MARK tableView dataSource and delegate methods
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return totalNumberOfSections;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 1;
+    return [self.numberOfRowsInRespectiveSection[section] integerValue];
 }
 
 - (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath: (NSIndexPath  *)indexPath {
@@ -57,6 +66,38 @@ static NSString* cellIdentifier = @"optionSelectorCell";
         [tableView registerNib:[UINib nibWithNibName:@"JKOptionSelectorTableViewCell" bundle:nil] forCellReuseIdentifier:cellIdentifier];
         currentCell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     }
+
+    NSArray* keyValuePairDetailsForCurrentSection = self.keyValueParametersCollectionInArray[indexPath.section];
+    if(indexPath.row < keyValuePairDetailsForCurrentSection.count) {
+        NSDictionary* currentKeyValuePairDictionary = keyValuePairDetailsForCurrentSection[indexPath.row];
+        currentCell.keyField.text = [currentKeyValuePairDictionary allKeys][0];
+        currentCell.valueField.text = [currentKeyValuePairDictionary objectForKey:currentCell.keyField.text];
+        currentCell.didAddKeyValuePairToArray = YES;
+        currentCell.currentKeyValuePairArrayIndex = indexPath.row;
+        DLog(@"%@ - Key %@ - Value and current index %d",currentCell.keyField.text,currentCell.valueField.text,indexPath.row);
+    }
+    else {
+        currentCell.keyField.text = @"";
+        currentCell.valueField.text = @"";
+        currentCell.didAddKeyValuePairToArray = NO;
+    }
+    
+    __weak typeof(JKOptionSelectorTableViewCell*) weakCellInstance = currentCell;
+    currentCell.KeyValueAddedBlock = ^(NSString* parameterKey, NSString* parameterValue) {
+        __strong typeof(JKOptionSelectorTableViewCell*) strongCellInstance = weakCellInstance;
+        if(strongCellInstance.didAddKeyValuePairToArray) {
+            [self.keyValueParametersCollectionInArray[indexPath.section] replaceObjectAtIndex:strongCellInstance.currentKeyValuePairArrayIndex withObject:@{parameterKey : parameterValue}];
+        }
+        else {
+            [self.keyValueParametersCollectionInArray[indexPath.section] addObject:@{parameterKey : parameterValue}];
+            strongCellInstance.currentKeyValuePairArrayIndex = [self.keyValueParametersCollectionInArray[indexPath.section] count] - 1;
+            strongCellInstance.didAddKeyValuePairToArray = YES;
+        }
+        DLog(@"Current value of key value pair %@",self.keyValueParametersCollectionInArray);
+        
+    };
+    
+    
     return currentCell;
 }
 
@@ -73,6 +114,7 @@ static NSString* cellIdentifier = @"optionSelectorCell";
     
     if (([self.sectionHeaderViewsCollection count] < sectionNumber + 1)) {
         UIView* headerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 512, 60)];
+        [headerView setBackgroundColor:[UIColor whiteColor]];
         UILabel* headerTitleLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, 250, 40)];
         headerTitleLabel.text = self.sectionHeaderNamesCollection[sectionNumber];
         CGFloat titleLabelWidth = [headerTitleLabel.text
@@ -81,12 +123,19 @@ static NSString* cellIdentifier = @"optionSelectorCell";
                                    attributes:@{ NSFontAttributeName:headerTitleLabel.font }
                                    context:nil].size.width;
         
-        UIButton* addRowsButton = [[UIButton alloc] initWithFrame:CGRectMake(20 + titleLabelWidth , 20, 25, 25)];
-        [addRowsButton setBackgroundImage:[UIImage imageNamed:@"button_plus_green"] forState:UIControlStateNormal];
-        addRowsButton.tag = sectionNumber;
-        [addRowsButton addTarget:self action:@selector(addRowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        UIButton* addRowButton = [[UIButton alloc] initWithFrame:CGRectMake(20 + titleLabelWidth , 20, 25, 25)];
+        [addRowButton setBackgroundImage:[UIImage imageNamed:@"button_plus_green"] forState:UIControlStateNormal];
+        addRowButton.tag = sectionNumber;
+        
+        UIButton* deleteRowButton = [[UIButton alloc] initWithFrame:CGRectMake(addRowButton.center.x + 25 , 20, 25, 25)];
+        [deleteRowButton setBackgroundImage:[UIImage imageNamed:@"button_minus_red"] forState:UIControlStateNormal];
+        deleteRowButton.tag = sectionNumber;
+        
+        [addRowButton addTarget:self action:@selector(addRowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+        [deleteRowButton addTarget:self action:@selector(deleteRowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [headerView addSubview:headerTitleLabel];
-        [headerView addSubview:addRowsButton];
+        [headerView addSubview:addRowButton];
+        [headerView addSubview:deleteRowButton];
         [self.sectionHeaderViewsCollection setObject:headerView atIndexedSubscript:sectionNumber];
     }
     return self.sectionHeaderViewsCollection[sectionNumber];
@@ -98,11 +147,35 @@ static NSString* cellIdentifier = @"optionSelectorCell";
     }
 }
 
+- (IBAction)doneButtonPressed:(id)sender {
+    if(self.dismissViewButtonAction) {
+        self.dismissViewButtonAction(1);
+    }
+}
+
 
 
 -(IBAction)addRowButtonPressed:(UIButton*)sender {
-    DLog(@"Sender Button tag is %d",sender.tag);
+    NSInteger sectionNumberToAddRowsTo = sender.tag;
+    NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumberToAddRowsTo] integerValue] + 1;
+    [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumberToAddRowsTo];
+    [self.tableView reloadSectionDU:sectionNumberToAddRowsTo withRowAnimation:UITableViewRowAnimationAutomatic];
+
 }
 
+-(IBAction)deleteRowButtonPressed:(UIButton*)sender {
+    NSInteger sectionNumberToDeleteRowFrom = sender.tag;
+    NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumberToDeleteRowFrom] integerValue] - 1;
+    if(newNumberOfRowsInSection < 1) {
+        return;
+    }
+    DLog(@"%@ ",self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom]);
+    if(newNumberOfRowsInSection < [self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom] count]) {
+        [self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom] removeLastObject];
+    }
+    DLog(@"%@ ",self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom]);
+    [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumberToDeleteRowFrom];
+    [self.tableView reloadSectionDU:sectionNumberToDeleteRowFrom withRowAnimation:UITableViewRowAnimationNone];
+}
 
 @end
