@@ -7,6 +7,7 @@
 //
 
 #import "JKNetworkActivityDemoController.h"
+#import <AFNetworking.h>
 #import "JKNetworkActivity.h"
 #import "JKURLConstants.h"
 
@@ -42,6 +43,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self hideErrorViewWithAnimationDuration:0];
+    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
+        NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
+    }];
 }
 
 - (IBAction)resetButtonPressed:(id)sender {
@@ -144,7 +148,7 @@
         [NSString stringWithFormat:@"Executed in %.3f Seconds", executionTime];
 
     self.serverResponse.text =
-        [NSString stringWithFormat:@"Server Responded with Message  :  \n\n %@",
+        [NSString stringWithFormat:@"\n\n %@",
                                    responseMessage];
 }
 

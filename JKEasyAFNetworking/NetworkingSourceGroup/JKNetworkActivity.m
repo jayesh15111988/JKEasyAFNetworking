@@ -7,7 +7,7 @@
 //
 
 #import "JKNetworkActivity.h"
-#import <AFNetworking/AFNetworking.h>
+#import <AFNetworking.h>
 #import "JKURLConstants.h"
 
 typedef enum { inputURLWithBase, inputURLWithoutBase } inputURLType;
@@ -63,98 +63,65 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
                                 failure:
                                     (void (^)(NSError *errorResponse))failure {
 
-    // Log any error occurred while converting from nsdictionary to nsdata
-    NSError *errorRegistrationInfo;
-
     // Convert dictionary data into NSdata representation
     // get full url from tail keyword
 
-    NSURL *destinationUrl;
+   NSString *destinationUrlString;
 
     if (isFullURL) {
-        destinationUrl = [NSURL URLWithString:pathToAPI];
+        destinationUrlString = pathToAPI;
     } else {
-        destinationUrl = [self getUrlFromString:pathToAPI];
+        destinationUrlString = [self getUrlFromString:pathToAPI];
     }
 
-    /* Initialsing httpclient with profiles url to send registration data and
-     * set paramter encoding to json format */
-
-    AFHTTPClient *httpClient =
-        [[AFHTTPClient alloc] initWithBaseURL:destinationUrl];
-    httpClient.parameterEncoding = AFJSONParameterEncoding;
-    [httpClient setDefaultHeader:@"Authorization" value:self.authToken];
-    NSMutableURLRequest *request =
-        [httpClient requestWithMethod:self.APIRequestMethodsCollection[method]
-                                 path:@""
-                           parameters:parameters];
-
-    // Request timeout parameter - Decided time after which raises an error code
-    // -1001
-    // We are increasing timout interval to combat out super slow internet
-    // connection
-
-    [request setTimeoutInterval:self.TimeoutPeriod];
-
-    if ((method == POST || method == PUT) && self.dataToPost) {
-        NSData *journalInfo =
-            [NSJSONSerialization dataWithJSONObject:self.dataToPost
-                                            options:NSJSONWritingPrettyPrinted
-                                              error:&errorRegistrationInfo];
-
-        NSString *userRegistrationDetailsJsondata =
-            [[NSString alloc] initWithData:journalInfo
-                                  encoding:NSUTF8StringEncoding];
-        [request setHTTPBody:[userRegistrationDetailsJsondata
-                                 dataUsingEncoding:NSUTF8StringEncoding]];
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer = [AFJSONRequestSerializer serializer];
+    if(self.authToken && self.authToken.length) {
+        [manager.requestSerializer setValue:self.authToken forHTTPHeaderField:@"Authorization"];
     }
-
-    if (method == DELETE) {
-
-
-        [httpClient deletePath:@""
-            parameters:nil
-            success:^(AFHTTPRequestOperation *operation, id response) {
-
-                if (completion) {
-                    completion(response);
-                }
-            }
-            failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-
-                if (failure) {
-                    failure(error);
-                }
-
-                NSLog(@"Failure while invalidating user auth token");
-            }];
-
-    } else {
-        AFHTTPRequestOperation *journalRegistrationOperation =
-            [AFJSONRequestOperation JSONRequestOperationWithRequest:request
-                success:^(NSURLRequest *request, NSHTTPURLResponse *response,
-                          id successResponse) {
-                    if (completion)
-                        completion(successResponse);
-                }
-                failure:^(NSURLRequest *request, NSURLResponse *response,
-                          NSError *error, id JSON) {
-                    if (failure) {
-                        failure(error);
-                    }
-                    NSLog(@"Failed with an error: %@", JSON);
-                }];
-
-        [journalRegistrationOperation start];
+    if(method == GET) {
+        [manager GET:destinationUrlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            completion(responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
     }
+    else if(method == POST){
+        [manager POST:destinationUrlString parameters:self.dataToPost success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            completion(responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
+    }
+    else if (method == PUT) {
+        [manager PUT:destinationUrlString parameters:self.dataToPost success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            completion(responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
+    }
+    else if (method == DELETE) {
+        [manager DELETE:destinationUrlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+            completion(responseObject);
+        } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+            failure(error);
+        }];
+    }
+    else {
+        //We have encountered a request that is not currently supported in the app
+        NSError* methodNotSupportedError = [[NSError alloc] initWithDomain:@"JK Easy AFNetworking" code:404 userInfo:@{NSLocalizedDescriptionKey : NSLocalizedString(@"Method not currently supported in the application" , nil) }];
+        failure(methodNotSupportedError);
+    }
+    
+    
 }
 
-- (NSURL *)getUrlFromString:(NSString *)tailEndAPIPath {
+- (NSString *)getUrlFromString:(NSString *)tailEndAPIPath {
 
     NSString *fullAPIPath =
-        [NSString stringWithFormat:@"%@/%@/%@", self.BaseURL, self.APIVersion,
-                                   tailEndAPIPath];
-    return [NSURL URLWithString:fullAPIPath];
+        [NSString stringWithFormat:@"%@/%@/%@", self.BaseURL, self.APIVersion, tailEndAPIPath];
+    return fullAPIPath;
 }
 
 
