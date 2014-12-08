@@ -12,6 +12,7 @@
 #import "UIViewController+MJPopupViewController.h"
 #import "NSString+Utility.h"
 #import "NSDictionary+Utility.h"
+#import "JKRestServiceAppSettingsViewController.h"
 #import "JKNetworkActivity.h"
 #import "JKURLConstants.h"
 
@@ -32,6 +33,7 @@
 @property(weak, nonatomic) IBOutlet UITextField *authorizationHeader;
 @property(strong, nonatomic) UIPasteboard* generalPasteboard;
 @property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
+@property (strong, nonatomic) JKRestServiceAppSettingsViewController* settingsViewController;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
@@ -51,6 +53,7 @@
 
     [self hideErrorViewWithAnimationDuration:0];
     self.networkRequestParametersProvider = [[JKRequestOptionsProviderUIViewController alloc] initWithNibName:@"JKRequestOptionsProviderUIViewController" bundle:nil];
+    self.settingsViewController = [[JKRestServiceAppSettingsViewController alloc] initWithNibName:@"JKRestServiceAppSettingsViewController" bundle:nil];
     __weak typeof(self) weakSelf = self;
     self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction, NSArray* inputKeyValuePairCollection){
         __strong typeof(self) strongSelf = weakSelf;
@@ -246,6 +249,7 @@
 
 -(IBAction)settingsButtonPressed:(id)sender {
     DLog(@"Go To Settings pressed");
+    [self presentPopupViewController:self.settingsViewController animationType:MJPopupViewAnimationSlideTopTop];
     
 }
 
