@@ -197,6 +197,36 @@
                                             <action selector="settingsButtonPressed:" destination="few-zC-ZBW" eventType="touchUpInside" id="DxV-pC-f8N"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cB-HB-sXl">
+                                        <rect key="frame" x="62" y="15" width="35" height="35"/>
+                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" image="button_plus_green.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="addWorkspaceButtonPressed:" destination="few-zC-ZBW" eventType="touchUpInside" id="h8U-Kt-ahS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7Ol-3s-P8u">
+                                        <rect key="frame" x="23" y="15" width="35" height="35"/>
+                                        <inset key="imageEdgeInsets" minX="5" minY="5" maxX="5" maxY="5"/>
+                                        <state key="normal" image="button_minus_red.png">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="removeWorkspaceButtonPressed:" destination="few-zC-ZBW" eventType="touchUpInside" id="2Tc-Eg-gLv"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5mf-4Z-Poo">
+                                        <rect key="frame" x="105" y="18" width="170" height="30"/>
+                                        <state key="normal" title="Workspace : Default">
+                                            <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="viewWorkspaceButtonPressed:" destination="few-zC-ZBW" eventType="touchUpInside" id="fDa-ZD-RaM"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.69992987409999996" green="0.85289672250000004" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -221,6 +251,7 @@
                     <connections>
                         <outlet property="activityIndicatorView" destination="nfk-gm-cGO" id="r4I-35-r2T"/>
                         <outlet property="authorizationHeader" destination="hid-Cg-5je" id="m7f-8O-kbc"/>
+                        <outlet property="currentWorkspaceLabel" destination="5mf-4Z-Poo" id="9EI-rB-Xbt"/>
                         <outlet property="errorMessageLabel" destination="1ka-d0-3xC" id="C27-WC-X4i"/>
                         <outlet property="errorView" destination="7zJ-R5-Jra" id="yO0-Kt-XnZ"/>
                         <outlet property="executionTime" destination="SqI-wG-qbu" id="S86-50-Z3V"/>
@@ -238,6 +269,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="button_minus_red.png" width="48" height="48"/>
+        <image name="button_plus_green.png" width="48" height="48"/>
         <image name="settings.png" width="30" height="30"/>
     </resources>
 </document>

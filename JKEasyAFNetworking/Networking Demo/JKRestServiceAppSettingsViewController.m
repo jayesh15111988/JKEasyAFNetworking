@@ -7,6 +7,7 @@
 //
 
 #import "JKRestServiceAppSettingsViewController.h"
+#import "UIViewController+MJPopupViewController.h"
 
 #define TOTAL_SETTING_OPTIONS 2
 @interface JKRestServiceAppSettingsViewController ()
@@ -16,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *maximumNumberOfHistoryItemsField;
 @property (strong, nonatomic) IBOutlet UITableViewCell *toSaveRequestsSettingCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *maximumHistoryItemsToDisplayCell;
+@property (strong, nonatomic) UIView* footerViewForTable;
 @end
 
 @implementation JKRestServiceAppSettingsViewController
@@ -23,8 +25,33 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.tableHeaderView = self.tableHeaderView;
+    self.tableView.tableFooterView = [self getFooterViewForTable];
     [self.tableView reloadData];
 }
+
+-(UIView*)getFooterViewForTable {
+    if(!self.footerViewForTable) {
+        self.footerViewForTable = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 500, 44)];
+        [self.footerViewForTable setBackgroundColor:[UIColor lightGrayColor]];
+        UIButton* okButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,150, 44)];
+        okButton.center = self.footerViewForTable.center;
+        [okButton setBackgroundColor:[UIColor whiteColor]];
+        okButton.layer.borderWidth = 1.0f;
+        okButton.layer.borderColor = [UIColor blackColor].CGColor;
+        [okButton setTitle:@"Ok" forState:UIControlStateNormal];
+        [okButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [okButton addTarget:self action:@selector(closeSettingsDialogue:) forControlEvents:UIControlEventTouchUpInside];
+        [self.footerViewForTable addSubview:okButton];
+    }
+    return self.footerViewForTable;
+}
+
+-(IBAction)closeSettingsDialogue:(id)sender {
+    if(self.dismissViewButtonAction) {
+        self.dismissViewButtonAction();
+    }
+}
+
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
@@ -63,12 +90,7 @@
         default:
             break;
     }
-    DLog(@"%@ current Cell",currentCell);
     return currentCell;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section {
-    return 44.0;
 }
 
 - (IBAction)toSavePreviousRequestsSwitchChanged:(UISwitch*)sender {

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface JKRestServiceAppSettingsViewController : UIViewController
-
+typedef void (^SettingsOkButtonPressedBlock)();
+@property (strong, nonatomic) SettingsOkButtonPressedBlock dismissViewButtonAction;
 @end

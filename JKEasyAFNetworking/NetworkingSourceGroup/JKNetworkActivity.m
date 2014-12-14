@@ -73,8 +73,8 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
     } else {
         destinationUrlString = [self getUrlFromString:pathToAPI];
     }
-
-    destinationUrlString = [destinationUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    self.remoteURL = destinationUrlString;
+    NSString* encodedRemoteURL = [destinationUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
@@ -83,28 +83,28 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
         [manager.requestSerializer setValue:self.authToken forHTTPHeaderField:@"Authorization"];
     }
     if(method == GET) {
-        [manager GET:destinationUrlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager GET:encodedRemoteURL parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             completion(responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             failure(error);
         }];
     }
     else if(method == POST){
-        [manager POST:destinationUrlString parameters:self.dataToPost success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager POST:encodedRemoteURL parameters:self.dataToPost success:^(AFHTTPRequestOperation *operation, id responseObject) {
             completion(responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             failure(error);
         }];
     }
     else if (method == PUT) {
-        [manager PUT:destinationUrlString parameters:self.dataToPost success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager PUT:encodedRemoteURL parameters:self.dataToPost success:^(AFHTTPRequestOperation *operation, id responseObject) {
             completion(responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             failure(error);
         }];
     }
     else if (method == DELETE) {
-        [manager DELETE:destinationUrlString parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        [manager DELETE:encodedRemoteURL parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             completion(responseObject);
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
             failure(error);

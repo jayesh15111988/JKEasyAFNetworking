@@ -14,9 +14,12 @@
 #import "NSDictionary+Utility.h"
 #import "JKRestServiceAppSettingsViewController.h"
 #import "JKNetworkActivity.h"
+#import "JKNetworkingRequest.h"
+#import "JKStoredHistoryOperationUtility.h"
+#import "JKWorkspacesListViewController.h"
 #import "JKURLConstants.h"
 
-#define animationTimeframe 2.0f
+#define animationTimeframe 0.5
 
 @interface JKNetworkActivityDemoController ()
 
@@ -31,9 +34,13 @@
 @property(weak, nonatomic) IBOutlet UILabel *executionTime;
 @property(strong, nonatomic) NSDate *requestSendTime;
 @property(weak, nonatomic) IBOutlet UITextField *authorizationHeader;
+
 @property(strong, nonatomic) UIPasteboard* generalPasteboard;
+
+@property (weak, nonatomic) IBOutlet UIButton *currentWorkspaceLabel;
 @property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
 @property (strong, nonatomic) JKRestServiceAppSettingsViewController* settingsViewController;
+@property (strong, nonatomic) JKWorkspacesListViewController* workSpaceList;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
@@ -50,11 +57,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [JKStoredHistoryOperationUtility createDefaultWorkSpace];
+    
+    [self.currentWorkspaceLabel setTitle:[NSString stringWithFormat:@"Workspace : %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]] forState:UIControlStateNormal];
 
     [self hideErrorViewWithAnimationDuration:0];
     self.networkRequestParametersProvider = [[JKRequestOptionsProviderUIViewController alloc] initWithNibName:@"JKRequestOptionsProviderUIViewController" bundle:nil];
     self.settingsViewController = [[JKRestServiceAppSettingsViewController alloc] initWithNibName:@"JKRestServiceAppSettingsViewController" bundle:nil];
     __weak typeof(self) weakSelf = self;
+    self.settingsViewController.dismissViewButtonAction = ^() {
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
+    };
+    
     self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction, NSArray* inputKeyValuePairCollection){
         __strong typeof(self) strongSelf = weakSelf;
         if(inputKeyValuePairCollection) {
@@ -135,7 +150,6 @@
                 ? self.authorizationHeader.text
                 : [[NSBundle mainBundle]
                       objectForInfoDictionaryKey:@"Authorization"]];
-
     [self.activityIndicatorView startAnimating];
 
     [newAPIRequest
@@ -149,6 +163,7 @@
 
             [self showResponseWithMessage:successResponse
                  andIsSuccessfullResponse:YES];
+            [self storeRequestInDataBaseWithSuccessValue:YES];
         }
         failure:^(NSError *errorResponse) {
 
@@ -160,7 +175,16 @@
                                            @"valid URL, Auth token and "
                                            @"parameters"
                       andAnimationDuration:animationTimeframe];
+            [self storeRequestInDataBaseWithSuccessValue:NO];
         }];
+}
+
+-(void)storeRequestInDataBaseWithSuccessValue:(BOOL)isRequestSuccessfull {
+    JKNetworkingRequest* newAPIRequest = [JKNetworkingRequest new];
+    
+    
+    
+    
 }
 
 - (void)showResponseWithMessage:(id)responseMessage
@@ -208,7 +232,7 @@
                         options:UIViewAnimationOptionCurveEaseOut
                      animations:^() {
                          self.errorView.transform =
-                             CGAffineTransformMakeScale(0.0, 0.0);
+                             CGAffineTransformMakeScale(0.001, 0.001);
                      }
                      completion:nil];
 }
@@ -231,7 +255,6 @@
         [self.networkRequestParametersProvider initializeKeyValueHolderArray];
         [self.networkRequestParametersProvider accumulateKeyValuesInParameterHolder:@[getParamertsKeyValueHolderDictionary, postParametersHolderDictionary]];
     }
-    
     [self presentPopupViewController:self.networkRequestParametersProvider animationType:MJPopupViewAnimationSlideTopTop];
 }
 
@@ -248,7 +271,6 @@
 }
 
 -(IBAction)settingsButtonPressed:(id)sender {
-    DLog(@"Go To Settings pressed");
     [self presentPopupViewController:self.settingsViewController animationType:MJPopupViewAnimationSlideTopTop];
     
 }
@@ -258,8 +280,82 @@
         self.generalPasteboard = [UIPasteboard generalPasteboard];
     }
     [self.generalPasteboard setString:self.serverResponse.text];
-    [self.serverResponse selectAll:self];
-    [UIMenuController sharedMenuController].menuVisible = NO;
+    [self showErrorViewWithMessage:@"Response Successfully Copied to clipboard" andAnimationDuration:0.5];
 }
+
+- (IBAction)removeWorkspaceButtonPressed:(id)sender {
+    [self showWorkSpaceListViewControllerWithRead:NO];
+}
+
+
+- (IBAction)addWorkspaceButtonPressed:(id)sender {
+    [self showInputPopupBoxForNewWorkspace];
+}
+
+- (IBAction)viewWorkspaceButtonPressed:(id)sender {
+    [self showWorkSpaceListViewControllerWithRead:YES];
+    
+}
+
+-(void)showWorkSpaceListViewControllerWithRead:(BOOL)isReading {
+    if(!self.workSpaceList) {
+        self.workSpaceList = [[JKWorkspacesListViewController alloc] initWithNibName:@"JKWorkspacesListViewController" bundle:nil];
+        __weak typeof(self) weakSelf = self;
+
+        self.workSpaceList.hideWorkSpaceListsBlockSelected = ^(NSString* updatedWorkspaceName) {
+            __strong typeof(self) strongSelf = weakSelf;
+            if(updatedWorkspaceName) {
+                [strongSelf.currentWorkspaceLabel setTitle:[NSString stringWithFormat:@"Workspace : %@",updatedWorkspaceName] forState:UIControlStateNormal];
+            }
+            [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
+        };
+    }
+    self.workSpaceList.isReading = isReading;
+    self.workSpaceList.topLabelTitle = isReading? @"List Of Available Workspaces" : @"Please Swipe or press edit to remove workspace";
+    [self presentPopupViewController:self.workSpaceList animationType:MJPopupViewAnimationSlideTopTop];
+    
+}
+
+-(void)showInputPopupBoxForNewWorkspace {
+    /* Ref : http://stackoverflow.com/questions/26074475/uialertview-vs-uialertcontroller-no-keyboard-in-ios-8 */
+    UIAlertController *alert= [UIAlertController
+                               alertControllerWithTitle:@"Enter New Workspace Name"
+                               message:@"Keep it short and sweet"
+                               preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                               handler:^(UIAlertAction * action){
+        
+                                                   UITextField *textField = alert.textFields[0];
+                                                   NSString* newWorkspaceName = textField.text;
+                                                   //create new workspace with this name
+                                                   if(newWorkspaceName.length > 4) {
+                                                       [self showErrorViewWithMessage:[JKStoredHistoryOperationUtility createWorkspaceWithName:newWorkspaceName] andAnimationDuration:0.25];
+                                                   }
+                                                   else {
+                                                       [self showErrorViewWithMessage:@"Workspace name must be at least 5 letters long" andAnimationDuration:0.25];
+                                                   }
+                                                   
+                                               }];
+    UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * action) {
+                                                       
+                                                       DLog(@"cancel btn");
+                                                       
+                                                       [alert dismissViewControllerAnimated:YES completion:nil];
+                                                       
+                                                   }];
+    
+    [alert addAction:cancel];
+    [alert addAction:ok];
+    
+    [alert addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        textField.placeholder = @"Workspace Name";
+        textField.keyboardType = UIKeyboardTypeDefault;
+    }];
+    
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 
 @end
