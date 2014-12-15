@@ -13,6 +13,7 @@
 @property NSString* authHeaderValue;
 @property NSString* getParameters;
 @property NSString* postParameters;
+@property NSString* headers;
 @property NSInteger requestMethodType;
 @property NSString* remoteURL;
 @property NSString* requestCreationTimestamp;

@@ -15,7 +15,11 @@
 #import "JKRestServiceAppSettingsViewController.h"
 #import "JKNetworkActivity.h"
 #import "JKNetworkingRequest.h"
+#import <RLMRealm.h>
+#import <RLMResults.h>
+#import "JKNetworkingWorkspace.h"
 #import "JKStoredHistoryOperationUtility.h"
+#import "JKNetworkRequestHistoryViewController.h"
 #import "JKWorkspacesListViewController.h"
 #import "JKURLConstants.h"
 
@@ -34,13 +38,15 @@
 @property(weak, nonatomic) IBOutlet UILabel *executionTime;
 @property(strong, nonatomic) NSDate *requestSendTime;
 @property(weak, nonatomic) IBOutlet UITextField *authorizationHeader;
-
 @property(strong, nonatomic) UIPasteboard* generalPasteboard;
+@property (strong, nonatomic) NSDateFormatter* formatter;
 
 @property (weak, nonatomic) IBOutlet UIButton *currentWorkspaceLabel;
+@property (strong, nonatomic) NSString* headersToSend;
 @property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
 @property (strong, nonatomic) JKRestServiceAppSettingsViewController* settingsViewController;
 @property (strong, nonatomic) JKWorkspacesListViewController* workSpaceList;
+@property (strong, nonatomic) JKNetworkRequestHistoryViewController* requestHistory;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
 
@@ -57,6 +63,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.formatter = [NSDateFormatter new];
+    [self.formatter setDateFormat:@"EEEE MMMM d, YYYY"];
     [JKStoredHistoryOperationUtility createDefaultWorkSpace];
     
     [self.currentWorkspaceLabel setTitle:[NSString stringWithFormat:@"Workspace : %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]] forState:UIControlStateNormal];
@@ -75,8 +83,8 @@
         if(inputKeyValuePairCollection) {
             strongSelf.inputGetParameters.text = [NSString stringWithFormat:@"%@",  [[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[GET]] jsonStringWithPrettyPrint]];
             strongSelf.inputDataToSend.text = [NSString stringWithFormat:@"%@",[[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[POST]] jsonStringWithPrettyPrint]];
+            strongSelf.headersToSend = [NSString stringWithFormat:@"%@",[[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[HEADER]] jsonStringWithPrettyPrint]];
         }
-        
         [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
     };
 }
@@ -108,13 +116,12 @@
 
 - (IBAction)sendAPIRequestButtonPressed:(id)sender {
 
-    NSDictionary *inputPOSTData = nil;
-    NSDictionary *inputGETParameters = nil;
+    
     NSError *error = nil;
-
     self.requestSendTime = [NSDate date];
-
-
+    NSDictionary* inputPOSTData = nil;
+    NSDictionary* inputGETParameters = nil;
+ 
     if ([self.inputDataToSend.text length]) {
         inputPOSTData = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:&error];
     }
@@ -180,11 +187,31 @@
 }
 
 -(void)storeRequestInDataBaseWithSuccessValue:(BOOL)isRequestSuccessfull {
-    JKNetworkingRequest* newAPIRequest = [JKNetworkingRequest new];
+    BOOL toSaveRequestInHistory = [[[NSUserDefaults standardUserDefaults] objectForKey:@"toSaveRequests"] boolValue];
+    NSString* currentWorkspace = [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"];
     
-    
-    
-    
+    if(toSaveRequestInHistory) {
+        JKNetworkingRequest* newAPIRequest = [JKNetworkingRequest new];
+        newAPIRequest.parentWorkspaceName = currentWorkspace;
+        newAPIRequest.getParameters = self.inputGetParameters.text? : @"";
+        newAPIRequest.postParameters = self.inputDataToSend.text? : @"";
+        newAPIRequest.authHeaderValue = self.authorizationHeader.text? : @"";
+        newAPIRequest.requestMethodType = self.requestType.selectedSegmentIndex;
+        newAPIRequest.remoteURL = self.inputURLField.text;
+        newAPIRequest.requestCreationTimestamp = [self.formatter stringFromDate:[NSDate date]];
+        newAPIRequest.isRequestSuccessfull = isRequestSuccessfull;
+        newAPIRequest.requestIdentifier = [JKStoredHistoryOperationUtility generateRandomStringWithLength:7];
+       
+        JKNetworkingWorkspace* workspace = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",currentWorkspace]] firstObject];
+        
+        RLMRealm *realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        [workspace.requests addObject:newAPIRequest];
+        [realm commitWriteTransaction];
+        
+        
+        
+    }
 }
 
 - (void)showResponseWithMessage:(id)responseMessage
@@ -356,6 +383,14 @@
     
     [self presentViewController:alert animated:YES completion:nil];
 }
+
+- (IBAction)showHistoryForCurrentWorkspace:(id)sender {
+    if(!self.requestHistory) {
+        self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
+    }
+    [self presentViewController:self.requestHistory animated:YES completion:nil];
+}
+
 
 
 @end

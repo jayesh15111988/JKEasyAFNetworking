@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import "JKNetworkingRequest.h"
+#import <RLMRealm.h>
+#import <RLMMigration.h>
 
 @implementation AppDelegate
 
@@ -16,9 +19,27 @@
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]) {
         [[NSUserDefaults standardUserDefaults] setObject:@"default" forKey:@"defaultWorkspace"];
     }
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"toSaveRequests"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"toSaveRequests"];
+    }
+    [self performDatabaseMigration];
     return YES;
 }
-							
+
+-(void)performDatabaseMigration {
+    [RLMRealm setSchemaVersion:1 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
+
+        if (oldSchemaVersion < 1) {
+
+            [migration enumerateObjects:JKNetworkingRequest.className
+                                  block:^(RLMObject *oldObject, RLMObject *newObject) {
+                                      newObject[@"headers"] = @"";
+            }];
+        }
+    }];
+    
+    
+}
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

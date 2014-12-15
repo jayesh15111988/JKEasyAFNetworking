@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3805E5511A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */; };
 		388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */; };
 		388E85601A3533740018E7DD /* JKNetworkingRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855F1A3533740018E7DD /* JKNetworkingRequest.m */; };
 		388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E85631A35380E0018E7DD /* JKStoredHistoryOperationUtility.m */; };
@@ -56,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3805E54F1A3E926D003A5301 /* JKNetworkRequestHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkRequestHistoryViewController.h; sourceTree = "<group>"; };
+		3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkRequestHistoryViewController.m; sourceTree = "<group>"; };
 		388E855B1A35335C0018E7DD /* JKNetworkingWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingWorkspace.h; sourceTree = "<group>"; };
 		388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkingWorkspace.m; sourceTree = "<group>"; };
 		388E855E1A3533740018E7DD /* JKNetworkingRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingRequest.h; sourceTree = "<group>"; };
@@ -148,6 +151,15 @@
 				AECF5FB18C24A2D5AE0345CA /* Pods.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		3805E54E1A3E9256003A5301 /* Request History */ = {
+			isa = PBXGroup;
+			children = (
+				3805E54F1A3E926D003A5301 /* JKNetworkRequestHistoryViewController.h */,
+				3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */,
+			);
+			name = "Request History";
 			sourceTree = "<group>";
 		};
 		388E855A1A3533240018E7DD /* Models */ = {
@@ -246,6 +258,7 @@
 		38E23CF21A35143700741DD4 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				3805E54E1A3E9256003A5301 /* Request History */,
 				38943A921A3E3FF4005128A6 /* Workspace List */,
 				38E23CFA1A351B8F00741DD4 /* Settings */,
 				91AE2C8319BD1C3E00AA36C8 /* Networking Main Group */,
@@ -526,6 +539,7 @@
 				91AE2C5C19BD18F100AA36C8 /* AppDelegate.m in Sources */,
 				38E23CE01A33F2D900741DD4 /* JKAppearanceProvider.m in Sources */,
 				38E23CEC1A34058F00741DD4 /* NSString+Utility.m in Sources */,
+				3805E5511A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m in Sources */,
 				38E23CCA1A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m in Sources */,
 				388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */,
 				38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */,

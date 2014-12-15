@@ -26,7 +26,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    DLog(@"%@",self.currentWorkspaceName);
     self.tableView.tableFooterView = self.tableFooterView;
 }
 
