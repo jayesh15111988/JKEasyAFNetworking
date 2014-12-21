@@ -11,7 +11,7 @@
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "NSString+Utility.h"
-#import "NSDictionary+Utility.h"
+#import "JKObjectToStringConvertor.h"
 #import "JKRestServiceAppSettingsViewController.h"
 #import "JKNetworkActivity.h"
 #import "JKNetworkingRequest.h"
@@ -82,9 +82,10 @@
     self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction, NSArray* inputKeyValuePairCollection){
         __strong typeof(self) strongSelf = weakSelf;
         if(inputKeyValuePairCollection) {
-            strongSelf.inputGetParameters.text = [NSString stringWithFormat:@"%@",  [[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[GET]] jsonStringWithPrettyPrint]];
-            strongSelf.inputDataToSend.text = [NSString stringWithFormat:@"%@",[[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[POST]] jsonStringWithPrettyPrint]];
-            strongSelf.headersToSend = [NSString stringWithFormat:@"%@",[[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[HEADER]] jsonStringWithPrettyPrint]];
+            
+            strongSelf.inputGetParameters.text = [NSString stringWithFormat:@"%@", [JKObjectToStringConvertor jsonStringWithPrettyPrintWithObject:[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[GET]]]];
+            strongSelf.inputDataToSend.text = [NSString stringWithFormat:@"%@",[JKObjectToStringConvertor jsonStringWithPrettyPrintWithObject:[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[POST]]]];
+            strongSelf.headersToSend = [NSString stringWithFormat:@"%@",[JKObjectToStringConvertor jsonStringWithPrettyPrintWithObject:[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[HEADER]]]];
         }
         [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
     };
@@ -94,7 +95,8 @@
     
     //Remove all previous entries from key-value pair array
     [self.networkRequestParametersProvider initializeKeyValueHolderArray];
-    
+    //Remove any stale header values in the variable
+    self.headersToSend = @"";
     NSArray *subviewsInCurrentView = [self.view subviews];
 
     for (UIView *individualViewOnCurrentView in subviewsInCurrentView) {
@@ -204,6 +206,7 @@
         newAPIRequest.isRequestSuccessfull = isRequestSuccessfull;
         newAPIRequest.requestIdentifier = [JKStoredHistoryOperationUtility generateRandomStringWithLength:7];
         newAPIRequest.serverResponseMessage = self.serverResponse.text;
+        newAPIRequest.executionTime = self.executionTime.text;
         
         JKNetworkingWorkspace* workspace = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",currentWorkspace]] firstObject];
         
@@ -226,10 +229,11 @@
         [requestCompletionTime timeIntervalSinceDate:self.requestSendTime];
     self.executionTime.text =
         [NSString stringWithFormat:@"Executed in %.3f Seconds", executionTime];
-    
+
     self.serverResponse.text =
         [NSString stringWithFormat:@"%@",
-                                   [((NSDictionary*)responseMessage) jsonStringWithPrettyPrint]];
+                                   [JKObjectToStringConvertor jsonStringWithPrettyPrintWithObject:responseMessage]];
+
 }
 
 
@@ -270,8 +274,10 @@
 - (IBAction)addMoreOptionsButtonPressed:(id)sender {
     NSError* getParamersConversionError = nil;
     NSError* postParamersConversionError = nil;
+    NSError* headerParamersConversionError = nil;
     NSDictionary* getParamertsKeyValueHolderDictionary = @{};
     NSDictionary* postParametersHolderDictionary = @{};
+    NSDictionary* headerParametersHolderDictionary = @{};
     
     if(self.inputGetParameters.text.length) {
         getParamertsKeyValueHolderDictionary = [self.inputGetParameters.text convertJSONStringToDictionaryWithErrorObject:&getParamersConversionError];
@@ -280,10 +286,13 @@
         postParametersHolderDictionary = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:&postParamersConversionError];
     }
     
+    if(self.headersToSend.length > 0) {
+        headerParametersHolderDictionary = [self.headersToSend convertJSONStringToDictionaryWithErrorObject:&headerParamersConversionError];
+    }
     
-    if(getParamertsKeyValueHolderDictionary.count || postParametersHolderDictionary.count) {
+    if(getParamertsKeyValueHolderDictionary.count || postParametersHolderDictionary.count || headerParametersHolderDictionary.count) {
         [self.networkRequestParametersProvider initializeKeyValueHolderArray];
-        [self.networkRequestParametersProvider accumulateKeyValuesInParameterHolder:@[getParamertsKeyValueHolderDictionary, postParametersHolderDictionary]];
+        [self.networkRequestParametersProvider accumulateKeyValuesInParameterHolder:@[headerParametersHolderDictionary,getParamertsKeyValueHolderDictionary, postParametersHolderDictionary]];
     }
     [self presentPopupViewController:self.networkRequestParametersProvider animationType:MJPopupViewAnimationSlideTopTop];
 }
@@ -417,6 +426,7 @@
     self.inputDataToSend.text = pastRequestObject.postParameters;
     self.headersToSend = pastRequestObject.headers;
     self.serverResponse.text = pastRequestObject.serverResponseMessage;
+    self.executionTime.text = pastRequestObject.executionTime;
     if(pastRequestObject.isRequestSuccessfull) {
         self.serverResponse.textColor = [UIColor blackColor];
     }

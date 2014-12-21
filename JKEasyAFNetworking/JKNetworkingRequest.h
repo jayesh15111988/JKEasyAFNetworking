@@ -20,6 +20,7 @@
 @property BOOL isRequestSuccessfull;
 @property NSString* requestIdentifier;
 @property NSString* serverResponseMessage;
+@property NSString* executionTime;
 @end
 
 RLM_ARRAY_TYPE(JKNetworkingRequest)

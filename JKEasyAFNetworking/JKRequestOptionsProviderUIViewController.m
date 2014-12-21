@@ -53,6 +53,7 @@ static const NSInteger totalNumberOfSections = 3;
 }
 
 -(void)initializeKeyValueHolderArray {
+
     if(self.keyValueParametersCollectionInArray){
         [self.keyValueParametersCollectionInArray removeAllObjects];
     }
@@ -200,7 +201,7 @@ static const NSInteger totalNumberOfSections = 3;
 }
 
 -(void)accumulateKeyValuesInParameterHolder:(NSArray*)inputParametersHolderArray {
-    NSInteger currentIndex = 1;
+    NSInteger currentIndex = 0;
     for(NSDictionary* individualKeyValueDictionary in inputParametersHolderArray) {
         for(NSString* key in individualKeyValueDictionary) {
             [self.keyValueParametersCollectionInArray[currentIndex] addObject:@{key : individualKeyValueDictionary[key]}];

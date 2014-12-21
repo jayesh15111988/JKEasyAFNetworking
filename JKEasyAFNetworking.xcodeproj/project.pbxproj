@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		3805E5511A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */; };
 		38826E621A464636003BAEF2 /* JKRequestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */; };
+		38826E661A46545F003BAEF2 /* JKObjectToStringConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */; };
 		388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */; };
 		388E85601A3533740018E7DD /* JKNetworkingRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855F1A3533740018E7DD /* JKNetworkingRequest.m */; };
 		388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E85631A35380E0018E7DD /* JKStoredHistoryOperationUtility.m */; };
@@ -25,7 +26,6 @@
 		38E23CE71A33FD6600741DD4 /* UITableView+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CE61A33FD6600741DD4 /* UITableView+Utility.m */; };
 		38E23CE91A33FF3500741DD4 /* button_minus_red.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CE81A33FF3500741DD4 /* button_minus_red.png */; };
 		38E23CEC1A34058F00741DD4 /* NSString+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CEB1A34058F00741DD4 /* NSString+Utility.m */; };
-		38E23CEF1A34EEB600741DD4 /* NSDictionary+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */; };
 		38E23CF11A35136600741DD4 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CF01A35136600741DD4 /* settings.png */; };
 		38E23CF81A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CF61A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m */; };
 		38E23CF91A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38E23CF71A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib */; };
@@ -62,6 +62,8 @@
 		3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkRequestHistoryViewController.m; sourceTree = "<group>"; };
 		38826E601A464636003BAEF2 /* JKRequestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRequestTableViewCell.h; sourceTree = "<group>"; };
 		38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestTableViewCell.m; sourceTree = "<group>"; };
+		38826E641A46545F003BAEF2 /* JKObjectToStringConvertor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKObjectToStringConvertor.h; sourceTree = "<group>"; };
+		38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKObjectToStringConvertor.m; sourceTree = "<group>"; };
 		388E855B1A35335C0018E7DD /* JKNetworkingWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingWorkspace.h; sourceTree = "<group>"; };
 		388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkingWorkspace.m; sourceTree = "<group>"; };
 		388E855E1A3533740018E7DD /* JKNetworkingRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingRequest.h; sourceTree = "<group>"; };
@@ -89,8 +91,6 @@
 		38E23CE81A33FF3500741DD4 /* button_minus_red.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = button_minus_red.png; sourceTree = "<group>"; };
 		38E23CEA1A34058F00741DD4 /* NSString+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Utility.h"; sourceTree = "<group>"; };
 		38E23CEB1A34058F00741DD4 /* NSString+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Utility.m"; sourceTree = "<group>"; };
-		38E23CED1A34EEB600741DD4 /* NSDictionary+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Utility.h"; sourceTree = "<group>"; };
-		38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+Utility.m"; sourceTree = "<group>"; };
 		38E23CF01A35136600741DD4 /* settings.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = settings.png; sourceTree = "<group>"; };
 		38E23CF51A351B8600741DD4 /* JKRestServiceAppSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = JKRestServiceAppSettingsViewController.h; path = "Networking Demo/JKRestServiceAppSettingsViewController.h"; sourceTree = "<group>"; };
 		38E23CF61A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = JKRestServiceAppSettingsViewController.m; path = "Networking Demo/JKRestServiceAppSettingsViewController.m"; sourceTree = "<group>"; };
@@ -163,6 +163,15 @@
 				3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */,
 			);
 			name = "Request History";
+			sourceTree = "<group>";
+		};
+		38826E631A46543B003BAEF2 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				38826E641A46545F003BAEF2 /* JKObjectToStringConvertor.h */,
+				38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 		388E855A1A3533240018E7DD /* Models */ = {
@@ -254,8 +263,6 @@
 				38E23CE61A33FD6600741DD4 /* UITableView+Utility.m */,
 				38E23CEA1A34058F00741DD4 /* NSString+Utility.h */,
 				38E23CEB1A34058F00741DD4 /* NSString+Utility.m */,
-				38E23CED1A34EEB600741DD4 /* NSDictionary+Utility.h */,
-				38E23CEE1A34EEB600741DD4 /* NSDictionary+Utility.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -334,6 +341,7 @@
 		91AE2C5119BD18F100AA36C8 /* JKEasyAFNetworking */ = {
 			isa = PBXGroup;
 			children = (
+				38826E631A46543B003BAEF2 /* Utilities */,
 				388E855A1A3533240018E7DD /* Models */,
 				38E23CF41A35144700741DD4 /* Xib Files */,
 				38E23CF31A35143E00741DD4 /* Storyboards */,
@@ -539,6 +547,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				38826E661A46545F003BAEF2 /* JKObjectToStringConvertor.m in Sources */,
 				38E23CF81A351B8600741DD4 /* JKRestServiceAppSettingsViewController.m in Sources */,
 				38E23CE71A33FD6600741DD4 /* UITableView+Utility.m in Sources */,
 				91AE2C5C19BD18F100AA36C8 /* AppDelegate.m in Sources */,
@@ -549,7 +558,6 @@
 				388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */,
 				38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */,
 				38E23CD11A33E05D00741DD4 /* UIViewController+MJPopupViewController.m in Sources */,
-				38E23CEF1A34EEB600741DD4 /* NSDictionary+Utility.m in Sources */,
 				38E23CD71A33E62B00741DD4 /* JKOptionSelectorTableViewCell.m in Sources */,
 				388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */,
 				91AE2C5819BD18F100AA36C8 /* main.m in Sources */,

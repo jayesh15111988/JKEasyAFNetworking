@@ -1,22 +1,27 @@
 //
-//  NSDictionary+Utility.m
+//  JKObjectToStringConvertor.m
 //  JKEasyAFNetworking
 //
-//  Created by Jayesh Kawli Backup on 12/7/14.
+//  Created by Jayesh Kawli Backup on 12/20/14.
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
-#import "NSDictionary+Utility.h"
+#import "JKObjectToStringConvertor.h"
 
-@implementation NSDictionary (Utility)
--(NSString*) jsonStringWithPrettyPrint {
+@implementation JKObjectToStringConvertor
+
++(NSString*) jsonStringWithPrettyPrintWithObject:(id)inputObject {
     
-    if(!self.count) {
+    if(!inputObject) {
         return @"";
     }
     
+    if([inputObject isKindOfClass:[NSString class]]) {
+        return inputObject;
+    }
+    
     NSError *error;
-    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:inputObject
                                                        options:(NSJSONWritingOptions) ( NSJSONWritingPrettyPrinted)
                                                          error:&error];
     
@@ -27,4 +32,5 @@
         return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
     }
 }
+
 @end

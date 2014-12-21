@@ -27,7 +27,7 @@
 }
 
 -(void)performDatabaseMigration {
-    [RLMRealm setSchemaVersion:2 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
+    [RLMRealm setSchemaVersion:3 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
 
         if (oldSchemaVersion < 1) {
 
@@ -40,6 +40,13 @@
             [migration enumerateObjects:JKNetworkingRequest.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
                                       newObject[@"serverResponseMessage"] = @"";
+                                  }];
+        }
+        
+        if(oldSchemaVersion < 3) {
+            [migration enumerateObjects:JKNetworkingRequest.className
+                                  block:^(RLMObject *oldObject, RLMObject *newObject) {
+                                      newObject[@"executionTime"] = @"";
                                   }];
         }
     }];
