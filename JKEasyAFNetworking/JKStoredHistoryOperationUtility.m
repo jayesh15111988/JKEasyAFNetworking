@@ -56,7 +56,7 @@ static NSString* dateFormatterFormatString = @"EEEE MMMM d, YYYY";
 
 +(NSString*)generateRandomStringWithLength:(NSInteger)randomStringLength {
     
-    NSMutableString *s = [NSMutableString stringWithCapacity:20];
+    NSMutableString *s = [NSMutableString stringWithCapacity:randomStringLength];
     for (NSUInteger i = 0; i < randomStringLength; i++) {
         u_int32_t r = arc4random() % [alphabet length];
         unichar c = [alphabet characterAtIndex:r];

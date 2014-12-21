@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3805E5511A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */; };
+		38826E621A464636003BAEF2 /* JKRequestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */; };
 		388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */; };
 		388E85601A3533740018E7DD /* JKNetworkingRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855F1A3533740018E7DD /* JKNetworkingRequest.m */; };
 		388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E85631A35380E0018E7DD /* JKStoredHistoryOperationUtility.m */; };
@@ -59,6 +60,8 @@
 /* Begin PBXFileReference section */
 		3805E54F1A3E926D003A5301 /* JKNetworkRequestHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkRequestHistoryViewController.h; sourceTree = "<group>"; };
 		3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkRequestHistoryViewController.m; sourceTree = "<group>"; };
+		38826E601A464636003BAEF2 /* JKRequestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRequestTableViewCell.h; sourceTree = "<group>"; };
+		38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestTableViewCell.m; sourceTree = "<group>"; };
 		388E855B1A35335C0018E7DD /* JKNetworkingWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingWorkspace.h; sourceTree = "<group>"; };
 		388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkingWorkspace.m; sourceTree = "<group>"; };
 		388E855E1A3533740018E7DD /* JKNetworkingRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingRequest.h; sourceTree = "<group>"; };
@@ -219,6 +222,8 @@
 				38E23CD51A33E62B00741DD4 /* JKOptionSelectorTableViewCell.h */,
 				38E23CD61A33E62B00741DD4 /* JKOptionSelectorTableViewCell.m */,
 				38E23CD81A33EA2900741DD4 /* JKOptionSelectorTableViewCell.xib */,
+				38826E601A464636003BAEF2 /* JKRequestTableViewCell.h */,
+				38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */,
 			);
 			name = "Custom Cell";
 			sourceTree = "<group>";
@@ -549,6 +554,7 @@
 				388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */,
 				91AE2C5819BD18F100AA36C8 /* main.m in Sources */,
 				38943A961A3E4017005128A6 /* JKWorkspacesListViewController.m in Sources */,
+				38826E621A464636003BAEF2 /* JKRequestTableViewCell.m in Sources */,
 				388E85601A3533740018E7DD /* JKNetworkingRequest.m in Sources */,
 				91AE2C8719BD1D5300AA36C8 /* JKNetworkActivity.m in Sources */,
 				91AE2C8D19BD203900AA36C8 /* JKNetworkActivityDemoController.m in Sources */,

@@ -27,7 +27,7 @@
 }
 
 -(void)performDatabaseMigration {
-    [RLMRealm setSchemaVersion:1 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
+    [RLMRealm setSchemaVersion:2 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
 
         if (oldSchemaVersion < 1) {
 
@@ -35,6 +35,12 @@
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
                                       newObject[@"headers"] = @"";
             }];
+        }
+        if(oldSchemaVersion < 2) {
+            [migration enumerateObjects:JKNetworkingRequest.className
+                                  block:^(RLMObject *oldObject, RLMObject *newObject) {
+                                      newObject[@"serverResponseMessage"] = @"";
+                                  }];
         }
     }];
     

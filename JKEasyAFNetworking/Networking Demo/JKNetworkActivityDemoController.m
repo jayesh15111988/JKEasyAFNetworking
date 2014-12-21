@@ -65,6 +65,7 @@
     [super viewDidLoad];
     self.formatter = [NSDateFormatter new];
     [self.formatter setDateFormat:@"EEEE MMMM d, YYYY"];
+    self.headersToSend = @"";
     [JKStoredHistoryOperationUtility createDefaultWorkSpace];
     
     [self.currentWorkspaceLabel setTitle:[NSString stringWithFormat:@"Workspace : %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]] forState:UIControlStateNormal];
@@ -198,10 +199,12 @@
         newAPIRequest.authHeaderValue = self.authorizationHeader.text? : @"";
         newAPIRequest.requestMethodType = self.requestType.selectedSegmentIndex;
         newAPIRequest.remoteURL = self.inputURLField.text;
+        newAPIRequest.headers = self.headersToSend;
         newAPIRequest.requestCreationTimestamp = [self.formatter stringFromDate:[NSDate date]];
         newAPIRequest.isRequestSuccessfull = isRequestSuccessfull;
         newAPIRequest.requestIdentifier = [JKStoredHistoryOperationUtility generateRandomStringWithLength:7];
-       
+        newAPIRequest.serverResponseMessage = self.serverResponse.text;
+        
         JKNetworkingWorkspace* workspace = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",currentWorkspace]] firstObject];
         
         RLMRealm *realm = [RLMRealm defaultRealm];
@@ -209,7 +212,7 @@
         [workspace.requests addObject:newAPIRequest];
         [realm commitWriteTransaction];
         
-        
+        DLog(@"%d ***",workspace.requests.count);
         
     }
 }
@@ -223,10 +226,10 @@
         [requestCompletionTime timeIntervalSinceDate:self.requestSendTime];
     self.executionTime.text =
         [NSString stringWithFormat:@"Executed in %.3f Seconds", executionTime];
-
+    
     self.serverResponse.text =
         [NSString stringWithFormat:@"%@",
-                                   responseMessage];
+                                   [((NSDictionary*)responseMessage) jsonStringWithPrettyPrint]];
 }
 
 
@@ -388,7 +391,39 @@
     if(!self.requestHistory) {
         self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
     }
+    
+    
+    
+    
+    JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]]] firstObject];
+    self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
+    
+    __weak typeof(self) weakSelf = self;
+    self.requestHistory.pastRequestSelectedAction = ^(JKNetworkingRequest* selectedRequest) {
+        __strong typeof(self) strongSelf = weakSelf;
+        [strongSelf dismissViewControllerAnimated:YES completion:nil];
+        [strongSelf resetButtonPressed:nil];
+        [strongSelf populateInputFieldsWithPreviousRequest:selectedRequest];
+    };
     [self presentViewController:self.requestHistory animated:YES completion:nil];
+}
+
+-(void)populateInputFieldsWithPreviousRequest:(JKNetworkingRequest*)pastRequestObject {
+    self.inputURLField.text = pastRequestObject.remoteURL;
+    self.authorizationHeader.text = pastRequestObject.authHeaderValue;
+    [self.inputURLScheme setSelectedSegmentIndex:1];
+    [self.requestType setSelectedSegmentIndex:pastRequestObject.requestMethodType];
+    self.inputGetParameters.text = pastRequestObject.getParameters;
+    self.inputDataToSend.text = pastRequestObject.postParameters;
+    self.headersToSend = pastRequestObject.headers;
+    self.serverResponse.text = pastRequestObject.serverResponseMessage;
+    if(pastRequestObject.isRequestSuccessfull) {
+        self.serverResponse.textColor = [UIColor blackColor];
+    }
+    else {
+        self.serverResponse.textColor = [UIColor redColor];
+    }
+
 }
 
 
