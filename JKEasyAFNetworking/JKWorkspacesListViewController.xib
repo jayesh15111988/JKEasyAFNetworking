@@ -9,8 +9,10 @@
             <connections>
                 <outlet property="editWorkspacesButton" destination="zov-1P-1L2" id="Wzb-ib-Hbu"/>
                 <outlet property="headerLabel" destination="u5q-JG-C7z" id="oC8-kl-dzq"/>
+                <outlet property="okButton" destination="D1L-DJ-u0w" id="jt9-jX-5Ke"/>
                 <outlet property="tableFooterView" destination="cpD-2i-8jT" id="oPh-FQ-tsM"/>
                 <outlet property="tableView" destination="HYT-nV-PqV" id="IRJ-Lf-X16"/>
+                <outlet property="titleView" destination="wXz-X6-3lT" id="v9e-oR-T4N"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -30,9 +32,9 @@
                 <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wXz-X6-3lT">
                     <rect key="frame" x="0.0" y="0.0" width="450" height="44"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="u5q-JG-C7z">
-                            <rect key="frame" x="50" y="11" width="350" height="30"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="12" translatesAutoresizingMaskIntoConstraints="NO" id="u5q-JG-C7z">
+                            <rect key="frame" x="70" y="11" width="370" height="30"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -59,7 +61,7 @@
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D1L-DJ-u0w">
                     <rect key="frame" x="150" y="8" width="150" height="30"/>
-                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" title="Ok">
                         <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -71,6 +73,7 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="183" y="347"/>
         </view>
     </objects>
 </document>

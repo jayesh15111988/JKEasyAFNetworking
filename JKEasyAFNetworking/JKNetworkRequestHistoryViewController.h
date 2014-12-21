@@ -12,6 +12,7 @@
 
 @interface JKNetworkRequestHistoryViewController : UIViewController
 @property RLMArray<JKNetworkingRequest> *requestsForCurrentWorkspace;
+@property (nonatomic, strong) NSString* currentWorkspaceName;
 typedef void (^PastRequestSelectedBlock)(JKNetworkingRequest* selectedRequest);
 @property (strong, nonatomic) PastRequestSelectedBlock pastRequestSelectedAction;
 @end

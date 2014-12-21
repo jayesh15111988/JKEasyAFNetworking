@@ -11,13 +11,16 @@
 
 @interface JKNetworkRequestHistoryViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
+@property (weak, nonatomic) IBOutlet UILabel *historyTitle;
 
 @end
+
 
 @implementation JKNetworkRequestHistoryViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.historyTitle.text = [NSString stringWithFormat:@"Request History for %@",self.currentWorkspaceName];
     [self.tableView reloadData];
 }
 
@@ -33,9 +36,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     JKNetworkingRequest* selectedRequestFromHistory = self.requestsForCurrentWorkspace[indexPath.row];
+    [self dismissViewControllerAnimated:YES completion:nil];
     if(self.pastRequestSelectedAction) {
         self.pastRequestSelectedAction(selectedRequestFromHistory);
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -53,7 +58,7 @@
     requestInfoCell.creationDateLabel.text = currentRequest.requestCreationTimestamp;
     requestInfoCell.requestURLLabel.text = currentRequest.remoteURL;
     requestInfoCell.requestMethodLabel.text = [self getHTTPMethodNameFromIndex:currentRequest.requestMethodType];
-    requestInfoCell.contentView.backgroundColor = [self getBackgroundColorForCellWithInputSuccessFlag:currentRequest.isRequestSuccessfull];
+    [self setTextColorForCellWithInputSuccessFlag:currentRequest.isRequestSuccessfull andInputCell:requestInfoCell];
     return requestInfoCell;
 }
 
@@ -65,12 +70,12 @@
     return  [@[ @"GET", @"POST", @"PUT", @"DELETE" ] objectAtIndex:methodIndex];
 }
 
--(UIColor*)getBackgroundColorForCellWithInputSuccessFlag:(BOOL)wasRequestSuccessful {
-    if(wasRequestSuccessful) {
-        return [UIColor whiteColor];
-    }
-    else {
-        return [UIColor redColor];
+-(void)setTextColorForCellWithInputSuccessFlag:(BOOL)wasRequestSuccessful andInputCell:(JKRequestTableViewCell*)inputCell {
+    UIColor* textColor = wasRequestSuccessful? [UIColor blackColor] : [UIColor redColor];
+    for(UIView* subview in inputCell.contentView.subviews) {
+        if([subview isKindOfClass:[UILabel class]]) {
+            [(UILabel*)subview setTextColor:textColor];
+        }
     }
 }
 @end

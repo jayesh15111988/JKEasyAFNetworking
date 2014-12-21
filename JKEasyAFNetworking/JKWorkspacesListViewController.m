@@ -19,6 +19,9 @@
 @property (strong, nonatomic) RLMResults* workSpaceList;
 @property (weak, nonatomic) IBOutlet UIButton *editWorkspacesButton;
 @property (strong, nonatomic) NSString* currentWorkspaceName;
+@property (weak, nonatomic) IBOutlet UIButton *okButton;
+@property (weak, nonatomic) IBOutlet UIView *titleView;
+
 
 @end
 
@@ -26,6 +29,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self addBorderToView:self.okButton];
+    [self addBorderToView:self.titleView];
+    [self addBorderToView:self.tableFooterView];
     self.tableView.tableFooterView = self.tableFooterView;
 }
 
@@ -34,6 +40,11 @@
     self.headerLabel.text = self.topLabelTitle;
     self.editWorkspacesButton.hidden = self.isReading;
     [self getDataAndReloadTable];
+}
+
+-(void)addBorderToView:(UIView*)viewToAddBorderTo {
+    viewToAddBorderTo.layer.borderColor = [UIColor blackColor].CGColor;
+    viewToAddBorderTo.layer.borderWidth = 1.0;
 }
 
 -(void)getDataAndReloadTable {
@@ -63,7 +74,7 @@
     }
     JKNetworkingWorkspace* currentWorkSpace = self.workSpaceList[indexPath.row];
     UILabel* workSpaceNameLabel = (UILabel*)[currentCell viewWithTag:13];
-    workSpaceNameLabel.text = currentWorkSpace.workSpaceName;
+    workSpaceNameLabel.text = [NSString stringWithFormat:@"%@     %@",currentWorkSpace.workSpaceIdentifier, currentWorkSpace.workSpaceName];
     return currentCell;
 }
 

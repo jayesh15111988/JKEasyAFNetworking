@@ -18,6 +18,7 @@
 @property (strong, nonatomic) IBOutlet UITableViewCell *toSaveRequestsSettingCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *maximumHistoryItemsToDisplayCell;
 @property (strong, nonatomic) UIView* footerViewForTable;
+
 @end
 
 @implementation JKRestServiceAppSettingsViewController
@@ -32,7 +33,7 @@
 -(UIView*)getFooterViewForTable {
     if(!self.footerViewForTable) {
         self.footerViewForTable = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 500, 44)];
-        [self.footerViewForTable setBackgroundColor:[UIColor lightGrayColor]];
+        [self.footerViewForTable setBackgroundColor:[UIColor whiteColor]];
         UIButton* okButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0,150, 44)];
         okButton.center = self.footerViewForTable.center;
         [okButton setBackgroundColor:[UIColor whiteColor]];

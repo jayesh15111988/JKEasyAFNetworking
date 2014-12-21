@@ -10,6 +10,8 @@
 		3805E5511A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */; };
 		38826E621A464636003BAEF2 /* JKRequestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */; };
 		38826E661A46545F003BAEF2 /* JKObjectToStringConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */; };
+		38826E681A465CAA003BAEF2 /* history.png in Resources */ = {isa = PBXBuildFile; fileRef = 38826E671A465CAA003BAEF2 /* history.png */; };
+		38826E6A1A46635C003BAEF2 /* back.png in Resources */ = {isa = PBXBuildFile; fileRef = 38826E691A46635C003BAEF2 /* back.png */; };
 		388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */; };
 		388E85601A3533740018E7DD /* JKNetworkingRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E855F1A3533740018E7DD /* JKNetworkingRequest.m */; };
 		388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E85631A35380E0018E7DD /* JKStoredHistoryOperationUtility.m */; };
@@ -64,6 +66,8 @@
 		38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestTableViewCell.m; sourceTree = "<group>"; };
 		38826E641A46545F003BAEF2 /* JKObjectToStringConvertor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKObjectToStringConvertor.h; sourceTree = "<group>"; };
 		38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKObjectToStringConvertor.m; sourceTree = "<group>"; };
+		38826E671A465CAA003BAEF2 /* history.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = history.png; sourceTree = "<group>"; };
+		38826E691A46635C003BAEF2 /* back.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = back.png; sourceTree = "<group>"; };
 		388E855B1A35335C0018E7DD /* JKNetworkingWorkspace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingWorkspace.h; sourceTree = "<group>"; };
 		388E855C1A35335C0018E7DD /* JKNetworkingWorkspace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkingWorkspace.m; sourceTree = "<group>"; };
 		388E855E1A3533740018E7DD /* JKNetworkingRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkingRequest.h; sourceTree = "<group>"; };
@@ -250,6 +254,8 @@
 			isa = PBXGroup;
 			children = (
 				38E23CE21A33F82000741DD4 /* button_plus_green.png */,
+				38826E671A465CAA003BAEF2 /* history.png */,
+				38826E691A46635C003BAEF2 /* back.png */,
 				38E23CE81A33FF3500741DD4 /* button_minus_red.png */,
 				38E23CF01A35136600741DD4 /* settings.png */,
 			);
@@ -489,10 +495,12 @@
 				38E23CF11A35136600741DD4 /* settings.png in Resources */,
 				38943A971A3E4017005128A6 /* JKWorkspacesListViewController.xib in Resources */,
 				91AE2C6719BD18F100AA36C8 /* Images.xcassets in Resources */,
+				38826E681A465CAA003BAEF2 /* history.png in Resources */,
 				38E23CE31A33F82000741DD4 /* button_plus_green.png in Resources */,
 				38E23CF91A351B8600741DD4 /* JKRestServiceAppSettingsViewController.xib in Resources */,
 				38E23CE91A33FF3500741DD4 /* button_minus_red.png in Resources */,
 				38E23CD91A33EA2900741DD4 /* JKOptionSelectorTableViewCell.xib in Resources */,
+				38826E6A1A46635C003BAEF2 /* back.png in Resources */,
 				38E23CD31A33E29200741DD4 /* JKRequestOptionsProviderUIViewController.xib in Resources */,
 				91AE2C5619BD18F100AA36C8 /* InfoPlist.strings in Resources */,
 				91AE2C8F19BD216C00AA36C8 /* JKEasyAFNetworkingStoryboard.storyboard in Resources */,

@@ -7,6 +7,7 @@
 //
 
 #import <AFNetworking.h>
+#import <TPKeyboardAvoidingScrollView.h>
 #import "JKNetworkActivityDemoController.h"
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
@@ -49,6 +50,7 @@
 @property (strong, nonatomic) JKNetworkRequestHistoryViewController* requestHistory;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
+@property (strong, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *mainScrollView;
 
 
 - (IBAction)resetButtonPressed:(id)sender;
@@ -89,6 +91,10 @@
         }
         [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
     };
+}
+
+-(void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
 }
 
 - (IBAction)resetButtonPressed:(id)sender {
@@ -350,7 +356,7 @@
         };
     }
     self.workSpaceList.isReading = isReading;
-    self.workSpaceList.topLabelTitle = isReading? @"List Of Available Workspaces" : @"Please Swipe or press edit to remove workspace";
+    self.workSpaceList.topLabelTitle = isReading? @"List Of Available Workspaces" : @"Swipe or press edit to remove workspace";
     [self presentPopupViewController:self.workSpaceList animationType:MJPopupViewAnimationSlideTopTop];
     
 }
@@ -397,24 +403,27 @@
 }
 
 - (IBAction)showHistoryForCurrentWorkspace:(id)sender {
+    
     if(!self.requestHistory) {
         self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
     }
     
-    
-    
-    
     JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]]] firstObject];
-    self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
     
-    __weak typeof(self) weakSelf = self;
-    self.requestHistory.pastRequestSelectedAction = ^(JKNetworkingRequest* selectedRequest) {
-        __strong typeof(self) strongSelf = weakSelf;
-        [strongSelf dismissViewControllerAnimated:YES completion:nil];
-        [strongSelf resetButtonPressed:nil];
-        [strongSelf populateInputFieldsWithPreviousRequest:selectedRequest];
-    };
-    [self presentViewController:self.requestHistory animated:YES completion:nil];
+    if(currentWorkspaceObject.requests.count > 0) {
+        self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
+        self.requestHistory.currentWorkspaceName = currentWorkspaceObject.workSpaceName;
+        __weak typeof(self) weakSelf = self;
+        self.requestHistory.pastRequestSelectedAction = ^(JKNetworkingRequest* selectedRequest) {
+            __strong typeof(self) strongSelf = weakSelf;
+            [strongSelf resetButtonPressed:nil];
+            [strongSelf populateInputFieldsWithPreviousRequest:selectedRequest];
+        };
+        [self presentViewController:self.requestHistory animated:YES completion:nil];
+    }
+    else {
+        [self showErrorViewWithMessage:[NSString stringWithFormat:@"Workspace %@ is Empty. No requests to display", currentWorkspaceObject.workSpaceName] andAnimationDuration:0.2];
+    }
 }
 
 -(void)populateInputFieldsWithPreviousRequest:(JKNetworkingRequest*)pastRequestObject {
@@ -434,6 +443,17 @@
         self.serverResponse.textColor = [UIColor redColor];
     }
 
+}
+
+#pragma mark textfield delegate methods
+- (void)textViewDidEndEditing:(UITextView *)textView {
+
+    //Stupid bug, causes scroll view content size to increase by significant amount after each edit
+    //to UITextField
+    if(self.mainScrollView.contentSize.width > self.view.frame.size.width) {
+        CGSize sizeWithFixedWidth = CGSizeMake(self.view.frame.size.width, self.mainScrollView.contentSize.height);
+        [self.mainScrollView setContentSize:sizeWithFixedWidth];
+    }
 }
 
 
