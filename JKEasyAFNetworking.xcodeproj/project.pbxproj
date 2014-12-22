@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		3805E5511A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */; };
+		387DD0651A4679E900DE774D /* JKHMACHeadersGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 387DD0641A4679E900DE774D /* JKHMACHeadersGenerator.m */; };
 		38826E621A464636003BAEF2 /* JKRequestTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */; };
 		38826E661A46545F003BAEF2 /* JKObjectToStringConvertor.m in Sources */ = {isa = PBXBuildFile; fileRef = 38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */; };
 		38826E681A465CAA003BAEF2 /* history.png in Resources */ = {isa = PBXBuildFile; fileRef = 38826E671A465CAA003BAEF2 /* history.png */; };
@@ -62,6 +63,8 @@
 /* Begin PBXFileReference section */
 		3805E54F1A3E926D003A5301 /* JKNetworkRequestHistoryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKNetworkRequestHistoryViewController.h; sourceTree = "<group>"; };
 		3805E5501A3E926D003A5301 /* JKNetworkRequestHistoryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKNetworkRequestHistoryViewController.m; sourceTree = "<group>"; };
+		387DD0631A4679E900DE774D /* JKHMACHeadersGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKHMACHeadersGenerator.h; sourceTree = "<group>"; };
+		387DD0641A4679E900DE774D /* JKHMACHeadersGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKHMACHeadersGenerator.m; sourceTree = "<group>"; };
 		38826E601A464636003BAEF2 /* JKRequestTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRequestTableViewCell.h; sourceTree = "<group>"; };
 		38826E611A464636003BAEF2 /* JKRequestTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestTableViewCell.m; sourceTree = "<group>"; };
 		38826E641A46545F003BAEF2 /* JKObjectToStringConvertor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKObjectToStringConvertor.h; sourceTree = "<group>"; };
@@ -174,6 +177,8 @@
 			children = (
 				38826E641A46545F003BAEF2 /* JKObjectToStringConvertor.h */,
 				38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */,
+				387DD0631A4679E900DE774D /* JKHMACHeadersGenerator.h */,
+				387DD0641A4679E900DE774D /* JKHMACHeadersGenerator.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -567,6 +572,7 @@
 				38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */,
 				38E23CD11A33E05D00741DD4 /* UIViewController+MJPopupViewController.m in Sources */,
 				38E23CD71A33E62B00741DD4 /* JKOptionSelectorTableViewCell.m in Sources */,
+				387DD0651A4679E900DE774D /* JKHMACHeadersGenerator.m in Sources */,
 				388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */,
 				91AE2C5819BD18F100AA36C8 /* main.m in Sources */,
 				38943A961A3E4017005128A6 /* JKWorkspacesListViewController.m in Sources */,

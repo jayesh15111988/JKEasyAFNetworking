@@ -20,10 +20,9 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-    // Configure the view for the selected state
 }
 
-- (void)textFieldDidEndEditing:(UITextField *)textField {
+- (void)textFieldDidEndEditing:(NSNotification *)notification {
     if(self.keyField.text.length && self.valueField.text.length) {
         if(self.KeyValueAddedBlock) {
                 self.KeyValueAddedBlock(self.keyField.text, self.valueField.text);

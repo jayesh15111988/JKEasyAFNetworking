@@ -16,11 +16,22 @@
 	<string>${PRODUCT_NAME}</string>
 	<key>BaseURL</key>
 	<string></string>
+	<key>HMACHeaders</key>
+	<array>
+		<string>X-PUBLIC</string>
+		<string>X-HASH</string>
+		<string>X-NONCE</string>
+		<string>X-MICROTIME</string>
+	</array>
 	<key>APIVersion</key>
 	<string></string>
 	<key>Authorization</key>
 	<string></string>
 	<key>TimeoutPeriod</key>
+	<string></string>
+	<key>AppSecret</key>
+	<string></string>
+	<key>PublicKey</key>
 	<string></string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>

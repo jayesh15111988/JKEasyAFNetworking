@@ -238,7 +238,7 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <color key="backgroundColor" red="0.9199132893760622" green="0.97210385101010099" blue="0.44015320188085316" alpha="1" colorSpace="calibratedRGB"/>
+                                <color key="backgroundColor" red="0.91065263139999997" green="1" blue="0.79993385289999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="bNk-ss-aeR">
                                 <rect key="frame" x="12" y="703" width="1000" height="50"/>

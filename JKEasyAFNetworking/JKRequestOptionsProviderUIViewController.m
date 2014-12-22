@@ -6,20 +6,25 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
+#import <CommonCrypto/CommonDigest.h>
 #import "UITableView+Utility.h"
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "JKOptionSelectorTableViewCell.h"
 #import "JKAppearanceProvider.h"
+#import "JKHMACHeadersGenerator.h"
 
 static NSString* cellIdentifier = @"optionSelectorCell";
 static const NSInteger totalNumberOfSections = 3;
+typedef enum { HAS_HMAC_HEADERS = 2, HAS_NO_HMAC_HEADERS } currentHeadersState;
 
 @interface JKRequestOptionsProviderUIViewController ()
 @property (strong, nonatomic) NSArray* sectionHeaderNamesCollection;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *tableViewFooter;
 @property (strong, nonatomic) IBOutlet UIView *tableViewHeader;
+@property (strong, nonatomic) UIButton* addHeadersButton;
+@property (strong, nonatomic) UIButton* generateHeadersButton;
 @property (strong, nonatomic) NSMutableArray* sectionHeaderViewsCollection;
 @property (strong, nonatomic) NSMutableArray* numberOfRowsInRespectiveSection;
 @property (strong, nonatomic) NSMutableArray* keyValueParametersCollectionInArray;
@@ -101,6 +106,7 @@ static const NSInteger totalNumberOfSections = 3;
     __weak typeof(JKOptionSelectorTableViewCell*) weakCellInstance = currentCell;
     currentCell.KeyValueAddedBlock = ^(NSString* parameterKey, NSString* parameterValue) {
         __strong typeof(JKOptionSelectorTableViewCell*) strongCellInstance = weakCellInstance;
+        
         if(strongCellInstance.didAddKeyValuePairToArray) {
             [self.keyValueParametersCollectionInArray[indexPath.section] replaceObjectAtIndex:strongCellInstance.currentKeyValuePairArrayIndex withObject:@{parameterKey : parameterValue}];
         }
@@ -110,10 +116,7 @@ static const NSInteger totalNumberOfSections = 3;
             strongCellInstance.didAddKeyValuePairToArray = YES;
         }
         DLog(@"Current value of key value pair %@",self.keyValueParametersCollectionInArray);
-        
     };
-    
-    
     return currentCell;
 }
 
@@ -123,6 +126,11 @@ static const NSInteger totalNumberOfSections = 3;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
     return 60.0;
+}
+
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath*)indexPath {
+    JKOptionSelectorTableViewCell* optionsCell = (JKOptionSelectorTableViewCell*)cell;
+    optionsCell.KeyValueAddedBlock = nil;
 }
 
 -(UIView*)getHeaderForSectionWithIndex:(NSInteger)sectionNumber {
@@ -147,6 +155,18 @@ static const NSInteger totalNumberOfSections = 3;
         [deleteRowButton setBackgroundImage:[UIImage imageNamed:@"button_minus_red"] forState:UIControlStateNormal];
         deleteRowButton.tag = sectionNumber;
         
+        //If this is a headers section, then add a provision to create and add HMAC headers
+        if(sectionNumber == HEADER) {
+            self.addHeadersButton = [[UIButton alloc] initWithFrame:CGRectMake(deleteRowButton.center.x + 30, 20, 160, 25)];
+            [self.addHeadersButton setTitle:@"Add HMAC Headers" forState:UIControlStateNormal];
+            self.addHeadersButton.tag = HAS_NO_HMAC_HEADERS;
+            [self.addHeadersButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            self.addHeadersButton.titleLabel.font = [UIFont systemFontOfSize:16];
+            [self.addHeadersButton addTarget:self action:@selector(addHMACHeaderButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            [headerView addSubview:self.addHeadersButton];
+            
+        }
+        
         [addRowButton addTarget:self action:@selector(addRowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [deleteRowButton addTarget:self action:@selector(deleteRowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
         [headerView addSubview:headerTitleLabel];
@@ -170,18 +190,52 @@ static const NSInteger totalNumberOfSections = 3;
     }
 }
 
+- (IBAction)addHMACHeaderButtonPressed:(UIButton*)sender {
+    
+    if(sender.tag == HAS_NO_HMAC_HEADERS){
+        [_keyValueParametersCollectionInArray[HEADER] addObjectsFromArray:[JKHMACHeadersGenerator getDesiredHMACHeaderFields]];
+        [self addRemoveNewRowsToSection:HEADER andNumberOfNewRows:4];
+        [sender setTitle:@"Remove Headers" forState:UIControlStateNormal];
+        sender.tag = HAS_HMAC_HEADERS;
+    } else {
+        [self removeHMACHeaders];
+        [sender setTitle:@"Add HMAC Headers" forState:UIControlStateNormal];
+        sender.tag = HAS_NO_HMAC_HEADERS;
+    }
+}
 
+- (void)removeHMACHeaders {
+    NSMutableArray* listOfAllKeyValueHeaders = [self.keyValueParametersCollectionInArray[HEADER] mutableCopy];
+    
+    NSArray* allHMACHeaders = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"HMACHeaders"];
+    __block NSString* currentKey;
+    NSMutableIndexSet *indexSetOfItemsToDelete = [NSMutableIndexSet indexSet];
+    
+    [listOfAllKeyValueHeaders enumerateObjectsUsingBlock:^(NSDictionary* listOfAllKeyValueHeaders, NSUInteger index, BOOL *stop) {
+    
+        currentKey = [listOfAllKeyValueHeaders allKeys][0];
+        if([allHMACHeaders containsObject:currentKey]) {
+            [indexSetOfItemsToDelete addIndex:index];
+        }
+    }];
+    [listOfAllKeyValueHeaders removeObjectsAtIndexes:indexSetOfItemsToDelete];
+    self.keyValueParametersCollectionInArray[HEADER] = listOfAllKeyValueHeaders;
+    [self addRemoveNewRowsToSection:HEADER andNumberOfNewRows:-(indexSetOfItemsToDelete.count)];
+}
 
 -(IBAction)addRowButtonPressed:(UIButton*)sender {
     [self.view endEditing:YES];
     NSInteger sectionNumberToAddRowsTo = sender.tag;
-    NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumberToAddRowsTo] integerValue] + 1;
-    [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumberToAddRowsTo];
-    [self.tableView reloadSectionDU:sectionNumberToAddRowsTo withRowAnimation:UITableViewRowAnimationAutomatic];
-
+    [self addRemoveNewRowsToSection:sectionNumberToAddRowsTo andNumberOfNewRows:1];
 }
 
--(IBAction)deleteRowButtonPressed:(UIButton*)sender {
+-(void)addRemoveNewRowsToSection:(NSInteger)sectionNumber andNumberOfNewRows:(NSInteger)numberOfAddedRows {
+    NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumber] integerValue] + numberOfAddedRows;
+    [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumber];
+    [self.tableView reloadSectionDU:sectionNumber withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (IBAction)deleteRowButtonPressed:(UIButton*)sender {
     [self.view endEditing:YES];
     NSInteger sectionNumberToDeleteRowFrom = sender.tag;
     NSInteger newNumberOfRowsInSection = [self.numberOfRowsInRespectiveSection[sectionNumberToDeleteRowFrom] integerValue] - 1;
@@ -191,16 +245,16 @@ static const NSInteger totalNumberOfSections = 3;
         [self.tableView reloadSectionDU:sectionNumberToDeleteRowFrom withRowAnimation:UITableViewRowAnimationNone];
         return;
     }
-    DLog(@"%@ ",self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom]);
+
     if(newNumberOfRowsInSection < [self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom] count]) {
         [self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom] removeLastObject];
     }
-    DLog(@"%@ ",self.keyValueParametersCollectionInArray[sectionNumberToDeleteRowFrom]);
+
     [self.numberOfRowsInRespectiveSection setObject:@(newNumberOfRowsInSection) atIndexedSubscript:sectionNumberToDeleteRowFrom];
     [self.tableView reloadSectionDU:sectionNumberToDeleteRowFrom withRowAnimation:UITableViewRowAnimationNone];
 }
 
--(void)accumulateKeyValuesInParameterHolder:(NSArray*)inputParametersHolderArray {
+- (void)accumulateKeyValuesInParameterHolder:(NSArray*)inputParametersHolderArray {
     NSInteger currentIndex = 0;
     for(NSDictionary* individualKeyValueDictionary in inputParametersHolderArray) {
         for(NSString* key in individualKeyValueDictionary) {
@@ -208,7 +262,6 @@ static const NSInteger totalNumberOfSections = 3;
         }
         currentIndex++;
     }
-    DLog(@"Key value pair collection %@",self.keyValueParametersCollectionInArray);
 }
 
 @end
