@@ -17,8 +17,11 @@
     NSString* xMICROTIME = [NSString stringWithFormat:@"%f",[[NSDate date] timeIntervalSince1970]];
     NSString* xNONCE = [self generateNonceWithUniqueValue:@"" andCurrentTimestamp:xMICROTIME];
     NSString* hashValue = [self generateHashWithPublicKey:storedPublicKey andAppSecret:[[NSBundle mainBundle] objectForInfoDictionaryKey:@"AppSecret"] andNonce:xNONCE andCurrentTimestamp:xMICROTIME];
+    
+    
+    
     NSArray* allHMACHeaderNames = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"HMACHeaders"];
-    return @[@{allHMACHeaderNames[0] : storedPublicKey}, @{allHMACHeaderNames[1] : hashValue}, @{allHMACHeaderNames[2] : xNONCE},@{allHMACHeaderNames[3] :  xMICROTIME}];
+    return @[@{allHMACHeaderNames[PUBLIC_KEY] : storedPublicKey}, @{allHMACHeaderNames[HASH] : hashValue}, @{allHMACHeaderNames[NONCE] : xNONCE},@{allHMACHeaderNames[MICROTIME] :  xMICROTIME}];
 }
 
 +(NSString*)generateNonceWithUniqueValue:(NSString*)uniqueValue andCurrentTimestamp:(NSString*)currentTimestamp {
@@ -27,17 +30,19 @@
 
 +(NSString*)generateHashWithPublicKey:(NSString*)publicKey andAppSecret:(NSString*)appSecret andNonce:(NSString*)nonce andCurrentTimestamp:(NSString*)currentTimestamp {
     NSString* inputString = [NSString stringWithFormat:@"%@%@%@",publicKey, currentTimestamp, nonce];
-    //NSInteger digestLength = CC_SHA256_DIGEST_LENGTH;
+    const char* inputCString = [inputString cStringUsingEncoding:NSUTF8StringEncoding];
+
     unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
-    const char* inpString = [inputString cStringUsingEncoding:NSUTF8StringEncoding];
-    NSInteger inputLength = [inputString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    const char *cKey  = [appSecret cStringUsingEncoding:NSASCIIStringEncoding];
+    unsigned int inputLength = [inputString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
     //NSData* inputData = [inputString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
-    NSInteger keyLength = [appSecret lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    NSInteger keyLen = strlen(cKey);
     
-    CCHmac(kCCHmacAlgSHA256, (__bridge const void *)(appSecret), keyLength, inpString,inputLength, cHMAC);
+    CCHmac(kCCHmacAlgSHA256, cKey, keyLen, inputCString,inputLength, cHMAC);
+    DLog(@"%d ** %s ** %d ** %s ** %d ** %s",kCCHmacAlgSHA256, cKey, keyLen,inputCString, inputLength, cHMAC);
     NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC
                                           length:sizeof(cHMAC)];
-    
+
     NSString *hash = [HMAC base64EncodedStringWithOptions:NSDataBase64Encoding64CharacterLineLength];
     return hash;
 }

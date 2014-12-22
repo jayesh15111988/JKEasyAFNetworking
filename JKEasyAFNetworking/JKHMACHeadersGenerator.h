@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {PUBLIC_KEY, HASH, NONCE, MICROTIME} HMACHeaderLabels;
+
 @interface JKHMACHeadersGenerator : NSObject
 +(NSArray*)getDesiredHMACHeaderFields;
 @end

@@ -24,7 +24,8 @@ typedef enum { HAS_HMAC_HEADERS = 2, HAS_NO_HMAC_HEADERS } currentHeadersState;
 @property (strong, nonatomic) IBOutlet UIView *tableViewFooter;
 @property (strong, nonatomic) IBOutlet UIView *tableViewHeader;
 @property (strong, nonatomic) UIButton* addHeadersButton;
-@property (strong, nonatomic) UIButton* generateHeadersButton;
+@property (strong, nonatomic) UIButton* generateNewHMACHeadersButton;
+@property (strong, nonatomic) NSArray* allHMACHeaders;
 @property (strong, nonatomic) NSMutableArray* sectionHeaderViewsCollection;
 @property (strong, nonatomic) NSMutableArray* numberOfRowsInRespectiveSection;
 @property (strong, nonatomic) NSMutableArray* keyValueParametersCollectionInArray;
@@ -157,14 +158,23 @@ typedef enum { HAS_HMAC_HEADERS = 2, HAS_NO_HMAC_HEADERS } currentHeadersState;
         
         //If this is a headers section, then add a provision to create and add HMAC headers
         if(sectionNumber == HEADER) {
+            UIFont* generalActionButtonFont = [UIFont systemFontOfSize:16];
             self.addHeadersButton = [[UIButton alloc] initWithFrame:CGRectMake(deleteRowButton.center.x + 30, 20, 160, 25)];
             [self.addHeadersButton setTitle:@"Add HMAC Headers" forState:UIControlStateNormal];
             self.addHeadersButton.tag = HAS_NO_HMAC_HEADERS;
             [self.addHeadersButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            self.addHeadersButton.titleLabel.font = [UIFont systemFontOfSize:16];
+            self.addHeadersButton.titleLabel.font = generalActionButtonFont;
             [self.addHeadersButton addTarget:self action:@selector(addHMACHeaderButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
             [headerView addSubview:self.addHeadersButton];
             
+            //This button will allow users to generate new HMAC headers for more convenience
+            self.generateNewHMACHeadersButton = [[UIButton alloc] initWithFrame:CGRectMake(self.addHeadersButton.frame.origin.x + self.addHeadersButton.frame.size.width , 20, 170, 25)];
+            [self.generateNewHMACHeadersButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [self.generateNewHMACHeadersButton setTitle:@"Create HMAC Headers" forState:UIControlStateNormal];
+            self.generateNewHMACHeadersButton.titleLabel.font = generalActionButtonFont;
+            self.generateNewHMACHeadersButton.hidden = YES;
+            [self.generateNewHMACHeadersButton addTarget:self action:@selector(generateNewHMACHeaders:) forControlEvents:UIControlEventTouchUpInside];
+            [headerView addSubview:self.generateNewHMACHeadersButton];
         }
         
         [addRowButton addTarget:self action:@selector(addRowButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
@@ -193,28 +203,58 @@ typedef enum { HAS_HMAC_HEADERS = 2, HAS_NO_HMAC_HEADERS } currentHeadersState;
 - (IBAction)addHMACHeaderButtonPressed:(UIButton*)sender {
     
     if(sender.tag == HAS_NO_HMAC_HEADERS){
+        if(!self.allHMACHeaders || ![self.allHMACHeaders count]) {
+            self.allHMACHeaders = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"HMACHeaders"];
+        }
         [_keyValueParametersCollectionInArray[HEADER] addObjectsFromArray:[JKHMACHeadersGenerator getDesiredHMACHeaderFields]];
         [self addRemoveNewRowsToSection:HEADER andNumberOfNewRows:4];
         [sender setTitle:@"Remove Headers" forState:UIControlStateNormal];
         sender.tag = HAS_HMAC_HEADERS;
     } else {
-        [self removeHMACHeaders];
+        [self removeUpdateHMACHeaders];
         [sender setTitle:@"Add HMAC Headers" forState:UIControlStateNormal];
         sender.tag = HAS_NO_HMAC_HEADERS;
     }
+    self.generateNewHMACHeadersButton.hidden = (sender.tag == HAS_NO_HMAC_HEADERS);
 }
 
-- (void)removeHMACHeaders {
+- (IBAction)generateNewHMACHeaders:(UIButton*)sender {
+    NSArray* newHMACHeaders = [JKHMACHeadersGenerator getDesiredHMACHeaderFields];
+    NSArray* currentListOfHeaders = self.keyValueParametersCollectionInArray[HEADER];
+    NSMutableArray* temporaryListOfKeyValuePairs = [currentListOfHeaders mutableCopy];
+    
+    
+    __block NSString* currentHeaderKey;
+    __block NSInteger indexOfHeaderCurrentHeader;
+   [currentListOfHeaders enumerateObjectsUsingBlock:^(NSDictionary* listOfAllKeyValueHeaders, NSUInteger index, BOOL *stop) {
+    
+       currentHeaderKey = [listOfAllKeyValueHeaders allKeys][0];
+       if([_allHMACHeaders containsObject:currentHeaderKey]) {
+           indexOfHeaderCurrentHeader = [self.allHMACHeaders indexOfObject:currentHeaderKey];
+           
+           //Public key virtually remains same each time
+           if(indexOfHeaderCurrentHeader != PUBLIC_KEY) {
+               [temporaryListOfKeyValuePairs replaceObjectAtIndex:index withObject:newHMACHeaders[indexOfHeaderCurrentHeader]];
+           }
+       }
+   }];
+    self.keyValueParametersCollectionInArray[HEADER] = temporaryListOfKeyValuePairs;
+    [self.tableView reloadSectionDU:HEADER withRowAnimation:UITableViewRowAnimationNone];
+    
+}
+
+- (void)removeUpdateHMACHeaders{
     NSMutableArray* listOfAllKeyValueHeaders = [self.keyValueParametersCollectionInArray[HEADER] mutableCopy];
     
-    NSArray* allHMACHeaders = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"HMACHeaders"];
+
     __block NSString* currentKey;
     NSMutableIndexSet *indexSetOfItemsToDelete = [NSMutableIndexSet indexSet];
+    
     
     [listOfAllKeyValueHeaders enumerateObjectsUsingBlock:^(NSDictionary* listOfAllKeyValueHeaders, NSUInteger index, BOOL *stop) {
     
         currentKey = [listOfAllKeyValueHeaders allKeys][0];
-        if([allHMACHeaders containsObject:currentKey]) {
+        if([self.allHMACHeaders containsObject:currentKey]) {
             [indexSetOfItemsToDelete addIndex:index];
         }
     }];
