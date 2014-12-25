@@ -256,6 +256,8 @@
        andIsSuccessfullResponse:(BOOL)isRequestSuccessfull {
     NSDate *requestCompletionTime;
     NSTimeInterval executionTime;
+    //Reset headers as soon as request is finished
+    self.headersToSend = @"";
     requestCompletionTime = [NSDate date];
     executionTime =
         [requestCompletionTime timeIntervalSinceDate:self.requestSendTime];

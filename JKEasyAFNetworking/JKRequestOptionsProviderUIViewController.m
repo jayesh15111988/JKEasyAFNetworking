@@ -115,8 +115,12 @@ static const NSInteger totalNumberOfSections = 3;
     currentCell.KeyValueAddedBlock = ^(NSString* parameterKey, NSString* parameterValue) {
         __strong typeof(JKOptionSelectorTableViewCell*) strongCellInstance = weakCellInstance;
         
-        if(strongCellInstance.didAddKeyValuePairToArray) {
-            [self.keyValueParametersCollectionInArray[indexPath.section] replaceObjectAtIndex:strongCellInstance.currentKeyValuePairArrayIndex withObject:@{parameterKey : parameterValue}];
+        //Temp Fix for random crash which causes due to fatc that observer on options cell is not removed even after it goes out of scope
+        NSInteger arrayElementReplacementIndex = strongCellInstance.currentKeyValuePairArrayIndex;
+        NSInteger sizeOfArrayForGivenSectionNumber = [self.keyValueParametersCollectionInArray[indexPath.section] count];
+        
+        if(strongCellInstance.didAddKeyValuePairToArray && arrayElementReplacementIndex < sizeOfArrayForGivenSectionNumber) {
+            [self.keyValueParametersCollectionInArray[indexPath.section] replaceObjectAtIndex:arrayElementReplacementIndex withObject:@{parameterKey : parameterValue}];
         }
         else {
             [self.keyValueParametersCollectionInArray[indexPath.section] addObject:@{parameterKey : parameterValue}];
@@ -323,7 +327,7 @@ static const NSInteger totalNumberOfSections = 3;
     
     for(NSDictionary* individualKeyValueDictionary in inputParametersHolderArray) {
         for(NSString* key in individualKeyValueDictionary) {
-            [self.keyValueParametersCollectionInArray[currentIndex] addObject:@{key : individualKeyValueDictionary[key]}];
+            [_keyValueParametersCollectionInArray[currentIndex] addObject:@{key : individualKeyValueDictionary[key]}];
         }
         
         DLog(@"%@",self.numberOfRowsInRespectiveSection);
