@@ -28,6 +28,7 @@ static const NSInteger totalNumberOfSections = 3;
 @property (strong, nonatomic) NSArray* allHMACHeaders;
 @property (strong, nonatomic) NSMutableArray* sectionHeaderViewsCollection;
 @property (strong, nonatomic) NSMutableArray* keyValueParametersCollectionInArray;
+@property (assign, nonatomic) BOOL originalHMACRequestStatus;
 @end
 
 @implementation JKRequestOptionsProviderUIViewController
@@ -57,6 +58,7 @@ static const NSInteger totalNumberOfSections = 3;
     [self initializeHMACHeaderValues];
     [self.tableView reloadData];
     //Adjust header titles based on whether previous request was HMACcompliant
+    self.originalHMACRequestStatus = self.didAddHMACHeaders;
     DLog(@"%@ and %@",self.generateNewHMACHeadersButton, self.addHeadersButton);
 }
 
@@ -202,7 +204,7 @@ static const NSInteger totalNumberOfSections = 3;
 
 - (IBAction)cancelButtonPressed:(id)sender {
     if(self.dismissViewButtonAction) {
-        self.dismissViewButtonAction(0, nil, self.didAddHMACHeaders);
+        self.dismissViewButtonAction(0, nil, self.originalHMACRequestStatus);
     }
 }
 
@@ -258,6 +260,7 @@ static const NSInteger totalNumberOfSections = 3;
        }
    }];
     self.keyValueParametersCollectionInArray[HEADER] = temporaryListOfKeyValuePairs;
+    self.didAddHMACHeaders = YES;
     [self.tableView reloadSectionDU:HEADER withRowAnimation:UITableViewRowAnimationNone];
     
 }

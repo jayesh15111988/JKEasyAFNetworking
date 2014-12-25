@@ -482,7 +482,7 @@
 
 }
 
-#pragma mark textfield delegate methods
+#pragma mark textView delegate methods
 - (void)textViewDidEndEditing:(UITextView *)textView {
 
     //Stupid bug, causes scroll view content size to increase by significant amount after each edit
@@ -490,6 +490,13 @@
     if(self.mainScrollView.contentSize.width > self.view.frame.size.width) {
         CGSize sizeWithFixedWidth = CGSizeMake(self.view.frame.size.width, self.mainScrollView.contentSize.height);
         [self.mainScrollView setContentSize:sizeWithFixedWidth];
+    }
+}
+
+#pragma textField delegate method 
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    if(textField == self.inputURLField) {
+        self.isHMACRequest = NO;
     }
 }
 

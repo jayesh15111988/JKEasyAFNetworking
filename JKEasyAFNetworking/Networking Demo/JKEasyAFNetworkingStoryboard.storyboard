@@ -18,15 +18,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nfk-gm-cGO">
-                                <rect key="frame" x="1494" y="212" width="37" height="37"/>
-                                <color key="color" red="1" green="0.48692554430000001" blue="0.15407261259999999" alpha="1" colorSpace="calibratedRGB"/>
-                            </activityIndicatorView>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BVy-be-pYy">
                                 <rect key="frame" x="0.0" y="20" width="1024" height="50"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oky-dR-kLt">
-                                        <rect key="frame" x="8" y="4" width="280" height="40"/>
+                                        <rect key="frame" x="8" y="5" width="280" height="40"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2cB-HB-sXl">
                                                 <rect key="frame" x="47" y="2" width="35" height="35"/>
@@ -62,7 +58,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="JJE-dD-ZQX">
-                                        <rect key="frame" x="352" y="4" width="320" height="40"/>
+                                        <rect key="frame" x="352" y="5" width="320" height="40"/>
                                         <subviews>
                                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="REST Service Tester" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ihI-eE-NYg">
                                                 <rect key="frame" x="10" y="5" width="300" height="30"/>
@@ -73,7 +69,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                     </view>
                                     <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="6X3-6p-zHN">
-                                        <rect key="frame" x="736" y="4" width="280" height="40"/>
+                                        <rect key="frame" x="736" y="5" width="280" height="40"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6D8-NN-UAi">
                                                 <rect key="frame" x="179" y="5" width="30" height="30"/>
@@ -106,6 +102,9 @@
                                         <rect key="frame" x="160" y="9" width="599" height="30"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
                                         <textInputTraits key="textInputTraits"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="few-zC-ZBW" id="X8b-dS-w6b"/>
+                                        </connections>
                                     </textField>
                                     <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="G3y-Tx-mtJ">
                                         <rect key="frame" x="298" y="128" width="323" height="29"/>
@@ -293,8 +292,16 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="nfk-gm-cGO">
+                                <rect key="frame" x="493" y="366" width="37" height="37"/>
+                                <color key="color" red="1" green="0.48692554430000001" blue="0.15407261259999999" alpha="1" colorSpace="calibratedRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="centerX" secondItem="nfk-gm-cGO" secondAttribute="centerX" id="1eU-ns-J8h"/>
+                            <constraint firstAttribute="centerY" secondItem="nfk-gm-cGO" secondAttribute="centerY" id="cYt-bD-XJk"/>
+                        </constraints>
                     </view>
                     <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
