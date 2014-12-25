@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface UIView (Utility)
--(void)addBorderWithColor:(UIColor*)borderColor andBorderWidth:(CGFloat)borderWidth;
+- (void)addBorderWithColor:(UIColor*)borderColor andBorderWidth:(CGFloat)borderWidth;
 - (void)resetViewHierarchy;
 @end
 

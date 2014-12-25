@@ -9,7 +9,7 @@
 #import "UIView+Utility.h"
 
 @implementation UIView (Utility)
--(void)addBorderWithColor:(UIColor*)borderColor andBorderWidth:(CGFloat)borderWidth {
+- (void)addBorderWithColor:(UIColor*)borderColor andBorderWidth:(CGFloat)borderWidth {
     self.layer.borderWidth = borderWidth;
     self.layer.borderColor = borderColor.CGColor;
 }

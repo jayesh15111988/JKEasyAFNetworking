@@ -422,7 +422,6 @@
 
     
     if(currentWorkspaceObject.requests.count > 0) {
-        
         self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
         self.requestHistory.currentWorkspaceName = currentWorkspaceObject.workSpaceName;
         __weak typeof(self) weakSelf = self;

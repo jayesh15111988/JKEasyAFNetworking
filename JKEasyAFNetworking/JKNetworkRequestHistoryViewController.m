@@ -12,6 +12,7 @@
 @interface JKNetworkRequestHistoryViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *historyTitle;
+@property (assign, nonatomic) NSInteger totalNumberOfActualResults;
 
 @end
 
@@ -35,7 +36,7 @@
 #pragma mark tableView datasource and delegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    JKNetworkingRequest* selectedRequestFromHistory = self.requestsForCurrentWorkspace[indexPath.row];
+    JKNetworkingRequest* selectedRequestFromHistory = self.requestsForCurrentWorkspace[self.totalNumberOfActualResults - indexPath.row - 1];
     [self dismissViewControllerAnimated:YES completion:nil];
     if(self.pastRequestSelectedAction) {
         self.pastRequestSelectedAction(selectedRequestFromHistory);
@@ -49,16 +50,17 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger maximumNumberOfResults = [[[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"] integerValue];
+    self.totalNumberOfActualResults = self.requestsForCurrentWorkspace.count;
     
     if(self.requestsForCurrentWorkspace.count > maximumNumberOfResults) {
         return maximumNumberOfResults;
     }
-    return self.requestsForCurrentWorkspace.count;
+        return self.totalNumberOfActualResults;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     JKRequestTableViewCell* requestInfoCell = (JKRequestTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"requestcell" forIndexPath:indexPath];
-    JKNetworkingRequest* currentRequest = self.requestsForCurrentWorkspace[indexPath.row];
+    JKNetworkingRequest* currentRequest = self.requestsForCurrentWorkspace[self.totalNumberOfActualResults - indexPath.row - 1];
     requestInfoCell.identifierLabel.text = currentRequest.requestIdentifier;
     requestInfoCell.creationDateLabel.text = currentRequest.requestCreationTimestamp;
     requestInfoCell.requestURLLabel.text = currentRequest.remoteURL;
