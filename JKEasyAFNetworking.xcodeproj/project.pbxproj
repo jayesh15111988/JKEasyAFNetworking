@@ -19,6 +19,7 @@
 		38943A961A3E4017005128A6 /* JKWorkspacesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38943A941A3E4017005128A6 /* JKWorkspacesListViewController.m */; };
 		38943A971A3E4017005128A6 /* JKWorkspacesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38943A951A3E4017005128A6 /* JKWorkspacesListViewController.xib */; };
 		38C05AC41A4BB02400066F20 /* UIView+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C05AC31A4BB02400066F20 /* UIView+Utility.m */; };
+		38C05AC71A4C6AA500066F20 /* JKAlertViewProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C05AC61A4C6AA500066F20 /* JKAlertViewProvider.m */; };
 		38E23CCA1A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CC91A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m */; };
 		38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CCD1A33E05D00741DD4 /* MJPopupBackgroundView.m */; };
 		38E23CD11A33E05D00741DD4 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CCF1A33E05D00741DD4 /* UIViewController+MJPopupViewController.m */; };
@@ -83,6 +84,8 @@
 		38943A951A3E4017005128A6 /* JKWorkspacesListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKWorkspacesListViewController.xib; sourceTree = "<group>"; };
 		38C05AC21A4BB02400066F20 /* UIView+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utility.h"; sourceTree = "<group>"; };
 		38C05AC31A4BB02400066F20 /* UIView+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utility.m"; sourceTree = "<group>"; };
+		38C05AC51A4C6AA500066F20 /* JKAlertViewProvider.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKAlertViewProvider.h; sourceTree = "<group>"; };
+		38C05AC61A4C6AA500066F20 /* JKAlertViewProvider.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKAlertViewProvider.m; sourceTree = "<group>"; };
 		38E23CC81A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRequestOptionsProviderUIViewController.h; sourceTree = "<group>"; };
 		38E23CC91A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestOptionsProviderUIViewController.m; sourceTree = "<group>"; };
 		38E23CCC1A33E05D00741DD4 /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPopupBackgroundView.h; sourceTree = "<group>"; };
@@ -182,6 +185,8 @@
 				38826E651A46545F003BAEF2 /* JKObjectToStringConvertor.m */,
 				387DD0631A4679E900DE774D /* JKHMACHeadersGenerator.h */,
 				387DD0641A4679E900DE774D /* JKHMACHeadersGenerator.m */,
+				38C05AC51A4C6AA500066F20 /* JKAlertViewProvider.h */,
+				38C05AC61A4C6AA500066F20 /* JKAlertViewProvider.m */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -576,6 +581,7 @@
 				388E855D1A35335C0018E7DD /* JKNetworkingWorkspace.m in Sources */,
 				38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */,
 				38E23CD11A33E05D00741DD4 /* UIViewController+MJPopupViewController.m in Sources */,
+				38C05AC71A4C6AA500066F20 /* JKAlertViewProvider.m in Sources */,
 				38E23CD71A33E62B00741DD4 /* JKOptionSelectorTableViewCell.m in Sources */,
 				387DD0651A4679E900DE774D /* JKHMACHeadersGenerator.m in Sources */,
 				388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */,
@@ -708,6 +714,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JKEasyAFNetworking/Supporting Files/JKEasyAFNetworking-Prefix.pch";
 				INFOPLIST_FILE = "JKEasyAFNetworking/Supporting Files/JKEasyAFNetworking-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;
@@ -723,6 +730,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "JKEasyAFNetworking/Supporting Files/JKEasyAFNetworking-Prefix.pch";
 				INFOPLIST_FILE = "JKEasyAFNetworking/Supporting Files/JKEasyAFNetworking-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 2;
 				WRAPPER_EXTENSION = app;

@@ -395,6 +395,24 @@
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Aoi-Ct-emx">
+                                        <rect key="frame" x="855" y="6" width="46" height="30"/>
+                                        <state key="normal" title="Edit">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="editRequestsTableButtonPressed:" destination="sSH-wd-XFh" eventType="touchUpInside" id="pVf-1G-jbc"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ilT-E0-eBV">
+                                        <rect key="frame" x="916" y="6" width="100" height="30"/>
+                                        <state key="normal" title="Clear All">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="clearAllRequestsButtonPressed:" destination="sSH-wd-XFh" eventType="touchUpInside" id="314-L0-ZdZ"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" red="0.69992987409999996" green="0.91616981907894723" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                             </view>

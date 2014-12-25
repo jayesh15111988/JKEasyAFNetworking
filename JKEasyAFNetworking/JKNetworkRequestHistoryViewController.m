@@ -6,14 +6,15 @@
 //  Copyright (c) 2014 Jayesh Kawli. All rights reserved.
 //
 
+#import <RLMRealm.h>
 #import "JKNetworkRequestHistoryViewController.h"
 #import "JKRequestTableViewCell.h"
+#import "JKAlertViewProvider.h"
 
 @interface JKNetworkRequestHistoryViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *historyTitle;
 @property (assign, nonatomic) NSInteger actualNumberOfPastRequests;
-
 @end
 
 
@@ -21,7 +22,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.historyTitle.text = [NSString stringWithFormat:@"Request History for %@",self.currentWorkspaceName];
+    self.historyTitle.text = [NSString stringWithFormat:@"Request History for %@",self.currentWorkspace.workSpaceName];
     [self.tableView reloadData];
 }
 
@@ -86,4 +87,58 @@
         }
     }
 }
+
+#pragma TableView edit delegate methods
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    return YES;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    JKNetworkingRequest* currentRequestToRemove = self.requestsForCurrentWorkspace[self.actualNumberOfPastRequests - indexPath.row - 1];
+    
+    [JKAlertViewProvider showAlertWithTitle:@"Delete Request" andMessage:@"Are you sure you want to remove this request from history?" isSingleButton:NO andParentViewController:self andOkAction:^{
+        
+        RLMRealm* realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        [realm deleteObject:currentRequestToRemove];
+        [realm commitWriteTransaction];
+        self.tableView.editing = !self.tableView.editing;
+        [self getDataAndReloadTable];
+        
+    } andCancelAction:^{
+        DLog(@"Request removal operation cancelled");
+    }];
+    
+}
+
+- (IBAction)editRequestsTableButtonPressed:(id)sender {
+    self.tableView.editing = !self.tableView.editing;
+    [self.tableView setEditing:self.tableView.editing animated:YES];
+}
+
+- (IBAction)clearAllRequestsButtonPressed:(id)sender {
+    [JKAlertViewProvider showAlertWithTitle:@"Requests History" andMessage:@"Are you sure you want to clear all history items?" isSingleButton:NO andParentViewController:self andOkAction:^{
+        //Remove all History Items for current workspace
+        RLMRealm* realm = [RLMRealm defaultRealm];
+        [realm beginWriteTransaction];
+        [self.currentWorkspace.requests removeAllObjects];
+        [realm commitWriteTransaction];
+        [self getDataAndReloadTable];
+    } andCancelAction:^{
+        DLog(@"Clear History Cancelled");
+    }];
+}
+
+-(void)getDataAndReloadTable {
+    self.requestsForCurrentWorkspace = self.currentWorkspace.requests;
+    if(self.requestsForCurrentWorkspace.count > 0){
+        [self.tableView reloadData];
+    }
+    else {
+        [JKAlertViewProvider showAlertWithTitle:@"History" andMessage:@"No Requests to display for this workspace" isSingleButton:YES andParentViewController:self andOkAction:^{
+            DLog(@"Ok Button Pressed");
+        } andCancelAction:nil];
+    }
+}
+
 @end

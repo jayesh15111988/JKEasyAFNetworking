@@ -9,10 +9,11 @@
 #import <UIKit/UIKit.h>
 #import <RLMArray.h>
 #import "JKNetworkingRequest.h"
+#import "JKNetworkingWorkspace.h"
 
 @interface JKNetworkRequestHistoryViewController : UIViewController
 @property RLMArray<JKNetworkingRequest> *requestsForCurrentWorkspace;
-@property (nonatomic, strong) NSString* currentWorkspaceName;
+@property (nonatomic, strong) JKNetworkingWorkspace* currentWorkspace;
 typedef void (^PastRequestSelectedBlock)(JKNetworkingRequest* selectedRequest);
 @property (strong, nonatomic) PastRequestSelectedBlock pastRequestSelectedAction;
 @end

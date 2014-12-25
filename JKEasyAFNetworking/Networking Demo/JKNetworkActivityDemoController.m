@@ -422,7 +422,7 @@
     
     if(currentWorkspaceObject.requests.count > 0) {
         self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
-        self.requestHistory.currentWorkspaceName = currentWorkspaceObject.workSpaceName;
+        self.requestHistory.currentWorkspace = currentWorkspaceObject;
         
         __weak typeof(self) weakSelf = self;
         self.requestHistory.pastRequestSelectedAction = ^(JKNetworkingRequest* selectedRequest) {
