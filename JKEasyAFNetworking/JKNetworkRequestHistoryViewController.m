@@ -108,13 +108,21 @@
     } andCancelAction:^{
         DLog(@"Request removal operation cancelled");
     }];
-    
 }
 
+
 - (IBAction)editRequestsTableButtonPressed:(id)sender {
-    self.tableView.editing = !self.tableView.editing;
-    [self.tableView setEditing:self.tableView.editing animated:YES];
+    
+    [UIView animateWithDuration:0.3 delay:0.0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.tableView.editing = !self.tableView.editing;
+    }
+    completion:nil];
 }
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated{
+
+}
+
 
 - (IBAction)clearAllRequestsButtonPressed:(id)sender {
     [JKAlertViewProvider showAlertWithTitle:@"Requests History" andMessage:@"Are you sure you want to clear all history items?" isSingleButton:NO andParentViewController:self andOkAction:^{
