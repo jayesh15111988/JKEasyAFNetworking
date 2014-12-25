@@ -9,5 +9,7 @@
 #import "JKNetworkingRequest.h"
 
 @implementation JKNetworkingRequest
-
+-(NSString*)description {
+    return [NSString stringWithFormat:@"%f",self.timestampForRequestCreation];
+}
 @end

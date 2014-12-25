@@ -30,21 +30,21 @@
   //  NSArray* modifiedArray = [tempArray subarrayWithRange:NSMakeRange(0, 2)];
 
     
-    [self performDatabaseMigration];
+    //[self performDatabaseMigration];
     return YES;
 }
 
 -(void)performDatabaseMigration {
-    [RLMRealm setSchemaVersion:4 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
+    [RLMRealm setSchemaVersion:1 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
 
         if (oldSchemaVersion < 1) {
 
             [migration enumerateObjects:JKNetworkingRequest.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
-                                      newObject[@"headers"] = @"";
+                                      //newObject[@"headers"] = @"";
             }];
         }
-        if(oldSchemaVersion < 2) {
+       /* if(oldSchemaVersion < 2) {
             [migration enumerateObjects:JKNetworkingRequest.className
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
                                       newObject[@"serverResponseMessage"] = @"";
@@ -63,7 +63,7 @@
                                   block:^(RLMObject *oldObject, RLMObject *newObject) {
                                       newObject[@"isHMACRequest"] = @(NO);
                                   }];
-        }
+        }*/
         
     }];
     

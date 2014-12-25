@@ -16,7 +16,8 @@
 @property NSString* headers;
 @property NSInteger requestMethodType;
 @property NSString* remoteURL;
-@property NSString* requestCreationTimestamp;
+@property CGFloat timestampForRequestCreation;
+@property NSString* dateOfRequestCreation;
 @property BOOL isRequestSuccessfull;
 @property BOOL isHMACRequest;
 @property NSString* requestIdentifier;

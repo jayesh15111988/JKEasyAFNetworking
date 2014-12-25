@@ -82,7 +82,7 @@ static const NSInteger totalNumberOfSections = 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    DLog(@"%d",self.numberOfRowsInRespectiveSection[section]);
+    DLog(@"%@",self.numberOfRowsInRespectiveSection[section]);
     return [self.numberOfRowsInRespectiveSection[section] integerValue];
 }
 

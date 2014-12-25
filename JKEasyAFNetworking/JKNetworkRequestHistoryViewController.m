@@ -12,7 +12,7 @@
 @interface JKNetworkRequestHistoryViewController ()
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (weak, nonatomic) IBOutlet UILabel *historyTitle;
-@property (assign, nonatomic) NSInteger totalNumberOfActualResults;
+@property (assign, nonatomic) NSInteger actualNumberOfPastRequests;
 
 @end
 
@@ -36,7 +36,7 @@
 #pragma mark tableView datasource and delegate methods
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    JKNetworkingRequest* selectedRequestFromHistory = self.requestsForCurrentWorkspace[self.totalNumberOfActualResults - indexPath.row - 1];
+    JKNetworkingRequest* selectedRequestFromHistory = self.requestsForCurrentWorkspace[self.actualNumberOfPastRequests - indexPath.row - 1];
     [self dismissViewControllerAnimated:YES completion:nil];
     if(self.pastRequestSelectedAction) {
         self.pastRequestSelectedAction(selectedRequestFromHistory);
@@ -50,19 +50,20 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     NSInteger maximumNumberOfResults = [[[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"] integerValue];
-    self.totalNumberOfActualResults = self.requestsForCurrentWorkspace.count;
     
+    self.actualNumberOfPastRequests = self.requestsForCurrentWorkspace.count;
     if(self.requestsForCurrentWorkspace.count > maximumNumberOfResults) {
         return maximumNumberOfResults;
     }
-        return self.totalNumberOfActualResults;
+    
+    return self.actualNumberOfPastRequests;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     JKRequestTableViewCell* requestInfoCell = (JKRequestTableViewCell*) [tableView dequeueReusableCellWithIdentifier:@"requestcell" forIndexPath:indexPath];
-    JKNetworkingRequest* currentRequest = self.requestsForCurrentWorkspace[self.totalNumberOfActualResults - indexPath.row - 1];
+    JKNetworkingRequest* currentRequest = self.requestsForCurrentWorkspace[self.actualNumberOfPastRequests - indexPath.row - 1];
     requestInfoCell.identifierLabel.text = currentRequest.requestIdentifier;
-    requestInfoCell.creationDateLabel.text = currentRequest.requestCreationTimestamp;
+    requestInfoCell.creationDateLabel.text = currentRequest.dateOfRequestCreation;
     requestInfoCell.requestURLLabel.text = currentRequest.remoteURL;
     requestInfoCell.requestMethodLabel.text = [self getHTTPMethodNameFromIndex:currentRequest.requestMethodType];
     [self setTextColorForCellWithInputSuccessFlag:currentRequest.isRequestSuccessfull andInputCell:requestInfoCell];

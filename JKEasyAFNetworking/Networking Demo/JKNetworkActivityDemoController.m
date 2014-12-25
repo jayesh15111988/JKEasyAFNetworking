@@ -210,7 +210,9 @@
         newAPIRequest.requestMethodType = self.requestType.selectedSegmentIndex;
         newAPIRequest.remoteURL = self.inputURLField.text;
         newAPIRequest.headers = self.headersToSend;
-        newAPIRequest.requestCreationTimestamp = [self.formatter stringFromDate:[NSDate date]];
+        newAPIRequest.dateOfRequestCreation = [self.formatter stringFromDate:[NSDate date]];
+        newAPIRequest.timestampForRequestCreation = [[NSDate date]timeIntervalSince1970];
+        DLog(@"Timestamp of request creation %f and date is %@",newAPIRequest.timestampForRequestCreation,newAPIRequest.dateOfRequestCreation);
         newAPIRequest.isRequestSuccessfull = isRequestSuccessfull;
         newAPIRequest.requestIdentifier = [JKStoredHistoryOperationUtility generateRandomStringWithLength:7];
         newAPIRequest.serverResponseMessage = self.serverResponse.text;
@@ -414,16 +416,14 @@
 
 - (IBAction)showHistoryForCurrentWorkspace:(id)sender {
     
-    if(!self.requestHistory) {
-        self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
-    }
-    
+    self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
     JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]]] firstObject];
 
     
     if(currentWorkspaceObject.requests.count > 0) {
         self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
         self.requestHistory.currentWorkspaceName = currentWorkspaceObject.workSpaceName;
+        
         __weak typeof(self) weakSelf = self;
         self.requestHistory.pastRequestSelectedAction = ^(JKNetworkingRequest* selectedRequest) {
             __strong typeof(self) strongSelf = weakSelf;
