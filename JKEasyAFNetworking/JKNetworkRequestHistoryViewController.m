@@ -23,12 +23,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.historyTitle.text = [NSString stringWithFormat:@"Request History for %@",self.currentWorkspace.workSpaceName];
-    [self.tableView reloadData];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.historyTitle.text = [NSString stringWithFormat:@"Request History for %@",self.currentWorkspace.workSpaceName];
+    [self.tableView reloadData];
 }
 
 - (IBAction)hideHistoryViewButtonPressed:(id)sender {
@@ -144,4 +144,9 @@
     [self.tableView reloadData];
 }
 
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    //Safety check, if view is dismissed before setting isEditing off, it will crash when we come on this page next time
+    self.tableView.editing = NO;
+}
 @end

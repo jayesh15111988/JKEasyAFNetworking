@@ -233,22 +233,18 @@
         newAPIRequest.headers = self.headersToSend;
         newAPIRequest.dateOfRequestCreation = [self.formatter stringFromDate:[NSDate date]];
         newAPIRequest.timestampForRequestCreation = [[NSDate date]timeIntervalSince1970];
-        DLog(@"Timestamp of request creation %f and date is %@",newAPIRequest.timestampForRequestCreation,newAPIRequest.dateOfRequestCreation);
         newAPIRequest.isRequestSuccessfull = isRequestSuccessfull;
         newAPIRequest.requestIdentifier = [JKStoredHistoryOperationUtility generateRandomStringWithLength:7];
         newAPIRequest.serverResponseMessage = self.serverResponse.text;
         newAPIRequest.executionTime = self.executionTime.text;
         newAPIRequest.isHMACRequest = self.isHMACRequest;
-        DLog(@"%d is hmac request",newAPIRequest.isHMACRequest);
+
         JKNetworkingWorkspace* workspace = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",currentWorkspace]] firstObject];
         
         RLMRealm *realm = [RLMRealm defaultRealm];
         [realm beginWriteTransaction];
         [workspace.requests addObject:newAPIRequest];
         [realm commitWriteTransaction];
-        
-        DLog(@"%d ***",workspace.requests.count);
-        
     }
 }
 
@@ -419,9 +415,6 @@
                                                }];
     UIAlertAction* cancel = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault
                                                    handler:^(UIAlertAction * action) {
-                                                       
-                                                       DLog(@"cancel btn");
-                                                       
                                                        [alert dismissViewControllerAnimated:YES completion:nil];
                                                        
                                                    }];
@@ -439,10 +432,10 @@
 
 - (IBAction)showHistoryForCurrentWorkspace:(id)sender {
     
+    if(!self.requestHistory) {
+        self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
+    }
     
-    
-    
-    self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
     JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[JKUserDefaultsOperations getObjectFromDefaultForKey:@"defaultWorkspace"]]] firstObject];
 
     
@@ -474,7 +467,7 @@
     self.serverResponse.text = pastRequestObject.serverResponseMessage;
     self.executionTime.text = pastRequestObject.executionTime;
     self.isHMACRequest = pastRequestObject.isHMACRequest;
-    DLog(@"%d Was this request HMAC?",self.isHMACRequest);
+    DLog(@"Was This request HMAC? %d",self.isHMACRequest);
     if(pastRequestObject.isRequestSuccessfull) {
         self.serverResponse.textColor = [UIColor blackColor];
     }

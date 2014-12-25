@@ -35,11 +35,10 @@
     unsigned char cHMAC[CC_SHA256_DIGEST_LENGTH];
     const char *cKey  = [appSecret cStringUsingEncoding:NSASCIIStringEncoding];
     unsigned int inputLength = [inputString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-    //NSData* inputData = [inputString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:NO];
+
     NSInteger keyLen = strlen(cKey);
-    
     CCHmac(kCCHmacAlgSHA256, cKey, keyLen, inputCString,inputLength, cHMAC);
-    DLog(@"%d ** %s ** %d ** %s ** %d ** %s",kCCHmacAlgSHA256, cKey, keyLen,inputCString, inputLength, cHMAC);
+    DLog(@"SHA Algorithm %d  Key %s Key length %d Input C String %s Input String length %d HMAC value %s",kCCHmacAlgSHA256, cKey, keyLen,inputCString, inputLength, cHMAC);
     NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC
                                           length:sizeof(cHMAC)];
 

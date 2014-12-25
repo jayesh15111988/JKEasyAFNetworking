@@ -57,9 +57,9 @@ static const NSInteger totalNumberOfSections = 3;
     self.generateNewHMACHeadersButton.hidden = !self.didAddHMACHeaders;
     [self initializeHMACHeaderValues];
     [self.tableView reloadData];
+    
     //Adjust header titles based on whether previous request was HMACcompliant
     self.originalHMACRequestStatus = self.didAddHMACHeaders;
-    DLog(@"%@ and %@",self.generateNewHMACHeadersButton, self.addHeadersButton);
 }
 
 
@@ -84,7 +84,6 @@ static const NSInteger totalNumberOfSections = 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    DLog(@"%@",self.numberOfRowsInRespectiveSection[section]);
     return [self.numberOfRowsInRespectiveSection[section] integerValue];
 }
 
@@ -103,7 +102,6 @@ static const NSInteger totalNumberOfSections = 3;
         currentCell.valueField.text = [currentKeyValuePairDictionary objectForKey:currentCell.keyField.text];
         currentCell.didAddKeyValuePairToArray = YES;
         currentCell.currentKeyValuePairArrayIndex = indexPath.row;
-        DLog(@"%@ - Key %@ - Value and current index %d",currentCell.keyField.text,currentCell.valueField.text,indexPath.row);
     }
     else {
         currentCell.keyField.text = @"";
@@ -127,7 +125,6 @@ static const NSInteger totalNumberOfSections = 3;
             strongCellInstance.currentKeyValuePairArrayIndex = [self.keyValueParametersCollectionInArray[indexPath.section] count] - 1;
             strongCellInstance.didAddKeyValuePairToArray = YES;
         }
-        DLog(@"Current value of key value pair %@",self.keyValueParametersCollectionInArray);
     };
     return currentCell;
 }

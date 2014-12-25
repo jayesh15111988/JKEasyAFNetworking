@@ -8,6 +8,7 @@
 
 #import "JKWorkspacesListViewController.h"
 #import "JKNetworkingWorkspace.h"
+#import "JKAlertViewProvider.h"
 #import "JKUserDefaultsOperations.h"
 #import <RLMObject.h>
 #import <RLMResults.h>
@@ -87,19 +88,24 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        DLog(@"Editing current Row");
-        JKNetworkingWorkspace* workspaceToDelete = self.workSpaceList[indexPath.row];
         
+        JKNetworkingWorkspace* workspaceToDelete = self.workSpaceList[indexPath.row];
         //Though this has already been taken care of this check if only for safety in case anything changes
         //In future
         if(![workspaceToDelete.workSpaceName isEqualToString:@"default"]){
-            RLMRealm* realm = [RLMRealm defaultRealm];
-            [realm beginWriteTransaction];
-            [realm deleteObject:workspaceToDelete];
-            [realm commitWriteTransaction];
-            self.tableView.editing = !self.tableView.editing;
-            [self getDataAndReloadTable];
+            
+            [JKAlertViewProvider showAlertWithTitle:@"Remove Workspace" andMessage:[NSString stringWithFormat:@"Are you sure to remove workspace %@ from system?", workspaceToDelete.workSpaceName] isSingleButton:NO andParentViewController:self andOkAction:^{
+                
+                RLMRealm* realm = [RLMRealm defaultRealm];
+                [realm beginWriteTransaction];
+                [realm deleteObject:workspaceToDelete];
+                [realm commitWriteTransaction];
+                self.tableView.editing = !self.tableView.editing;
+                [self getDataAndReloadTable];
+                
+            } andCancelAction:^{
+                DLog(@"Not deleting workspace");
+            }];
         }
         else {
             UIAlertController* alertMessage = [UIAlertController new];
@@ -130,6 +136,12 @@
 
 - (IBAction)editWorkspaceButtonPressed:(id)sender {
         [self.tableView setEditing:!self.tableView.editing animated:YES];
+}
+
+-(void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    //In case tableView is already in editing mode
+    self.tableView.editing = NO;
 }
 
 

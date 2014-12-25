@@ -34,6 +34,7 @@
                              }];
         [alertController addAction:cancel];
     }
+    
     [alertController addAction:ok];
     [parent presentViewController:alertController animated:YES completion:nil];
 }
