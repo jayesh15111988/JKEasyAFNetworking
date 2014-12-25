@@ -18,7 +18,6 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
 @interface JKNetworkActivity ()
 
 @property(nonatomic, strong) NSDictionary *dataToPost;
-@property(nonatomic, strong) NSString *authToken;
 @property(strong, nonatomic) NSArray *APIRequestMethodsCollection;
 
 
@@ -31,7 +30,7 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
 
 @implementation JKNetworkActivity
 - (id)initWithData:(NSDictionary *)dataToPost
-    andAuthorizationToken:(NSString *)authorizationToken {
+     {
     if (!self.dataToPost) {
         self.dataToPost = [[NSDictionary alloc] init];
     }
@@ -49,14 +48,13 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
         self.APIRequestMethodsCollection =
             @[ @"GET", @"POST", @"PUT", @"DELETE" ];
         self.dataToPost = dataToPost;
-        self.authToken = authorizationToken;
     }
 
     return self;
 }
 
 - (void)communicateWithServerWithMethod:(NSInteger)method
-                           andIsFullURL:(BOOL)isFullURL
+                           andHeaderFields:(NSDictionary*)headerFields
                            andPathToAPI:(NSString *)pathToAPI
                           andParameters:(NSDictionary *)parameters
                              completion:(void (^)(id successResponse))completion
@@ -66,22 +64,19 @@ typedef enum { GET, POST, PUT, DELETE } serverRequestMethod;
     // Convert dictionary data into NSdata representation
     // get full url from tail keyword
 
-   NSString *destinationUrlString;
+   NSString *destinationUrlString = pathToAPI;
 
-    if (isFullURL) {
-        destinationUrlString = pathToAPI;
-    } else {
-        destinationUrlString = [self getUrlFromString:pathToAPI];
-    }
     self.remoteURL = destinationUrlString;
     NSString* encodedRemoteURL = [destinationUrlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
     manager.requestSerializer = [AFJSONRequestSerializer serializer];
-    if(self.authToken && self.authToken.length) {
-        [manager.requestSerializer setValue:self.authToken forHTTPHeaderField:@"Authorization"];
+    for (NSString* headerKey in headerFields) {
+        [manager.requestSerializer setValue:headerFields[headerKey] forHTTPHeaderField:headerKey];
     }
+    
+    //[manager.requestSerializer setva]
     if(method == GET) {
         [manager GET:encodedRemoteURL parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
             completion(responseObject);

@@ -48,6 +48,11 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    NSInteger maximumNumberOfResults = [[[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"] integerValue];
+    
+    if(self.requestsForCurrentWorkspace.count > maximumNumberOfResults) {
+        return maximumNumberOfResults;
+    }
     return self.requestsForCurrentWorkspace.count;
 }
 

@@ -8,6 +8,7 @@
 
 #import "JKRestServiceAppSettingsViewController.h"
 #import "UIViewController+MJPopupViewController.h"
+#import "UIView+Utility.h"
 
 #define TOTAL_SETTING_OPTIONS 2
 @interface JKRestServiceAppSettingsViewController ()
@@ -63,8 +64,8 @@
     }
     
     if([[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"]) {
-        NSString* maximumNumberOfRequestsToShow = [[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"];
-        self.maximumNumberOfHistoryItemsField.text= maximumNumberOfRequestsToShow.length? maximumNumberOfRequestsToShow : @"100";
+        NSInteger maximumNumberOfRequestsToShow = [[[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"] integerValue];
+        self.maximumNumberOfHistoryItemsField.text= [NSString stringWithFormat:@"%d",maximumNumberOfRequestsToShow];
     }
     
 }
@@ -91,6 +92,7 @@
         default:
             break;
     }
+    [currentCell addBorderWithColor:[UIColor blackColor] andBorderWidth:1.0f];
     return currentCell;
 }
 

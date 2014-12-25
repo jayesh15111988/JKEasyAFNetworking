@@ -18,6 +18,7 @@
 @property NSString* remoteURL;
 @property NSString* requestCreationTimestamp;
 @property BOOL isRequestSuccessfull;
+@property BOOL isHMACRequest;
 @property NSString* requestIdentifier;
 @property NSString* serverResponseMessage;
 @property NSString* executionTime;

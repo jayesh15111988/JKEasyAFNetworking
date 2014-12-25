@@ -22,12 +22,20 @@
     if(![[NSUserDefaults standardUserDefaults] objectForKey:@"toSaveRequests"]) {
         [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"toSaveRequests"];
     }
+    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"]) {
+        [[NSUserDefaults standardUserDefaults] setObject:@(100) forKey:@"maxHistory"];
+    }
+    
+//    NSArray* tempArray = @[@"jayesh",@"kawli",@"manali",@"raut",@"archana",@"raur"];
+  //  NSArray* modifiedArray = [tempArray subarrayWithRange:NSMakeRange(0, 2)];
+
+    
     [self performDatabaseMigration];
     return YES;
 }
 
 -(void)performDatabaseMigration {
-    [RLMRealm setSchemaVersion:3 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
+    [RLMRealm setSchemaVersion:4 withMigrationBlock:^(RLMMigration *migration, NSUInteger oldSchemaVersion) {
 
         if (oldSchemaVersion < 1) {
 
@@ -49,6 +57,14 @@
                                       newObject[@"executionTime"] = @"";
                                   }];
         }
+        
+        if(oldSchemaVersion < 4) {
+            [migration enumerateObjects:JKNetworkingRequest.className
+                                  block:^(RLMObject *oldObject, RLMObject *newObject) {
+                                      newObject[@"isHMACRequest"] = @(NO);
+                                  }];
+        }
+        
     }];
     
     

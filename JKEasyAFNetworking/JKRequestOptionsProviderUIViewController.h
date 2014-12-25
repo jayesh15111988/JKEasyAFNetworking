@@ -11,8 +11,10 @@ typedef enum { HEADER, GET, POST } parametersType;
 
 @interface JKRequestOptionsProviderUIViewController : UIViewController
 
-typedef void (^OkButtonPressedBlock)(BOOL isOkAction, NSArray* inputKeyValuePairCollection);
+typedef void (^OkButtonPressedBlock)(BOOL isOkAction, NSArray* inputKeyValuePairCollection, BOOL isHMACRequest);
 @property (strong, nonatomic) OkButtonPressedBlock dismissViewButtonAction;
+@property (assign, nonatomic) BOOL didAddHMACHeaders;
+@property (strong, nonatomic) NSMutableArray* numberOfRowsInRespectiveSection;
 -(void)initializeKeyValueHolderArray;
 -(void)accumulateKeyValuesInParameterHolder:(NSArray*)inputParametersHolderArray;
 @end

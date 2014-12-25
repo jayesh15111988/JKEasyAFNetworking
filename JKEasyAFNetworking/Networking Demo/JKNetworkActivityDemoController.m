@@ -12,6 +12,7 @@
 #import "JKRequestOptionsProviderUIViewController.h"
 #import "UIViewController+MJPopupViewController.h"
 #import "NSString+Utility.h"
+#import "UIView+Utility.h"
 #import "JKObjectToStringConvertor.h"
 #import "JKRestServiceAppSettingsViewController.h"
 #import "JKNetworkActivity.h"
@@ -44,6 +45,7 @@
 
 @property (weak, nonatomic) IBOutlet UIButton *currentWorkspaceLabel;
 @property (strong, nonatomic) NSString* headersToSend;
+@property (assign, nonatomic) BOOL isHMACRequest;
 @property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
 @property (strong, nonatomic) JKRestServiceAppSettingsViewController* settingsViewController;
 @property (strong, nonatomic) JKWorkspacesListViewController* workSpaceList;
@@ -66,7 +68,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.formatter = [NSDateFormatter new];
-    [self.formatter setDateFormat:@"EEEE MMMM d, YYYY"];
+    [self.formatter setDateFormat:@"EEEE MMMM d, YYYY hh:mm a"];
     self.headersToSend = @"";
     [JKStoredHistoryOperationUtility createDefaultWorkSpace];
     
@@ -81,8 +83,9 @@
         [strongSelf dismissPopupViewControllerWithanimationType:MJPopupViewAnimationSlideTopTop];
     };
     
-    self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction, NSArray* inputKeyValuePairCollection){
+    self.networkRequestParametersProvider.dismissViewButtonAction = ^(BOOL isOkAction, NSArray* inputKeyValuePairCollection, BOOL isHMACRequest){
         __strong typeof(self) strongSelf = weakSelf;
+        strongSelf.isHMACRequest = isHMACRequest;
         if(inputKeyValuePairCollection) {
             
             strongSelf.inputGetParameters.text = [NSString stringWithFormat:@"%@", [JKObjectToStringConvertor jsonStringWithPrettyPrintWithObject:[strongSelf getKeyedDictionaryFromArray:inputKeyValuePairCollection[GET]]]];
@@ -103,24 +106,8 @@
     [self.networkRequestParametersProvider initializeKeyValueHolderArray];
     //Remove any stale header values in the variable
     self.headersToSend = @"";
-    NSArray *subviewsInCurrentView = [self.view subviews];
-
-    for (UIView *individualViewOnCurrentView in subviewsInCurrentView) {
-
-        if ([individualViewOnCurrentView isKindOfClass:[UITextField class]]) {
-            UITextField *inputTextField =
-                (UITextField *)individualViewOnCurrentView;
-            inputTextField.text = nil;
-        } else if ([individualViewOnCurrentView isKindOfClass:[UITextView class]]) {
-            UITextView *inputTextView = (UITextView *)individualViewOnCurrentView;
-            if(individualViewOnCurrentView == self.serverResponse) {
-                inputTextView.text = @"Non-Editable";
-            }
-            else {
-                inputTextView.text = nil;
-            }
-        }
-    }
+    //Recursively reset all input fields in the the given view
+    [self.view resetViewHierarchy];
 }
 
 - (IBAction)sendAPIRequestButtonPressed:(id)sender {
@@ -160,26 +147,41 @@
 
 
     JKNetworkActivity *newAPIRequest = [[JKNetworkActivity alloc]
-                 initWithData:inputPOSTData
-        andAuthorizationToken:
-            self.authorizationHeader.text.length
-                ? self.authorizationHeader.text
-                : [[NSBundle mainBundle]
-                      objectForInfoDictionaryKey:@"Authorization"]];
+                 initWithData:inputPOSTData];
+    
     [self.activityIndicatorView startAnimating];
 
+    
+    NSString* authorizationHeaderValue = self.authorizationHeader.text.length ? self.authorizationHeader.text
+    : [[NSBundle mainBundle] objectForInfoDictionaryKey:@"Authorization"];
+    
+    NSError* headerParamersConversionError = nil;
+    
+    NSMutableDictionary* mutableHeaderFields = [[self.headersToSend convertJSONStringToDictionaryWithErrorObject:&headerParamersConversionError] mutableCopy];
+    [mutableHeaderFields setObject:authorizationHeaderValue forKey:@"Authorization"];
+    
     [newAPIRequest
         communicateWithServerWithMethod:self.requestType.selectedSegmentIndex
-        andIsFullURL:self.inputURLScheme.selectedSegmentIndex
+        andHeaderFields:(NSDictionary*)mutableHeaderFields
         andPathToAPI:self.inputURLField.text
-     andParameters:inputGETParameters
+        andParameters:inputGETParameters
         completion:^(id successResponse) {
 
             [self.activityIndicatorView stopAnimating];
-
+            
+            BOOL isRequestReallySuccessfull = NO;
+            if([successResponse isKindOfClass:[NSDictionary class]]) {
+                if([successResponse objectForKey:@"success"]) {
+                    isRequestReallySuccessfull = [successResponse[@"success"] boolValue];
+                }
+                else {
+                    isRequestReallySuccessfull = YES;
+                }
+            }
+            
             [self showResponseWithMessage:successResponse
-                 andIsSuccessfullResponse:YES];
-            [self storeRequestInDataBaseWithSuccessValue:YES];
+                 andIsSuccessfullResponse:isRequestReallySuccessfull];
+            [self storeRequestInDataBaseWithSuccessValue:isRequestReallySuccessfull];
         }
         failure:^(NSError *errorResponse) {
 
@@ -213,7 +215,8 @@
         newAPIRequest.requestIdentifier = [JKStoredHistoryOperationUtility generateRandomStringWithLength:7];
         newAPIRequest.serverResponseMessage = self.serverResponse.text;
         newAPIRequest.executionTime = self.executionTime.text;
-        
+        newAPIRequest.isHMACRequest = self.isHMACRequest;
+        DLog(@"%d is hmac request",newAPIRequest.isHMACRequest);
         JKNetworkingWorkspace* workspace = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",currentWorkspace]] firstObject];
         
         RLMRealm *realm = [RLMRealm defaultRealm];
@@ -236,6 +239,7 @@
     self.executionTime.text =
         [NSString stringWithFormat:@"Executed in %.3f Seconds", executionTime];
 
+    self.serverResponse.textColor = isRequestSuccessfull ? [UIColor blackColor] : [UIColor redColor];
     self.serverResponse.text =
         [NSString stringWithFormat:@"%@",
                                    [JKObjectToStringConvertor jsonStringWithPrettyPrintWithObject:responseMessage]];
@@ -281,6 +285,7 @@
     NSError* getParamersConversionError = nil;
     NSError* postParamersConversionError = nil;
     NSError* headerParamersConversionError = nil;
+    
     NSDictionary* getParamertsKeyValueHolderDictionary = @{};
     NSDictionary* postParametersHolderDictionary = @{};
     NSDictionary* headerParametersHolderDictionary = @{};
@@ -288,6 +293,7 @@
     if(self.inputGetParameters.text.length) {
         getParamertsKeyValueHolderDictionary = [self.inputGetParameters.text convertJSONStringToDictionaryWithErrorObject:&getParamersConversionError];
     }
+    
     if(self.inputDataToSend.text.length) {
         postParametersHolderDictionary = [self.inputDataToSend.text convertJSONStringToDictionaryWithErrorObject:&postParamersConversionError];
     }
@@ -296,17 +302,21 @@
         headerParametersHolderDictionary = [self.headersToSend convertJSONStringToDictionaryWithErrorObject:&headerParamersConversionError];
     }
     
+    self.networkRequestParametersProvider.didAddHMACHeaders = self.isHMACRequest;
     if(getParamertsKeyValueHolderDictionary.count || postParametersHolderDictionary.count || headerParametersHolderDictionary.count) {
         [self.networkRequestParametersProvider initializeKeyValueHolderArray];
         [self.networkRequestParametersProvider accumulateKeyValuesInParameterHolder:@[headerParametersHolderDictionary,getParamertsKeyValueHolderDictionary, postParametersHolderDictionary]];
     }
+    else {
+        self.networkRequestParametersProvider.numberOfRowsInRespectiveSection = [[NSMutableArray alloc] initWithArray:@[@(1),@(1),@(1)]];
+    }
+    
     [self presentPopupViewController:self.networkRequestParametersProvider animationType:MJPopupViewAnimationSlideTopTop];
 }
 
 - (NSDictionary *) getKeyedDictionaryFromArray:(NSArray *)array {
-    NSDictionary* outputDictionary;
-
     
+    NSDictionary* outputDictionary;
     NSMutableDictionary *mutableDictionary = [[NSMutableDictionary alloc] init];
     for (outputDictionary in array){
         NSString* key = [[outputDictionary allKeys] firstObject];
@@ -409,8 +419,10 @@
     }
     
     JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]]] firstObject];
+
     
     if(currentWorkspaceObject.requests.count > 0) {
+        
         self.requestHistory.requestsForCurrentWorkspace = currentWorkspaceObject.requests;
         self.requestHistory.currentWorkspaceName = currentWorkspaceObject.workSpaceName;
         __weak typeof(self) weakSelf = self;
@@ -436,6 +448,8 @@
     self.headersToSend = pastRequestObject.headers;
     self.serverResponse.text = pastRequestObject.serverResponseMessage;
     self.executionTime.text = pastRequestObject.executionTime;
+    self.isHMACRequest = pastRequestObject.isHMACRequest;
+    DLog(@"%d Was this request HMAC?",self.isHMACRequest);
     if(pastRequestObject.isRequestSuccessfull) {
         self.serverResponse.textColor = [UIColor blackColor];
     }

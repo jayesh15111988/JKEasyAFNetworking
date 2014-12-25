@@ -18,6 +18,7 @@
 		388E85641A35380E0018E7DD /* JKStoredHistoryOperationUtility.m in Sources */ = {isa = PBXBuildFile; fileRef = 388E85631A35380E0018E7DD /* JKStoredHistoryOperationUtility.m */; };
 		38943A961A3E4017005128A6 /* JKWorkspacesListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38943A941A3E4017005128A6 /* JKWorkspacesListViewController.m */; };
 		38943A971A3E4017005128A6 /* JKWorkspacesListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 38943A951A3E4017005128A6 /* JKWorkspacesListViewController.xib */; };
+		38C05AC41A4BB02400066F20 /* UIView+Utility.m in Sources */ = {isa = PBXBuildFile; fileRef = 38C05AC31A4BB02400066F20 /* UIView+Utility.m */; };
 		38E23CCA1A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CC91A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m */; };
 		38E23CD01A33E05D00741DD4 /* MJPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CCD1A33E05D00741DD4 /* MJPopupBackgroundView.m */; };
 		38E23CD11A33E05D00741DD4 /* UIViewController+MJPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 38E23CCF1A33E05D00741DD4 /* UIViewController+MJPopupViewController.m */; };
@@ -80,6 +81,8 @@
 		38943A931A3E4017005128A6 /* JKWorkspacesListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKWorkspacesListViewController.h; sourceTree = "<group>"; };
 		38943A941A3E4017005128A6 /* JKWorkspacesListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKWorkspacesListViewController.m; sourceTree = "<group>"; };
 		38943A951A3E4017005128A6 /* JKWorkspacesListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = JKWorkspacesListViewController.xib; sourceTree = "<group>"; };
+		38C05AC21A4BB02400066F20 /* UIView+Utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Utility.h"; sourceTree = "<group>"; };
+		38C05AC31A4BB02400066F20 /* UIView+Utility.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Utility.m"; sourceTree = "<group>"; };
 		38E23CC81A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JKRequestOptionsProviderUIViewController.h; sourceTree = "<group>"; };
 		38E23CC91A33DB8800741DD4 /* JKRequestOptionsProviderUIViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JKRequestOptionsProviderUIViewController.m; sourceTree = "<group>"; };
 		38E23CCC1A33E05D00741DD4 /* MJPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJPopupBackgroundView.h; sourceTree = "<group>"; };
@@ -274,6 +277,8 @@
 				38E23CE61A33FD6600741DD4 /* UITableView+Utility.m */,
 				38E23CEA1A34058F00741DD4 /* NSString+Utility.h */,
 				38E23CEB1A34058F00741DD4 /* NSString+Utility.m */,
+				38C05AC21A4BB02400066F20 /* UIView+Utility.h */,
+				38C05AC31A4BB02400066F20 /* UIView+Utility.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -579,6 +584,7 @@
 				38826E621A464636003BAEF2 /* JKRequestTableViewCell.m in Sources */,
 				388E85601A3533740018E7DD /* JKNetworkingRequest.m in Sources */,
 				91AE2C8719BD1D5300AA36C8 /* JKNetworkActivity.m in Sources */,
+				38C05AC41A4BB02400066F20 /* UIView+Utility.m in Sources */,
 				91AE2C8D19BD203900AA36C8 /* JKNetworkActivityDemoController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
