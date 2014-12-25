@@ -10,4 +10,5 @@
 
 @interface NSString (Utility)
 -(NSDictionary*)convertJSONStringToDictionaryWithErrorObject:(NSError**)error;
+- (BOOL) isURLValid;
 @end

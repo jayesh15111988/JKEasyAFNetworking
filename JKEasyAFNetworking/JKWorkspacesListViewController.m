@@ -8,6 +8,7 @@
 
 #import "JKWorkspacesListViewController.h"
 #import "JKNetworkingWorkspace.h"
+#import "JKUserDefaultsOperations.h"
 #import <RLMObject.h>
 #import <RLMResults.h>
 #import <RLMRealm.h>
@@ -122,7 +123,7 @@
 
 - (IBAction)okButtonPressed:(id)sender {
     if(self.hideWorkSpaceListsBlockSelected) {
-        [[NSUserDefaults standardUserDefaults] setObject:self.currentWorkspaceName forKey:@"defaultWorkspace"];
+        [JKUserDefaultsOperations setObjectInDefaultForValue:self.currentWorkspaceName andKey:@"defaultWorkspace"];
         self.hideWorkSpaceListsBlockSelected(self.currentWorkspaceName);
     }
 }

@@ -25,8 +25,7 @@
                                    okAction();
                                }];
     
-    if(!singleButton)
-    {
+    if(!singleButton) {
         UIAlertAction *cancel = [UIAlertAction
                              actionWithTitle:NSLocalizedString(@"Cancel", @"Cancel action")
                              style:UIAlertActionStyleCancel

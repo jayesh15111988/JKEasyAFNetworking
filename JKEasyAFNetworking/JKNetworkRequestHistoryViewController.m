@@ -9,6 +9,7 @@
 #import <RLMRealm.h>
 #import "JKNetworkRequestHistoryViewController.h"
 #import "JKRequestTableViewCell.h"
+#import "JKUserDefaultsOperations.h"
 #import "JKAlertViewProvider.h"
 
 @interface JKNetworkRequestHistoryViewController ()
@@ -50,7 +51,8 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSInteger maximumNumberOfResults = [[[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"] integerValue];
+    
+    NSInteger maximumNumberOfResults = [[JKUserDefaultsOperations getObjectFromDefaultForKey:@"maxHistory"] integerValue];
     
     self.actualNumberOfPastRequests = self.requestsForCurrentWorkspace.count;
     if(self.requestsForCurrentWorkspace.count > maximumNumberOfResults) {
@@ -119,11 +121,6 @@
     completion:nil];
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated{
-
-}
-
-
 - (IBAction)clearAllRequestsButtonPressed:(id)sender {
     [JKAlertViewProvider showAlertWithTitle:@"Requests History" andMessage:@"Are you sure you want to clear all history items?" isSingleButton:NO andParentViewController:self andOkAction:^{
         //Remove all History Items for current workspace
@@ -139,14 +136,12 @@
 
 -(void)getDataAndReloadTable {
     self.requestsForCurrentWorkspace = self.currentWorkspace.requests;
-    if(self.requestsForCurrentWorkspace.count > 0){
-        [self.tableView reloadData];
-    }
-    else {
+    if(self.requestsForCurrentWorkspace.count == 0){
         [JKAlertViewProvider showAlertWithTitle:@"History" andMessage:@"No Requests to display for this workspace" isSingleButton:YES andParentViewController:self andOkAction:^{
             DLog(@"Ok Button Pressed");
         } andCancelAction:nil];
     }
+    [self.tableView reloadData];
 }
 
 @end

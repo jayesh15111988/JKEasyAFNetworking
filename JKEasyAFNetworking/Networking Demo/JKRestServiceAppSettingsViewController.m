@@ -8,6 +8,7 @@
 
 #import "JKRestServiceAppSettingsViewController.h"
 #import "UIViewController+MJPopupViewController.h"
+#import "JKUserDefaultsOperations.h"
 #import "UIView+Utility.h"
 
 #define TOTAL_SETTING_OPTIONS 2
@@ -57,14 +58,18 @@
 
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"toSaveRequests"]) {
-        BOOL toSaveAPIRequestsLocally = [[[NSUserDefaults standardUserDefaults]
-                                      objectForKey:@"toSaveRequests"] boolValue];
+
+    if([JKUserDefaultsOperations getObjectFromDefaultForKey:@"toSaveRequests"]) {
+        
+        BOOL toSaveAPIRequestsLocally = [[JKUserDefaultsOperations getObjectFromDefaultForKey:@"toSaveRequests"] boolValue];
         [self.toSaveRequestsSwitch setOn:toSaveAPIRequestsLocally];
     }
     
-    if([[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"]) {
-        NSInteger maximumNumberOfRequestsToShow = [[[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"] integerValue];
+    
+    
+    if([JKUserDefaultsOperations getObjectFromDefaultForKey:@"maxHistory"]) {
+        
+        NSInteger maximumNumberOfRequestsToShow = [[JKUserDefaultsOperations getObjectFromDefaultForKey:@"maxHistory"] integerValue];
         self.maximumNumberOfHistoryItemsField.text= [NSString stringWithFormat:@"%d",maximumNumberOfRequestsToShow];
     }
     
@@ -97,11 +102,11 @@
 }
 
 - (IBAction)toSavePreviousRequestsSwitchChanged:(UISwitch*)sender {
-    [[NSUserDefaults standardUserDefaults] setObject:@(sender.isOn) forKey:@"toSaveRequests"];
+    [JKUserDefaultsOperations setObjectInDefaultForValue:@(sender.isOn) andKey:@"toSaveRequests"];
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
-    [[NSUserDefaults standardUserDefaults] setObject:self.maximumNumberOfHistoryItemsField.text forKey:@"maxHistory"];
+    [JKUserDefaultsOperations setObjectInDefaultForValue:self.maximumNumberOfHistoryItemsField.text andKey:@"maxHistory"];
 }
 
 

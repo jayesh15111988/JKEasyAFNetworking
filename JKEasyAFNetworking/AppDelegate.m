@@ -10,20 +10,21 @@
 #import <RLMMigration.h>
 #import "AppDelegate.h"
 #import "JKNetworkingRequest.h"
+#import "JKUserDefaultsOperations.h"
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     //Set up default realm for app
-    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"default" forKey:@"defaultWorkspace"];
+    if(![JKUserDefaultsOperations getObjectFromDefaultForKey:@"defaultWorkspace"]) {
+        [JKUserDefaultsOperations setObjectInDefaultForValue:@"default" andKey:@"defaultWorkspace"];
     }
-    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"toSaveRequests"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"toSaveRequests"];
+    if(![JKUserDefaultsOperations getObjectFromDefaultForKey:@"toSaveRequests"]) {
+        [JKUserDefaultsOperations setObjectInDefaultForValue:@(YES) andKey:@"toSaveRequests"];
     }
-    if(![[NSUserDefaults standardUserDefaults] objectForKey:@"maxHistory"]) {
-        [[NSUserDefaults standardUserDefaults] setObject:@(100) forKey:@"maxHistory"];
+    if(![JKUserDefaultsOperations getObjectFromDefaultForKey:@"maxHistory"]) {
+        [JKUserDefaultsOperations setObjectInDefaultForValue:@(100) andKey:@"maxHistory"];
     }
     
 //    NSArray* tempArray = @[@"jayesh",@"kawli",@"manali",@"raut",@"archana",@"raur"];

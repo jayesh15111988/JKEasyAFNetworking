@@ -17,6 +17,7 @@
 #import "JKRestServiceAppSettingsViewController.h"
 #import "JKNetworkActivity.h"
 #import "JKNetworkingRequest.h"
+#import "JKUserDefaultsOperations.h"
 #import <RLMRealm.h>
 #import <RLMResults.h>
 #import "JKNetworkingWorkspace.h"
@@ -24,6 +25,7 @@
 #import "JKNetworkRequestHistoryViewController.h"
 #import "JKWorkspacesListViewController.h"
 #import "JKURLConstants.h"
+#import "JKNetworkingResponseLargeDisplayViewController.h"
 
 #define animationTimeframe 0.5
 
@@ -44,12 +46,14 @@
 @property (strong, nonatomic) NSDateFormatter* formatter;
 
 @property (weak, nonatomic) IBOutlet UIButton *currentWorkspaceLabel;
+
 @property (strong, nonatomic) NSString* headersToSend;
 @property (assign, nonatomic) BOOL isHMACRequest;
 @property (strong, nonatomic) JKRequestOptionsProviderUIViewController* networkRequestParametersProvider;
 @property (strong, nonatomic) JKRestServiceAppSettingsViewController* settingsViewController;
 @property (strong, nonatomic) JKWorkspacesListViewController* workSpaceList;
 @property (strong, nonatomic) JKNetworkRequestHistoryViewController* requestHistory;
+@property (strong, nonatomic) JKNetworkingResponseLargeDisplayViewController* largeDisplayForServerResponse;
 @property(weak, nonatomic)
     IBOutlet UIActivityIndicatorView *activityIndicatorView;
 @property (strong, nonatomic) IBOutlet TPKeyboardAvoidingScrollView *mainScrollView;
@@ -72,7 +76,9 @@
     self.headersToSend = @"";
     [JKStoredHistoryOperationUtility createDefaultWorkSpace];
     
-    [self.currentWorkspaceLabel setTitle:[NSString stringWithFormat:@"Workspace : %@",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]] forState:UIControlStateNormal];
+    
+    
+    [self.currentWorkspaceLabel setTitle:[NSString stringWithFormat:@"Workspace : %@",[JKUserDefaultsOperations getObjectFromDefaultForKey:@"defaultWorkspace"]] forState:UIControlStateNormal];
 
     [self hideErrorViewWithAnimationDuration:0];
     self.networkRequestParametersProvider = [[JKRequestOptionsProviderUIViewController alloc] initWithNibName:@"JKRequestOptionsProviderUIViewController" bundle:nil];
@@ -110,7 +116,7 @@
     [self.view resetViewHierarchy];
 }
 
-- (IBAction)sendAPIRequestButtonPressed:(id)sender {
+- (IBAction)sendAPIRequestButtonPressed:(UIButton*)sender {
 
     
     NSError *error = nil;
@@ -127,7 +133,7 @@
 
     NSString* errorMessage = @"";
     
-    if (![self.inputURLField.text length]) {
+    if (![self.inputURLField.text isURLValid]) {
         errorMessage = @"Please input the valid URL in given field";
     }
     
@@ -144,12 +150,11 @@
     // We will check if user had already entered Auth token in the field - If
     // not, we will use the default ones setup
     // Through #defines
-
-
+    [self disableButton:sender];
     JKNetworkActivity *newAPIRequest = [[JKNetworkActivity alloc]
                  initWithData:inputPOSTData];
     
-    [self.activityIndicatorView startAnimating];
+   
 
     
     NSString* authorizationHeaderValue = self.authorizationHeader.text.length ? self.authorizationHeader.text
@@ -167,8 +172,8 @@
         andParameters:inputGETParameters
         completion:^(id successResponse) {
 
-            [self.activityIndicatorView stopAnimating];
             
+            [self enableButton:sender];
             BOOL isRequestReallySuccessfull = NO;
             if([successResponse isKindOfClass:[NSDictionary class]]) {
                 if([successResponse objectForKey:@"success"]) {
@@ -185,7 +190,7 @@
         }
         failure:^(NSError *errorResponse) {
 
-            [self.activityIndicatorView stopAnimating];
+            [self enableButton:sender];
             [self showResponseWithMessage:[errorResponse localizedDescription]
                  andIsSuccessfullResponse:NO];
             [self showErrorViewWithMessage:@"Error Occurred in processing the "
@@ -197,9 +202,25 @@
         }];
 }
 
+
+-(void)disableButton:(UIButton*)inputButton {
+    inputButton.userInteractionEnabled = NO;
+    inputButton.alpha = 0.5;
+    [self.activityIndicatorView startAnimating];
+}
+
+-(void)enableButton:(UIButton*)inputButton {
+    inputButton.userInteractionEnabled = YES;
+    inputButton.alpha = 1.0;
+    [self.activityIndicatorView stopAnimating];
+}
+
 -(void)storeRequestInDataBaseWithSuccessValue:(BOOL)isRequestSuccessfull {
-    BOOL toSaveRequestInHistory = [[[NSUserDefaults standardUserDefaults] objectForKey:@"toSaveRequests"] boolValue];
-    NSString* currentWorkspace = [[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"];
+    
+    BOOL toSaveRequestInHistory = [[JKUserDefaultsOperations getObjectFromDefaultForKey:@"toSaveRequests"] boolValue];
+    
+    
+    NSString* currentWorkspace = [JKUserDefaultsOperations getObjectFromDefaultForKey:@"defaultWorkspace"];
     
     if(toSaveRequestInHistory) {
         JKNetworkingRequest* newAPIRequest = [JKNetworkingRequest new];
@@ -416,8 +437,11 @@
 
 - (IBAction)showHistoryForCurrentWorkspace:(id)sender {
     
+    
+    
+    
     self.requestHistory = [self.storyboard instantiateViewControllerWithIdentifier:@"requesthistory"];
-    JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[[NSUserDefaults standardUserDefaults] objectForKey:@"defaultWorkspace"]]] firstObject];
+    JKNetworkingWorkspace* currentWorkspaceObject = [[JKNetworkingWorkspace objectsWhere:[NSString stringWithFormat:@"workSpaceName = '%@'",[JKUserDefaultsOperations getObjectFromDefaultForKey:@"defaultWorkspace"]]] firstObject];
 
     
     if(currentWorkspaceObject.requests.count > 0) {
@@ -469,6 +493,25 @@
     }
 }
 
+
+- (IBAction)showFullScreenResponseButtonPressed:(id)sender {
+    
+    if([self didReceiveValidResponse]) {
+        if(!self.largeDisplayForServerResponse) {
+        self.largeDisplayForServerResponse = (JKNetworkingResponseLargeDisplayViewController*)[self.storyboard instantiateViewControllerWithIdentifier:@"largeresponsedisplay"];
+        }
+        self.largeDisplayForServerResponse.remoteURL = self.inputURLField.text;
+        self.largeDisplayForServerResponse.serverResponse = self.serverResponse.text;
+        [self presentViewController:self.largeDisplayForServerResponse animated:YES completion:nil];
+    }
+    else {
+        [self showErrorViewWithMessage:@"Request not valid or no valid response received" andAnimationDuration:0.3];
+    }
+}
+
+-(BOOL)didReceiveValidResponse {
+    return (([self.inputURLField.text isURLValid]) && (![self.serverResponse.text isEqualToString:@"Non-Editable"]));
+}
 
 
 @end
